@@ -1,0 +1,163 @@
+{
+  "name": "cocotbext-fcov",
+  "url": "https://github.com/furiosa-ai/cocotbext-fcov",
+  "visibility": "public",
+  "readme": {
+    "title": "cocotbext-fcov",
+    "sections": [
+      {
+        "heading": "cocotbext-fcov",
+        "text": "Cocotb Extension for Functional Coverage Closure",
+        "children": [
+          {
+            "heading": "Installation",
+            "text": "$ git clone https://github.com/furiosa-ai/cocotbext-fcov\n$ pip install ./cocotbext-fcov",
+            "children": []
+          },
+          {
+            "heading": "Documentation",
+            "text": "",
+            "children": [
+              {
+                "heading": "CoverPoint",
+                "text": "The\nCoverPoint\nclass defines specific ranges to be covered during verification using bins, corresponding to the\ncoverpoint\nin SystemVerilog.\nCoverPoint\nrequires a collection of bins, and the following types are supported as bins:",
+                "children": [
+                  {
+                    "heading": "integer",
+                    "text": "CoverPoint\n([\n1\n,\n5\n])\n# bins bin_1 = {1};\n# bins bin_5 = {5};",
+                    "children": []
+                  },
+                  {
+                    "heading": "range",
+                    "text": "CoverPoint\n([\nrange\n(\n10\n),\nrange\n(\n10\n,\n20\n)])\n# bins bin_0_9 = {[0:9]};\n# bins bin_10_19 = {[10:19]};",
+                    "children": []
+                  },
+                  {
+                    "heading": "list (Iterable)",
+                    "text": "CoverPoint\n([[\n1\n,\n2\n], (\n3\n,\n5\n,\n7\n)])\n# bins bin_1_2 = {1, 2};\n# bins bin_3_7 = {3, 5, 7};",
+                    "children": []
+                  },
+                  {
+                    "heading": "transition",
+                    "text": "CoverPoint\n([[\n1\n,\n\"=>\"\n,\n2\n], [\nrange\n(\n10\n,\n20\n),\n\"=>\"\n,\nrange\n(\n20\n,\n30\n)]])\n# bins bin_1_2 = {1 => 2};\n# bins bin_10_29 = {[10:19] => [20:29]};",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "heading": "Predefined Bin Types",
+                "text": "For convenience, some predefined bin types are provided:",
+                "children": [
+                  {
+                    "heading": "BinSingle",
+                    "text": "CoverPoint\n(\nBinSingle\n(\n1\n))\n# bins bin_1 = {1};\nCoverPoint\n(\nBinSingle\n(\nrange\n(\n10\n)))\n# bins bin_0_9 = {[0:9]};",
+                    "children": []
+                  },
+                  {
+                    "heading": "BinUniform",
+                    "text": "Use like python\nrange()\nCoverPoint\n(\nBinUniform\n(\n10\n))\n# bins bin_0_9[] = {[0:9]};\nCoverPoint\n(\nBinUniform\n(\n10\n,\n20\n,\nnum\n=\n5\n))\n# bins bin_10_19[5] = {[10:19]};",
+                    "children": []
+                  },
+                  {
+                    "heading": "BinRange",
+                    "text": "Same as\nBinUniform\n, but not support\nnum\nargument\nCoverPoint\n(\nBinRange\n(\n10\n))\n# bins bin_0_9[] = {[0:9]};\nCoverPoint\n(\nBinRange\n(\n10\n,\n20\n))\n# bins bin_10_19[] = {[10:19]};",
+                    "children": []
+                  },
+                  {
+                    "heading": "BinDict",
+                    "text": "CoverPoint\n(\nBinDict\n({\n\"FALSE\"\n:\n0\n,\n\"TRUE\"\n:\n1\n}),\nformat\n=\n\"b\"\n)\n# bins FALSE = {'b0};\n# bins TRUE = {'b1};",
+                    "children": []
+                  },
+                  {
+                    "heading": "BinEnum",
+                    "text": "class\nBool\n(\nEnum\n):\nFALSE\n=\n0\nTRUE\n=\n1\nCoverPoint\n(\nBinEnum\n(\nBool\n),\nformat\n=\n\"b\"\n)\n# bins FALSE = {'b0};\n# bins TRUE = {'b1};",
+                    "children": []
+                  },
+                  {
+                    "heading": "BinBool",
+                    "text": "CoverPoint\n(\nBinBool\n())\n# bins FALSE = {'b0};\n# bins TRUE = {'b1};",
+                    "children": []
+                  },
+                  {
+                    "heading": "BinExp",
+                    "text": "Use like python\nrange()\nCoverPoint\n(\nBinExp\n(\n100\n,\nbase\n=\n10\n))\n# bins bin_0 = {0}\n# bins bin_1_9 = {[1:9]}\n# bins bin_10_99 = {[10:99]}",
+                    "children": []
+                  },
+                  {
+                    "heading": "BinMinMax, BinMinMaxUniform",
+                    "text": "CoverPoint\n(\nBinMinMax\n(\nmin\n=\n100\n,\nmax\n=\n200\n,\nnum\n=\n5\n))\n# bins bin_100 = {100};\n# bins bin_101_199[3] = {[101:199]};\n# bins bin_200 = {200};",
+                    "children": []
+                  },
+                  {
+                    "heading": "BinMinMaxExp",
+                    "text": "CoverPoint\n(\nBinMinMaxExp\n(\nmin\n=\n100\n,\nmax\n=\n200\n,\nbase\n=\n2\n))\n# bins bin_100 = {100};\n# bins bin_101_127 = {[101:127]};\n# bins bin_128_199 = {[128:199]};\n# bins bin_200 = {200};",
+                    "children": []
+                  },
+                  {
+                    "heading": "BinWindow",
+                    "text": "CoverPoint\n(\nBinWindow\n(\n0x6\n,\nwidth\n=\n6\n,\nshift\n=\n2\n))\n# bins bin_0x6 = {'h6};\n# bins bin_0x18 = {'h18};\n# bins bin_0x20 = {'h20};",
+                    "children": []
+                  },
+                  {
+                    "heading": "BinOneHot",
+                    "text": "CoverPoint\n(\nBinOneHot\n(\nwidth\n=\n3\n,\nformat\n=\n\"b\"\n))\n# bins bin_0b1 = {'b1};\n# bins bin_0b10 = {'b10};\n# bins bin_0b100 = {'b100};",
+                    "children": []
+                  },
+                  {
+                    "heading": "BinDefault",
+                    "text": "CoverPoint\n(\nBinDefault\n())\n# bins others = default;",
+                    "children": []
+                  },
+                  {
+                    "heading": "BinBitwise",
+                    "text": "CoverPoint\n(\nBinBitwise\n(\n3\n),\nname\n=\n\"cp_bitwise\"\n,\ngroup\n=\n\"cg_predefined\"\n)\n# cp_bitwise_0: coverpoint cg_predefined_cp_bitwise[0];\n# cp_bitwise_1: coverpoint cg_predefined_cp_bitwise[1];\n# cp_bitwise_2: coverpoint cg_predefined_cp_bitwise[2];",
+                    "children": []
+                  },
+                  {
+                    "heading": "BinTransition",
+                    "text": "CoverPoint\n(\nBinTransition\n((\n1\n,\n2\n,\n3\n), (\n4\n,\n5\n,\n6\n), ([\n7\n,\n8\n,\n9\n],\nrange\n(\n10\n,\n20\n))))\n# bins bin_1_3 = (1 => 2 => 3);\n# bins bin_4_6 = (4 => 5 => 6);\n# bins bin_7_19 = (7, 8, 9 => [10:19]);",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "heading": "Cross",
+                "text": "The\nCross\nclass supports the examination of various combinations of values of coverpoints, corresponding to the\ncross\nin SystemVerilog.\nCross\n([\ncp1\n,\ncp2\n],\nname\n=\n\"cx\"\n)\n# cx: cross cp1, cp2;",
+                "children": []
+              },
+              {
+                "heading": "CoverGroup",
+                "text": "The\nCoverGroup\nclass is a container that groups together multiple coverpoints and samples covered values, corresponding to the\ncovergroup\nin SystemVerilog.\nclass\nCustomCoverGroup\n(\nCoverGroup\n):\ncp_bool\n=\nCoverPoint\n(\nBinBool\n())\ncp_range\n=\nCoverPoint\n(\nBinRange\n(\n10\n))\ncx_bool_range\n=\nCross\n([\ncp_bool\n,\ncp_range\n])\ncg_custom\n=\nCustomCoverGroup\n(\nname\n=\n\"cg_custom\"\n)\n# covergroup cg_custom;\n#   cp_bool: coverpoint cg_custom_cp_bool {\n#     bins FALSE = {0};\n#     bins TRUE = {1};\n#   }\n#   cp_range: coverpoint cg_custom_cp_range {\n#     bins bin_0_9 = {[0:9]};\n#   }\n#   cx_bool_range: cross cp_bool, cp_range;",
+                "children": []
+              },
+              {
+                "heading": "CoverageModel",
+                "text": "A\nCoverageModel\nis a collection of specifications used to measure the coverage of a design during simulation, typically represented by a set of CoverGroups and coverted to a single module in SystemVerilog.\nclass\nCustomCovModel\n(\nCoverageModel\n):\ncg_custom_1\n=\nCustomCoverGroup1\n()\ncg_custom_2\n=\nCustomCoverGroup2\n()\ncov_model\n=\nCustomCovModel\n()\n# module cov_model();\n#   wire ...\n#   covergroup cg_custom_1 ...\n#   wire ...\n#   covergroup cg_custom_2 ...\n# endmodule",
+                "children": [
+                  {
+                    "heading": "make_coverage",
+                    "text": "A tool that generates SystemVerilog code and Markdown documentation from Python code, including model instances.\nUsage:\nmake_coverage [-h] [--file FILE] [--sv_output SV_OUTPUT] [--md_output MD_OUTPUT] [--overwrite]\nOptional arguments:\n-h, --help            show this help message and exit\n  --file FILE, -f FILE  python files that include coverage model instances\n  --sv_output SV_OUTPUT, -sv SV_OUTPUT\n                        output file name for systemverilog code\n  --md_output MD_OUTPUT, -md MD_OUTPUT\n                        output file name for markdown document\n  --overwrite, -w       force overwrite output files if they exist",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "heading": "CoverageCollector",
+                "text": "A base class designed to gather and sample coverage values using coverage models.",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": null,
+    "license": null,
+    "stars": 9,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-11-14T00:38:31.714877Z"
+  }
+}

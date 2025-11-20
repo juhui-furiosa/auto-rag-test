@@ -1,0 +1,71 @@
+{
+  "name": "LongBench",
+  "url": "https://github.com/furiosa-ai/LongBench",
+  "visibility": "public",
+  "readme": {
+    "title": "📚 LongBench v2: Towards Deeper Understanding and Reasoning on Realistic Long-context Multitasks",
+    "sections": [
+      {
+        "heading": "📚 LongBench v2: Towards Deeper Understanding and Reasoning on Realistic Long-context Multitasks",
+        "text": "🌐\nProject Page\n• 📚\nLongBench v2 Paper\n• 📊\nLongBench v2 Dataset\n• 𝕏\nThread\n📖\nLongBench Paper\n• 🤗\nLongBench Dataset\n📢 The original LongBench v1 related files are moved under\nLongBench/\n, read its README\nhere\n.\nLongBench v2 is designed to assess the ability of LLMs to handle long-context problems requiring\ndeep understanding and reasoning\nacross real-world multitasks. LongBench v2 has the following features: (1)\nLength\n: Context length ranging from 8k to 2M words, with the majority under 128k. (2)\nDifficulty\n: Challenging enough that even human experts, using search tools within the document, cannot answer correctly in a short time. (3)\nCoverage\n: Cover various realistic scenarios. (4)\nReliability\n: All in a multiple-choice question format for reliable evaluation.\nTo elaborate, LongBench v2 consists of 503 challenging multiple-choice questions, with contexts ranging from 8k to 2M words, across six major task categories: single-document QA, multi-document QA, long in-context learning, long-dialogue history understanding, code repo understanding, and long structured data understanding. To ensure the breadth and the practicality, we collect data from nearly 100 highly educated individuals with diverse professional backgrounds. We employ both automated and manual review processes to maintain high quality and difficulty, resulting in human experts achieving only 53.7% accuracy under a 15-minute time constraint. Our evaluation reveals that the best-performing model, when directly answers the questions, achieves only 50.1% accuracy. In contrast, the o1-preview model, which includes longer reasoning, achieves 57.7%, surpassing the human baseline by 4%. These results highlight the importance of\nenhanced reasoning ability and scaling inference-time compute to tackle the long-context challenges in LongBench v2\n.\n🔍 With LongBench v2, we are eager to find out how scaling inference-time compute will affect deep understanding and reasoning in long-context scenarios. View our 🏆 leaderboard\nhere\n(updating).",
+        "children": [
+          {
+            "heading": "🔥 Updates",
+            "text": "🔥🔥🔥\n[2024/01/15]\nMore evaluation results added to our\nleaderboard\n, including Gemini-Exp-1206, Gemini-2.0-Flash, DeepSeek-V3, and MiniMax-Text-01, Check them out!\n🔥🔥🔥\n[2024/12/20]\nWe are excited to release\nLongBench v2\n! Compared to the first generation of LongBench, LongBench v2 is much longer and much more challenging. Its goal is to provide a reliable evaluation standard for the development of future superhuman long-context AI systems.",
+            "children": []
+          },
+          {
+            "heading": "⚙️ How to evaluate on LongBench v2",
+            "text": "",
+            "children": [
+              {
+                "heading": "Load Data",
+                "text": "You can download and load the\nLongBench v2\ndata through the Hugging Face datasets (\n🤗 HF Repo\n):\nfrom\ndatasets\nimport\nload_dataset\ndataset\n=\nload_dataset\n(\n'THUDM/LongBench-v2'\n,\nsplit\n=\n'train'\n)\nAlternatively, you can download the file from\nthis link\nto load the data.",
+                "children": []
+              },
+              {
+                "heading": "Data Format",
+                "text": "All data in\nLongBench v2\nare standardized to the following format:\n{\n\"_id\"\n:\n\"\nUnique identifier for each piece of data\n\"\n,\n\"domain\"\n:\n\"\nThe primary domain category of the data\n\"\n,\n\"sub_domain\"\n:\n\"\nThe specific sub-domain category within the domain\n\"\n,\n\"difficulty\"\n:\n\"\nThe difficulty level of the task, either 'easy' or 'hard'\n\"\n,\n\"length\"\n:\n\"\nThe length category of the task, which can be 'short', 'medium', or 'long'\n\"\n,\n\"question\"\n:\n\"\nThe input/command for the task, usually short, such as questions in QA, queries in many-shot learning, etc\n\"\n,\n\"choice_A\"\n:\n\"\nOption A\n\"\n,\n\"choice_B\"\n:\n\"\nOption B\n\"\n,\n\"choice_C\"\n:\n\"\nOption C\n\"\n,\n\"choice_D\"\n:\n\"\nOption D\n\"\n,\n\"answer\"\n:\n\"\nThe groundtruth answer, denoted as A, B, C, or D\n\"\n,\n\"context\"\n:\n\"\nThe long context required for the task, such as documents, books, code repositories, etc.\n\"\n}",
+                "children": []
+              },
+              {
+                "heading": "Evaluation",
+                "text": "Install the requirements with pip:\npip install -r requirements.txt\n.\nTo run model evaluation, first add your model path and its context window length to\nconfig/\n, then follow these steps (we take\nGLM-4-9B-Chat\nfor a running example):",
+                "children": [
+                  {
+                    "heading": "Step 1: Deploy the Model with vLLM",
+                    "text": "First, deploy your model using\nvLLM\n. Run the following command to serve the model:\nvllm serve THUDM/glm-4-9b-chat --api-key token-abc123 --tensor-parallel-size 4 --gpu-memory-utilization 0.95 --max_model_len 131072 --trust-remote-code\n--tensor-parallel-size 4\nspecifies the number of tensor parallelism slices. It should be set to higher value, i.e., 8, to serve larger models such as\nLlama-3.1-70B-Instruct\nor\nQwen2.5-72B-Instruct\n.\nAdjust\n--gpu-memory-utilization\nto control GPU memory usage.\nSet\n--max_model_len\nto the context window length of the model.",
+                    "children": []
+                  },
+                  {
+                    "heading": "Step 2: Run Model Inference",
+                    "text": "Once your model is deployed, modify the\nURL\nand\nAPI_KEY\nin\npred.py\nto match your serving instance. Run the model inference with the following command:\npython pred.py --model GLM-4-9B-Chat\n--cot\n: Enable evaluation under the Chain-of-Thought (CoT) setting.\n--no_context\n: Test the model’s performance without the long context (pure memorization).\n--rag N\n: Use top-N retrieved contexts during +RAG evaluation. This is set to 0 by default to disable RAG. For details on the retrieval process, refer to the\nretrieve.py\nfile.",
+                    "children": []
+                  },
+                  {
+                    "heading": "Step 3: Export Results",
+                    "text": "Finally, run\npython result.py\nto export the evaluation results.",
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "heading": "📝 Citation",
+            "text": "@article{bai2024longbench2,\n  title={LongBench v2: Towards Deeper Understanding and Reasoning on Realistic Long-context Multitasks}, \n  author={Yushi Bai and Shangqing Tu and Jiajie Zhang and Hao Peng and Xiaozhi Wang and Xin Lv and Shulin Cao and Jiazheng Xu and Lei Hou and Yuxiao Dong and Jie Tang and Juanzi Li},\n  journal={arXiv preprint arXiv:2412.15204},\n  year={2024}\n}\n@inproceedings{bai2024longbench,\n    title = \"{L}ong{B}ench: A Bilingual, Multitask Benchmark for Long Context Understanding\",\n    author = \"Bai, Yushi and Lv, Xin  and Zhang, Jiajie  and Lyu, Hongchang  and\n      Tang, Jiankai  and Huang, Zhidian  and Du, Zhengxiao  and Liu, Xiao  and Zeng, Aohan  and Hou, Lei  and Dong, Yuxiao  and Tang, Jie  and Li, Juanzi\",\n    booktitle = \"Proceedings of the 62nd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)\",\n    month = aug,\n    year = \"2024\",\n    address = \"Bangkok, Thailand\",\n    publisher = \"Association for Computational Linguistics\",\n    url = \"https://aclanthology.org/2024.acl-long.172\",\n    doi = \"10.18653/v1/2024.acl-long.172\",\n    pages = \"3119--3137\",\n}",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": "LongBench v2 and LongBench (ACL 2024)",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-06-02T07:38:44.000Z"
+  }
+}

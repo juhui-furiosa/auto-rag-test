@@ -1,0 +1,58 @@
+{
+  "name": "vllm",
+  "url": "https://github.com/furiosa-ai/vllm",
+  "visibility": "public",
+  "readme": {
+    "title": "(no title)",
+    "sections": [
+      {
+        "heading": "Easy, fast, and cheap LLM serving for everyone",
+        "text": "|\nDocumentation\n|\nBlog\n|\nPaper\n|\nTwitter/X\n|\nUser Forum\n|\nDeveloper Slack\n|\nJoin us at the\nPyTorch Conference, October 22-23\nand\nRay Summit, November 3-5\nin San Francisco for our latest updates on vLLM and to meet the vLLM team! Register now for the largest vLLM community events of the year!\nLatest News\n🔥\n[2025/08] We hosted\nvLLM Shenzhen Meetup\nfocusing on the ecosystem around vLLM! Please find the meetup slides\nhere\n.\n[2025/08] We hosted\nvLLM Singapore Meetup\n. We shared V1 updates, disaggregated serving and MLLM speedups with speakers from Embedded LLM, AMD, WekaIO, and A*STAR. Please find the meetup slides\nhere\n.\n[2025/08] We hosted\nvLLM Shanghai Meetup\nfocusing on building, developing, and integrating with vLLM! Please find the meetup slides\nhere\n.\n[2025/05] vLLM is now a hosted project under PyTorch Foundation! Please find the announcement\nhere\n.\n[2025/01] We are excited to announce the alpha release of vLLM V1: A major architectural upgrade with 1.7x speedup! Clean code, optimized execution loop, zero-overhead prefix caching, enhanced multimodal support, and more. Please check out our blog post\nhere\n.",
+        "children": []
+      },
+      {
+        "heading": "About",
+        "text": "vLLM is a fast and easy-to-use library for LLM inference and serving.\nOriginally developed in the\nSky Computing Lab\nat UC Berkeley, vLLM has evolved into a community-driven project with contributions from both academia and industry.\nvLLM is fast with:\nState-of-the-art serving throughput\nEfficient management of attention key and value memory with\nPagedAttention\nContinuous batching of incoming requests\nFast model execution with CUDA/HIP graph\nQuantizations:\nGPTQ\n,\nAWQ\n,\nAutoRound\n, INT4, INT8, and FP8\nOptimized CUDA kernels, including integration with FlashAttention and FlashInfer\nSpeculative decoding\nChunked prefill\nvLLM is flexible and easy to use with:\nSeamless integration with popular Hugging Face models\nHigh-throughput serving with various decoding algorithms, including\nparallel sampling\n,\nbeam search\n, and more\nTensor, pipeline, data and expert parallelism support for distributed inference\nStreaming outputs\nOpenAI-compatible API server\nSupport for NVIDIA GPUs, AMD CPUs and GPUs, Intel CPUs and GPUs, PowerPC CPUs, and TPU. Additionally, support for diverse hardware plugins such as Intel Gaudi, IBM Spyre and Huawei Ascend.\nPrefix caching support\nMulti-LoRA support\nvLLM seamlessly supports most popular open-source models on HuggingFace, including:\nTransformer-like LLMs (e.g., Llama)\nMixture-of-Expert LLMs (e.g., Mixtral, Deepseek-V2 and V3)\nEmbedding Models (e.g., E5-Mistral)\nMulti-modal LLMs (e.g., LLaVA)\nFind the full list of supported models\nhere\n.",
+        "children": []
+      },
+      {
+        "heading": "Getting Started",
+        "text": "Install vLLM with\npip\nor\nfrom source\n:\npip install vllm\nVisit our\ndocumentation\nto learn more.\nInstallation\nQuickstart\nList of Supported Models",
+        "children": []
+      },
+      {
+        "heading": "Contributing",
+        "text": "We welcome and value any contributions and collaborations.\nPlease check out\nContributing to vLLM\nfor how to get involved.",
+        "children": []
+      },
+      {
+        "heading": "Sponsors",
+        "text": "vLLM is a community project. Our compute resources for development and testing are supported by the following organizations. Thank you for your support!\nCash Donations:\na16z\nDropbox\nSequoia Capital\nSkywork AI\nZhenFund\nCompute Resources:\nAlibaba Cloud\nAMD\nAnyscale\nAWS\nCrusoe Cloud\nDatabricks\nDeepInfra\nGoogle Cloud\nIntel\nLambda Lab\nNebius\nNovita AI\nNVIDIA\nReplicate\nRoblox\nRunPod\nTrainy\nUC Berkeley\nUC San Diego\nSlack Sponsor: Anyscale\nWe also have an official fundraising venue through\nOpenCollective\n. We plan to use the fund to support the development, maintenance, and adoption of vLLM.",
+        "children": []
+      },
+      {
+        "heading": "Citation",
+        "text": "If you use vLLM for your research, please cite our\npaper\n:\n@inproceedings\n{\nkwon2023efficient\n,\ntitle\n=\n{\nEfficient Memory Management for Large Language Model Serving with PagedAttention\n}\n,\nauthor\n=\n{\nWoosuk Kwon and Zhuohan Li and Siyuan Zhuang and Ying Sheng and Lianmin Zheng and Cody Hao Yu and Joseph E. Gonzalez and Hao Zhang and Ion Stoica\n}\n,\nbooktitle\n=\n{\nProceedings of the ACM SIGOPS 29th Symposium on Operating Systems Principles\n}\n,\nyear\n=\n{\n2023\n}\n}",
+        "children": []
+      },
+      {
+        "heading": "Contact Us",
+        "text": "For technical questions and feature requests, please use GitHub\nIssues\nFor discussing with fellow users, please use the\nvLLM Forum\nFor coordinating contributions and development, please use\nSlack\nFor security disclosures, please use GitHub's\nSecurity Advisories\nfeature\nFor collaborations and partnerships, please contact us at\nvllm-questions@lists.berkeley.edu",
+        "children": []
+      },
+      {
+        "heading": "Media Kit",
+        "text": "If you wish to use vLLM's logo, please refer to\nour media kit repo",
+        "children": []
+      }
+    ]
+  },
+  "metadata": {
+    "description": "A high-throughput and memory-efficient inference and serving engine for LLMs",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-11-14T00:37:12.905760Z"
+  }
+}

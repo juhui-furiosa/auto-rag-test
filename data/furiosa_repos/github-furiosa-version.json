@@ -1,0 +1,23 @@
+{
+  "name": "furiosa-version",
+  "url": "https://github.com/furiosa-ai/furiosa-version",
+  "visibility": "public",
+  "readme": {
+    "title": "furiosa-version",
+    "sections": [
+      {
+        "heading": "furiosa-version",
+        "text": "A simple CLI tool to print out version strings of libraries.\nInstallation:\ncargo install --git https://github.com/furiosa-ai/furiosa-version.git\nSynopsis:\ntarget/release/furiosa-version \nUsage: furiosa-version [OPTIONS] <name>\n\nArguments:\n  <name>  an library to get (available names: libhal, libruntime, libcompiler)\n\nOptions:\n      --version     Get a version string\n      --hash        Get a git hash string\n      --build-time  Get a build time\n  -h, --help        Print help information\n\nExamples:\n\n  # Print a git hash of libcompiler\n  furiosa-version libcompiler --hash\n\n  # Print a version and build time of libhal\n  furiosa-version libhal --version --build-time\nExamples:\n$ target/release/furiosa-version libcompiler\n0.9.0-dev 37d8500e4 2022-11-29T21:58:26Z\n\n$ target/release/furiosa-version libhal --version --build-time\n2.0 2022-11-09T01:10:52Z",
+        "children": []
+      }
+    ]
+  },
+  "metadata": {
+    "description": "A simple CLI util to get version strings from furiosa-libhal, furiosa-libcompiler, and furiosa-libnux",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2022-11-30T21:32:47Z"
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "name": "tensorflow",
+  "url": "https://github.com/furiosa-ai/tensorflow",
+  "visibility": "public",
+  "readme": {
+    "title": "(no title)",
+    "sections": [
+      {
+        "heading": "Install",
+        "text": "See the\nTensorFlow install guide\nfor the\npip package\n, to\nenable GPU support\n, use a\nDocker container\n, and\nbuild from source\n.\nTo install the current release, which includes support for\nCUDA-enabled GPU cards\n(Ubuntu and\nWindows)\n:\n$ pip install tensorflow\nA smaller CPU-only package is also available:\n$ pip install tensorflow-cpu\nTo update TensorFlow to the latest version, add\n--upgrade\nflag to the above\ncommands.\nNightly binaries are available for testing using the\ntf-nightly\nand\ntf-nightly-cpu\npackages on PyPi.",
+        "children": [
+          {
+            "heading": "Try your first TensorFlow program",
+            "text": "$ python\n>\n>>\nimport\ntensorflow\nas\ntf\n>\n>>\ntf\n.\nadd\n(\n1\n,\n2\n).\nnumpy\n()\n3\n>\n>>\nhello\n=\ntf\n.\nconstant\n(\n'Hello, TensorFlow!'\n)\n>\n>>\nhello\n.\nnumpy\n()\nb'Hello, TensorFlow!'\nFor more examples, see the\nTensorFlow tutorials\n.",
+            "children": []
+          }
+        ]
+      },
+      {
+        "heading": "Contribution guidelines",
+        "text": "If you want to contribute to TensorFlow, be sure to review the\ncontribution guidelines\n. This project adheres to TensorFlow's\ncode of conduct\n. By participating, you are expected to\nuphold this code.\nWe use\nGitHub issues\nfor\ntracking requests and bugs, please see\nTensorFlow Discuss\nfor general questions and discussion, and please direct specific questions to\nStack Overflow\n.\nThe TensorFlow project strives to abide by generally accepted best practices in\nopen-source software development:",
+        "children": []
+      },
+      {
+        "heading": "Continuous build status",
+        "text": "",
+        "children": [
+          {
+            "heading": "Official Builds",
+            "text": "Build Type\nStatus\nArtifacts\nLinux CPU\nPyPI\nLinux GPU\nPyPI\nLinux XLA\nTBA\nmacOS\nPyPI\nWindows CPU\nPyPI\nWindows GPU\nPyPI\nAndroid\nRaspberry Pi 0 and 1\nPy2\nPy3\nRaspberry Pi 2 and 3\nPy2\nPy3",
+            "children": []
+          },
+          {
+            "heading": "Community Supported Builds",
+            "text": "Build Type\nStatus\nArtifacts\nLinux AMD ROCm GPU\nNightly\nNightly\nLinux AMD ROCm GPU\nStable Release\nRelease\n1.15\n/\n2.x\nLinux s390x\nNightly\nNightly\nLinux s390x CPU\nStable Release\nRelease\nLinux ppc64le CPU\nNightly\nNightly\nLinux ppc64le CPU\nStable Release\nRelease\n1.15\n/\n2.x\nLinux ppc64le GPU\nNightly\nNightly\nLinux ppc64le GPU\nStable Release\nRelease\n1.15\n/\n2.x\nLinux CPU with Intel® MKL-DNN\nNightly\nNightly\nLinux CPU with Intel® MKL-DNN\nStable Release\nRelease\n1.15\n/\n2.x\nRed Hat® Enterprise Linux® 7.6 CPU & GPU\nPython 2.7, 3.6\n1.13.1 PyPI",
+            "children": []
+          }
+        ]
+      },
+      {
+        "heading": "Resources",
+        "text": "TensorFlow.org\nTensorFlow Tutorials\nTensorFlow Official Models\nTensorFlow Examples\nTensorFlow in Practice from Coursera\nTensorFlow: Data and Deployment from Coursera\nIntro to TensorFlow for Deep Learning from Udacity\nIntroduction to TensorFlow Lite from Udacity\nTensorFlow Blog\nLearn ML with TensorFlow\nTensorFlow Twitter\nTensorFlow YouTube\nTensorFlow Roadmap\nTensorFlow White Papers\nTensorBoard Visualization Toolkit\nLearn more about the\nTensorFlow community\nand how to\ncontribute\n.",
+        "children": []
+      },
+      {
+        "heading": "License",
+        "text": "Apache License 2.0",
+        "children": []
+      }
+    ]
+  },
+  "metadata": {
+    "description": "An Open Source Machine Learning Framework for Everyone",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2020-03-20T02:36:19.000Z"
+  }
+}

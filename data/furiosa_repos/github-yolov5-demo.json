@@ -1,0 +1,49 @@
+{
+  "name": "yolov5-demo",
+  "url": "https://github.com/furiosa-ai/yolov5-demo",
+  "visibility": "public",
+  "readme": {
+    "title": "Setup",
+    "sections": [
+      {
+        "heading": "Setup",
+        "text": "",
+        "children": [
+          {
+            "heading": "Setup environment",
+            "text": "sudo apt-get install ffmpeg \ngit clone git@github.com:furiosa-ai/yolov5-demo.git\ncd\nyolov5-demo\nconda activate\n<\nenv\n>\npip install -r requirements.txt\n./build.sh",
+            "children": []
+          },
+          {
+            "heading": "Weights",
+            "text": "Download weights from\nhere\nand extract to \"./weights\"",
+            "children": []
+          },
+          {
+            "heading": "Calibration",
+            "text": "Download BDD100K dataset from\nhere\nor prepare own dataset for calibration",
+            "children": []
+          },
+          {
+            "heading": "Run",
+            "text": "#\nArguments\npython demo.py -h\n  --input INPUT         Path to image / image folder / video file\n  --model MODEL         Path to onnx weights folder\n  --framework {onnx,furiosa}\n                        Which backend to use\n  --calib-data CALIB_DATA\n                        Path to calibration data containing image files\n  --calib-data-count CALIB_DATA_COUNT\n                        How many images to use\nfor\ncalibration\n  --no-display          Disables displaying results on the screen (useful\nfor\nserver)\n  --frame-limit FRAME_LIMIT\n                        Stops inference after frame limit is reached\n  --record-file RECORD_FILE\n                        Record results to specified video file (e.g.\n\"\nout.mp4\n\"\n)\nExample\n#\nRun yolov5 object detector using OnnxRuntime (f32)\npython demo.py \\\n  --input data/test_img.jpg \\\n  --model weights/yolov5m_warboy_bdd100k_640 \\\n  --framework onnx \\\n  --no-display\n#\nRun yolov5 object detector using FursioaSDK (i8)\npython demo.py \\\n  --input data/test_img.jpg \\\n  --model weights/yolov5m_warboy_bdd100k_640 \\\n  --framework furiosa \\\n  --no-display \\\n  --calib-data ../data/bdd100k/images/100k/test \\\n  --calib-data-count 10",
+            "children": []
+          },
+          {
+            "heading": "Export",
+            "text": "python export.py -h\n  --weights WEIGHTS     Path to Pytorch weights\n  --name NAME           Name to store model\n  --classes CLASSES [CLASSES ...]\n                        Class names\nExample\n#\nExport Pytorch weights to onnx\n#\nOutput model saved to weights/yolov5l_bdd100k_640\n#\nClasses are optional\npython export.py \\\n  --weights ../yolov5/runs/train/l_bdd/weights/best.pt \\\n  --name yolov5l_bdd100k_640 \\\n  --classes\n\"\nperson\n\"\n\"\nrider\n\"\n\"\ncar\n\"\n\"\ntruck\n\"\n\"\nbus\n\"\n\\\n\"\ntrain\n\"\n\"\nmotor\n\"\n\"\nbike\n\"\n\"\ntraffic light\n\"\n\"\ntraffic sign\n\"",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": null,
+    "license": null,
+    "stars": 1,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2023-04-28T01:38:04Z"
+  }
+}

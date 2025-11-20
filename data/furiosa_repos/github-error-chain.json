@@ -1,0 +1,39 @@
+{
+  "name": "error-chain",
+  "url": "https://github.com/furiosa-ai/error-chain",
+  "visibility": "public",
+  "readme": {
+    "title": "error-chain - Consistent error handling for Rust",
+    "sections": [
+      {
+        "heading": "error-chain - Consistent error handling for Rust",
+        "text": "error-chain\nmakes it easy to take full advantage of Rust's error\nhandling features without the overhead of maintaining boilerplate\nerror types and conversions. It implements an opinionated strategy for\ndefining your own error types, as well as conversions from others'\nerror types.\nDocumentation (crates.io)\n.\nDocumentation (master)\n.",
+        "children": [
+          {
+            "heading": "Quick start",
+            "text": "If you just want to set up your new project with error-chain,\nfollow the\nquickstart.rs\ntemplate, and read this\nintro\nto error-chain.",
+            "children": []
+          },
+          {
+            "heading": "Supported Rust version",
+            "text": "Please view the beginning of the\nTravis configuration file\nto see the oldest supported Rust version.\nNote that\nerror-chain\nsupports older versions of Rust when built with\ndefault-features = false\n.",
+            "children": []
+          },
+          {
+            "heading": "License",
+            "text": "MIT/Apache-2.0",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": "Error boilerplate for Rust",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-11-14T00:42:41.064079Z"
+  }
+}

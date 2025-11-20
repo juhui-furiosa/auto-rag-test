@@ -1,0 +1,23 @@
+{
+  "name": "git-sync-maestro",
+  "url": "https://github.com/furiosa-ai/git-sync-maestro",
+  "visibility": "public",
+  "readme": {
+    "title": "git-sync-maestro",
+    "sections": [
+      {
+        "heading": "git-sync-maestro",
+        "text": "",
+        "children": []
+      }
+    ]
+  },
+  "metadata": {
+    "description": null,
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-11-14T00:40:08.083856Z"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "name": "furiosa-smi-go",
+  "url": "https://github.com/furiosa-ai/furiosa-smi-go",
+  "visibility": "public",
+  "readme": {
+    "title": "Furiosa System Management Interface Go Binding",
+    "sections": [
+      {
+        "heading": "Furiosa System Management Interface Go Binding",
+        "text": "",
+        "children": [
+          {
+            "heading": "Overview",
+            "text": "Furiosa System Management Interface, is a programmatic interface for managing and monitoring FuriosaAI NPUs.\nThe interface provides the following API modules, each designed to offer distinct functionalities for managing and monitoring NPU devices.\nThese modules enable developers to access essential hardware information, topology details, system-wide information, and performance metrics.\nEach module provides the following features:\nInitialize module\nhandles initialization of the Furiosa SMI library.\nDevice module\nprovides NPU device discovery and information including\ndevice specification\nand\nliveness\n.\nTopology module\nprovides the topology status within a system including\ndevice-to-device link type\nand\np2p accessibility\n.\nSystem module\nprovides system-wide information of each NPU device, including\nfirmware version\nand\ndriver version\n.\nPerformance module\nprovides the device performance metrics including\npower consumption\n,\ntemperature\n, and\nutilization\n.",
+            "children": []
+          },
+          {
+            "heading": "Installation",
+            "text": "furiosa-smi-go\nis available on the\nGo Packages\n.\ngo get github.com/furiosa-ai/furiosa-smi-go@latest\nOnce installed, you can import the\nfuriosa-smi-go\nmodule:\nimport\n\"github.com/furiosa-ai/furiosa-smi-go/pkg/smi\"",
+            "children": []
+          },
+          {
+            "heading": "Usage",
+            "text": "To get started with\nfuriosa-smi-go\n, simply import the\nfuriosa-smi-go\npackage and utilize its functions to interact with NPU devices.\nThe package provides various methods to access the NPU device information and status.\npackage\nmain\nimport\n(\n\"fmt\"\n\"os\"\n\"github.com/furiosa-ai/furiosa-smi-go/pkg/smi\"\n)\nfunc\nmain\n() {\nif\nerr\n:=\nsmi\n.\nInit\n();\nerr\n!=\nnil\n{\nfmt\n.\nPrintf\n(\n\"%s\n\\n\n\"\n,\nerr\n.\nError\n())\nos\n.\nExit\n(\n1\n)\n\t}\ndevices\n,\nerr\n:=\nsmi\n.\nListDevices\n()\nif\nerr\n!=\nnil\n{\nfmt\n.\nPrintf\n(\n\"%s\n\\n\n\"\n,\nerr\n.\nError\n())\nos\n.\nExit\n(\n1\n)\n\t}\nfmt\n.\nPrintf\n(\n\"found %d device(s)\n\\n\n\"\n,\nlen\n(\ndevices\n))\nfor\n_\n,\ndevice\n:=\nrange\ndevices\n{\ndeviceInfo\n,\nerr\n:=\ndevice\n.\nDeviceInfo\n()\nif\nerr\n!=\nnil\n{\nfmt\n.\nPrintln\n(\nerr\n.\nError\n())\nos\n.\nExit\n(\n1\n)\n\t\t}\nfmt\n.\nPrintf\n(\n\"Device Arch: %v\n\\n\n\"\n,\ndeviceInfo\n.\nArch\n())\nfmt\n.\nPrintf\n(\n\"Device CoreNum: %d\n\\n\n\"\n,\ndeviceInfo\n.\nCoreNum\n())\nfmt\n.\nPrintf\n(\n\"Device NumaNode: %d\n\\n\n\"\n,\ndeviceInfo\n.\nNumaNode\n())\nfmt\n.\nPrintf\n(\n\"Device Name: %s\n\\n\n\"\n,\ndeviceInfo\n.\nName\n())\n// ... You can use other APIs. Please refer to the documentation.\n}\n}\nThe expected output is as below.\nfound 1 device(s)\nDevice Arch: 8\nDevice CoreNum: 0\nDevice NumaNode: 0\nDevice Name: /rngd/npu0\n\n...\nYou can refer to\nthe example go programs\nfor more usage.\ndevice_lister\nshow_p2p_capability\nshow_topology",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": null,
+    "license": null,
+    "stars": 1,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-09-22T22:01:18Z"
+  }
+}

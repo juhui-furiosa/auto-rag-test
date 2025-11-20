@@ -1,0 +1,79 @@
+{
+  "name": "yolov5m",
+  "url": "https://github.com/furiosa-ai/yolov5m",
+  "visibility": "public",
+  "readme": {
+    "title": "(no title)",
+    "sections": [
+      {
+        "heading": "YOLOv8 🚀 NEW",
+        "text": "We are thrilled to announce the launch of Ultralytics YOLOv8 🚀, our NEW cutting-edge, state-of-the-art (SOTA) model released at\nhttps://github.com/ultralytics/ultralytics\n. YOLOv8 is designed to be fast, accurate, and easy to use, making it an excellent choice for a wide range of object detection, image segmentation and image classification tasks.\nSee the\nYOLOv8 Docs\nfor details and get started with:\npip install ultralytics",
+        "children": []
+      },
+      {
+        "heading": "Documentation",
+        "text": "See the\nYOLOv5 Docs\nfor full documentation on training, testing and deployment. See below for quickstart examples.",
+        "children": []
+      },
+      {
+        "heading": "Integrations",
+        "text": "Roboflow\nClearML ⭐ NEW\nComet ⭐ NEW\nNeural Magic ⭐ NEW\nLabel and export your custom datasets directly to YOLOv5 for training with\nRoboflow\nAutomatically track, visualize and even remotely train YOLOv5 using\nClearML\n(open-source!)\nFree forever,\nComet\nlets you save YOLOv5 models, resume training, and interactively visualise and debug predictions\nRun YOLOv5 inference up to 6x faster with\nNeural Magic DeepSparse",
+        "children": []
+      },
+      {
+        "heading": "Ultralytics HUB",
+        "text": "Experience seamless AI with\nUltralytics HUB\n⭐, the all-in-one solution for data visualization, YOLOv5 and YOLOv8 🚀 model training and deployment, without any coding. Transform images into actionable insights and bring your AI visions to life with ease using our cutting-edge platform and user-friendly\nUltralytics App\n. Start your journey for\nFree\nnow!",
+        "children": []
+      },
+      {
+        "heading": "Why YOLOv5",
+        "text": "YOLOv5 has been designed to be super easy to get started and simple to learn. We prioritize real-world results.",
+        "children": [
+          {
+            "heading": "Pretrained Checkpoints",
+            "text": "Model\nsize\n(pixels)\nmAP\nval\n50-95\nmAP\nval\n50\nSpeed\nCPU b1\n(ms)\nSpeed\nV100 b1\n(ms)\nSpeed\nV100 b32\n(ms)\nparams\n(M)\nFLOPs\n@640 (B)\nYOLOv5n\n640\n28.0\n45.7\n45\n6.3\n0.6\n1.9\n4.5\nYOLOv5s\n640\n37.4\n56.8\n98\n6.4\n0.9\n7.2\n16.5\nYOLOv5m\n640\n45.4\n64.1\n224\n8.2\n1.7\n21.2\n49.0\nYOLOv5l\n640\n49.0\n67.3\n430\n10.1\n2.7\n46.5\n109.1\nYOLOv5x\n640\n50.7\n68.9\n766\n12.1\n4.8\n86.7\n205.7\nYOLOv5n6\n1280\n36.0\n54.4\n153\n8.1\n2.1\n3.2\n4.6\nYOLOv5s6\n1280\n44.8\n63.7\n385\n8.2\n3.6\n12.6\n16.8\nYOLOv5m6\n1280\n51.3\n69.3\n887\n11.1\n6.8\n35.7\n50.0\nYOLOv5l6\n1280\n53.7\n71.3\n1784\n15.8\n10.5\n76.8\n111.4\nYOLOv5x6\n+\nTTA\n1280\n1536\n55.0\n55.8\n72.7\n72.7\n3136\n-\n26.2\n-\n19.4\n-\n140.7\n-\n209.8\n-",
+            "children": []
+          }
+        ]
+      },
+      {
+        "heading": "Segmentation",
+        "text": "Our new YOLOv5\nrelease v7.0\ninstance segmentation models are the fastest and most accurate in the world, beating all current\nSOTA benchmarks\n. We've made them super simple to train, validate and deploy. See full details in our\nRelease Notes\nand visit our\nYOLOv5 Segmentation Colab Notebook\nfor quickstart tutorials.",
+        "children": []
+      },
+      {
+        "heading": "Classification",
+        "text": "YOLOv5\nrelease v6.2\nbrings support for classification model training, validation and deployment! See full details in our\nRelease Notes\nand visit our\nYOLOv5 Classification Colab Notebook\nfor quickstart tutorials.",
+        "children": []
+      },
+      {
+        "heading": "Environments",
+        "text": "Get started in seconds with our verified environments. Click each icon below for details.",
+        "children": []
+      },
+      {
+        "heading": "Contribute",
+        "text": "We love your input! We want to make contributing to YOLOv5 as easy and transparent as possible. Please see our\nContributing Guide\nto get started, and fill out the\nYOLOv5 Survey\nto send us feedback on your experiences. Thank you to all our contributors!",
+        "children": []
+      },
+      {
+        "heading": "License",
+        "text": "Ultralytics offers two licensing options to accommodate diverse use cases:\nAGPL-3.0 License\n: This\nOSI-approved\nopen-source license is ideal for students and enthusiasts, promoting open collaboration and knowledge sharing. See the\nLICENSE\nfile for more details.\nEnterprise License\n: Designed for commercial use, this license permits seamless integration of Ultralytics software and AI models into commercial goods and services, bypassing the open-source requirements of AGPL-3.0. If your scenario involves embedding our solutions into a commercial offering, reach out through\nUltralytics Licensing\n.",
+        "children": []
+      },
+      {
+        "heading": "Contact",
+        "text": "For YOLOv5 bug reports and feature requests please visit\nGitHub Issues\n, and join our\nDiscord\ncommunity for questions and discussions!",
+        "children": []
+      }
+    ]
+  },
+  "metadata": {
+    "description": "YOLOv5 🚀 in PyTorch > ONNX > CoreML > TFLite",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2024-09-05T19:53:45.000Z"
+  }
+}

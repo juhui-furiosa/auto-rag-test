@@ -1,0 +1,60 @@
+{
+  "name": "counting-guidance",
+  "url": "https://github.com/furiosa-ai/counting-guidance",
+  "visibility": "public",
+  "readme": {
+    "title": "[WACV 2025 Oral] Counting Guidance for High Fidelity Text-to-Image Synthesis",
+    "sections": [
+      {
+        "heading": "[WACV 2025 Oral] Counting Guidance for High Fidelity Text-to-Image Synthesis",
+        "text": "",
+        "children": [
+          {
+            "heading": "Wonjun Kang 1,2* , Kevin Galim 2* , Hyung Il Koo 2,3 , Nam Ik Cho 1 1 Seoul National University , 2 FuriosaAI , 3 Ajou University",
+            "text": "Paper Link\n:\nhttps://arxiv.org/abs/2306.17567",
+            "children": []
+          },
+          {
+            "heading": "Updates",
+            "text": "[01/20/25] Our paper is selected for oral presentation at\nWACV 2025\n! 🎉🎉\n[10/28/24] Our paper is accepted by\nWACV 2025\n! 🎉",
+            "children": []
+          },
+          {
+            "heading": "Usage",
+            "text": "Note, we tested the code on a NVIDIA V100 32GB GPU. On different GPUs, results might slightly differ.",
+            "children": [
+              {
+                "heading": "Setup",
+                "text": "Download RCC counting network weights\ncounting.ckpt\nto weights/counting.ckpt\nRun\nconda env create --name ldm_count --file=env.yml\npip install timm==0.9.2\nconda activate ldm_count\nwget https://huggingface.co/ShilongLiu/GroundingDINO/resolve/main/groundingdino_swint_ogc.pth -P weights",
+                "children": []
+              },
+              {
+                "heading": "Generate one image with counting guidance",
+                "text": "python generate.py \\\n    --prompt \"six apples on the table\" \\\n    --counting_words apples \\\n    --counting_word_counts 6 \\\n    --counting_scale 1.0 \\\n    --seed 0 \\\n    --output output.png",
+                "children": []
+              },
+              {
+                "heading": "Reproduce paper results",
+                "text": "# Check exp/ for outputs\nsh run_metrics.sh",
+                "children": []
+              }
+            ]
+          },
+          {
+            "heading": "Citation",
+            "text": "@inproceedings{kang2025counting,\n  title={Counting guidance for high fidelity text-to-image synthesis},\n  author={Kang, Wonjun and Galim, Kevin and Koo, Hyung Il and Cho, Nam Ik},\n  booktitle={2025 IEEE/CVF Winter Conference on Applications of Computer Vision (WACV)},\n  pages={899--908},\n  year={2025},\n  organization={IEEE}\n}",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": "[WACV 2025 Oral] Counting Guidance for High Fidelity Text-to-Image Synthesis",
+    "license": null,
+    "stars": 8,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-07-04T06:35:35.000Z"
+  }
+}

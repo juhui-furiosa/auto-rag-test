@@ -1,0 +1,119 @@
+{
+  "name": "dot-viewer",
+  "url": "https://github.com/furiosa-ai/dot-viewer",
+  "visibility": "public",
+  "readme": {
+    "title": "dot-viewer",
+    "sections": [
+      {
+        "heading": "dot-viewer",
+        "text": "dot-viewer\nis a dot-format graph debugger in TUI, inspired by Vim.",
+        "children": []
+      },
+      {
+        "heading": "1. Getting Started",
+        "text": "",
+        "children": [
+          {
+            "heading": "a. Prerequisites",
+            "text": "",
+            "children": [
+              {
+                "heading": "i. Graphviz",
+                "text": "dot-viewer\nparses a dot format file using C bindings to\nGraphviz (v7.0.6)\n.\nThe system environment should be able to find and include the following header files.\n#include\n<gvc.h>\n#include\n<cgraph.h>",
+                "children": [
+                  {
+                    "heading": "Option 1. Installing Graphviz from Package Manager",
+                    "text": "Coming from Linux,\n$\nsudo apt install graphviz-dev\nAnd coming from vanilla Ubuntu, you may want to install these too.\n$\nsudo apt install build-essentials cmake\n$\nsudo apt install clang\nComing from Mac,\n$\nbrew install graphviz\nAnd coming from Apple Silicon Mac, and\nadd an environment variable\n,\nexport\nCPATH=/opt/homebrew/include",
+                    "children": []
+                  },
+                  {
+                    "heading": "Option 2. Building Graphviz from Source",
+                    "text": "Or, try building from the source code following the\nguide\n.",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "heading": "ii. xdot.py",
+                "text": "dot-viewer\nrenders a subgraph with\nxdot.py\n, an interactive dot visualizer.\nIt is required that\nxdot is executable in command-line\nbeforehand such that the following works.\n$\nxdot\n*\n.dot",
+                "children": []
+              }
+            ]
+          },
+          {
+            "heading": "b. Installation",
+            "text": "",
+            "children": [
+              {
+                "heading": "i. Initialize",
+                "text": "First initialize and update the submodule\ndot-graph\n.\n$\ngit submodule init\n$\ngit submodule update",
+                "children": []
+              },
+              {
+                "heading": "ii. Run",
+                "text": "Then run crate.\n$\ncargo run --release [path-to-dot-file]\nThis will open a TUI screen on the terminal.",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "heading": "2. Features",
+        "text": "With\ndot-viewer\n, users may\ntraverse the graph in TUI\nusing,\ngoto next/prev node of the currently selected node\nfuzzy search on node name\nregex search on node name and attributes\nmake and export subgraphs\nusing,\nsubgraph tree selection\napplying filter on search matches\nneighboring\nn\nnodes of the currently selected node",
+        "children": [
+          {
+            "heading": "Keybindings",
+            "text": "",
+            "children": [
+              {
+                "heading": "General",
+                "text": "Key\nCommand\nActions\n:q<C-R>\nquit\ndot-viewer\n:help<CR>\nshow help\nesc\ngo back to the main screen\nHit\nesc\nto go back to Normal mode whenever you are unsure of what you are doing...",
+                "children": []
+              },
+              {
+                "heading": "Mode Switches",
+                "text": "Key\nFrom\nTo\nesc\nAll\nNormal\n/\nNormal\nFuzzy Search\nr\nNormal\nRegex Search\n:\nNormal\nCommand",
+                "children": []
+              },
+              {
+                "heading": "Normal",
+                "text": "Key\nActions\nc\nclose the current tab(view)\nh/l\nmove focus between current, prevs, nexts list\nj/k\ntraverse in focused list\nn/N\nmove between matched nodes\ngg\nmove to the topmost node in focused list\nG\nmove to the bottom node in focused list\ntab\n/\nbacktab\nmove between tabs",
+                "children": []
+              },
+              {
+                "heading": "Search",
+                "text": "Key\nActions\ntab\nautocomplete search keyword\nenter\napply search\ne.g., in fuzzy search mode,\n/g1_s14_t100\nand in regex search mode,\nr\\(H: ., D: .\\)",
+                "children": []
+              },
+              {
+                "heading": "Command",
+                "text": "Key\nCommand\nActions\nfilter\napply filter on current matches, opening a new tab(view)\nneighbors [depth]\nget up to\ndepth\nneighbors of the current node in a new tab(view)\nexport [(opt) filename]\nexport the current tab(view) to dot\nxdot [(opt) filename]\nlaunch\nxdot\nwith the filename or\nexports/current.dot\nby default\nsubgraph\nopen a popup showing subgraph tree\ntab\nautocomplete command\nenter\nexecute command\nAll exported files are saved in\nexports\ndirectory in the project root.\nMost recently exported file is copied in\nexports/current.dot\n.",
+                "children": []
+              },
+              {
+                "heading": "Subgraph Popup",
+                "text": "Key\nActions\nh/j/k/l\ntraverse the tree\nenter\nchange root to the selected subgraph, opening a new tab(view)",
+                "children": []
+              },
+              {
+                "heading": "Help Popup",
+                "text": "Key\nActions\nh/j/k/l\ntraverse help messages",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": null,
+    "license": null,
+    "stars": 7,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-11-14T00:40:42.898921Z"
+  }
+}

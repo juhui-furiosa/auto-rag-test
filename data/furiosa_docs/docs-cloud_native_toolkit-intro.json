@@ -1,0 +1,7 @@
+{
+  "title": "Cloud Native Toolkit",
+  "url": "https://developer.furiosa.ai/latest/en/cloud_native_toolkit/intro.html",
+  "version": "2025.3.1",
+  "content": "# Cloud Native Toolkit[#](#cloud-native-toolkit \"Link to this heading\")\n\nFuriosaAI Cloud Native Toolkit is a software stack to enable FuriosaAI’s NPU product in Kubernetes and container ecosystems.\nIt simplifies the deployment and management of NPU-accelerated workloads in cloud-native infrastructure,\nallowing developers to build containerized applications that integrate seamlessly with enterprise cloud-native platforms and cloud management frameworks.\n\n[![Cloud Native Toolkit](../_images/cntk_diagram.png)](../_images/cntk_diagram.png)\n\n[![Cloud Native Toolkit](../_images/cntk_diagram.png)](../_images/cntk_diagram.png)\n\nNote\n\nThis diagram may include components that have not been publicly released yet. These components are currently in development and will be available in an upcoming release.",
+  "external_links": []
+}

@@ -1,0 +1,56 @@
+{
+  "name": "yolov7",
+  "url": "https://github.com/furiosa-ai/yolov7",
+  "visibility": "public",
+  "readme": {
+    "title": "Yolov7 with Furiosa-SDK",
+    "sections": [
+      {
+        "heading": "Yolov7 with Furiosa-SDK",
+        "text": "This repository gives an example of optimally compiling and running a YOLOv7 model using the options provided by the\nFuriosa SDK\n.",
+        "children": [
+          {
+            "heading": "Setup",
+            "text": "",
+            "children": [
+              {
+                "heading": "Setup Environment",
+                "text": "git clone git@github.com:furiosa-ai/yolov7.git\ncd\nyolov7\ngit clone https://github.com/WongKinYiu/yolov7\nwget https://github.com/WongKinYiu/yolov7/releases/download/v0.1/yolov7.pt\nconda create -n demo python=3.9\nconda activate demo\npip install -r requirements.txt",
+                "children": []
+              }
+            ]
+          },
+          {
+            "heading": "Export ONNX",
+            "text": "Convert torch model to onnx model.\npython onnx_export.py --weights=./yolov7.pt --onnx_path=./yolov7.onnx --opset_version=13 --model_input_name=images --model_output_name=outputs",
+            "children": []
+          },
+          {
+            "heading": "Furiosa Quantization",
+            "text": "Convert f32 onnx model to i8 onnx model using\nfuriosa.quantinizer\n. This involves a process for cutting off the post-processing elements.\npython furiosa_quantize.py --onnx_path=./yolov7.onnx --dfg_path=./yolov7.dfg --opset_version=13 --calib_data=./images/train --model_input_name=images\n#\nArgument\npython furiosa_quantize.py -h\n  --onnx_path ONNX_PATH\n                        Path to onnx file\n  --dfg_path DFG_PATH   Path to i8 onnx file\n  --opset_version OPSET_VERSION\n                        the ONNX version to\nexport\nthe model to\n  --calib_data CALIB_DATA\n                        Path to calibration data containing image files\n  --calib_count CALIB_COUNT\n                        How many images to use\nfor\ncalibration\n  --model_input_name MODEL_INPUT_NAME\n                        the model\n'\ns input name",
+            "children": []
+          },
+          {
+            "heading": "Run",
+            "text": "Create a session using the quantized model obtained from\nfuriosa_quantize.py\n. Use the sessions you create to make inferences on your test data set.",
+            "children": [
+              {
+                "heading": "Example",
+                "text": "python furiosa_eval.py --dfg_path=./yolov7.dfg --eval_data_path=./images/test --output_path=./output\n#\nArgument\npython furiosa_eval.py -h\n  --dfg_path DFG_PATH   Path to dfg file\n  --eval_data_path EVAL_DATA_PATH\n                        Path to evaluation data containing image files\n  --eval_count EVAL_COUNT\n                        How many images to use\nfor\nevaluation\n  --output_path OUTPUT_PATH\n                        Path to result image\n  ...",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": null,
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-11-14T00:40:51.669572Z"
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "name": "backtrace-rs",
+  "url": "https://github.com/furiosa-ai/backtrace-rs",
+  "visibility": "public",
+  "readme": {
+    "title": "backtrace-rs",
+    "sections": [
+      {
+        "heading": "backtrace-rs",
+        "text": "Documentation\nA library for acquiring backtraces at runtime for Rust. This library aims to\nenhance the support of the standard library by providing a programmatic\ninterface to work with, but it also supports simply easily printing the current\nbacktrace like libstd's panics.",
+        "children": [
+          {
+            "heading": "Install",
+            "text": "[\ndependencies\n]\nbacktrace\n=\n\"\n0.3\n\"",
+            "children": []
+          },
+          {
+            "heading": "Usage",
+            "text": "To simply capture a backtrace and defer dealing with it until a later time,\nyou can use the top-level\nBacktrace\ntype.\nuse\nbacktrace\n::\nBacktrace\n;\nfn\nmain\n(\n)\n{\nlet\nbt =\nBacktrace\n::\nnew\n(\n)\n;\n// do_some_work();\nprintln\n!\n(\n\"{:?}\"\n,\nbt\n)\n;\n}\nIf, however, you'd like more raw access to the actual tracing functionality, you\ncan use the\ntrace\nand\nresolve\nfunctions directly.\nfn\nmain\n(\n)\n{\nbacktrace\n::\ntrace\n(\n|frame|\n{\nlet\nip = frame\n.\nip\n(\n)\n;\nlet\nsymbol_address = frame\n.\nsymbol_address\n(\n)\n;\n// Resolve this instruction pointer to a symbol name\nbacktrace\n::\nresolve_frame\n(\nframe\n,\n|symbol|\n{\nif\nlet\nSome\n(\nname\n)\n= symbol\n.\nname\n(\n)\n{\n// ...\n}\nif\nlet\nSome\n(\nfilename\n)\n= symbol\n.\nfilename\n(\n)\n{\n// ...\n}\n}\n)\n;\ntrue\n// keep going to the next frame\n}\n)\n;\n}",
+            "children": []
+          }
+        ]
+      },
+      {
+        "heading": "License",
+        "text": "This project is licensed under either of\nApache License, Version 2.0, (\nLICENSE-APACHE\nor\nhttps://www.apache.org/licenses/LICENSE-2.0\n)\nMIT license (\nLICENSE-MIT\nor\nhttps://opensource.org/licenses/MIT\n)\nat your option.",
+        "children": [
+          {
+            "heading": "Contribution",
+            "text": "Unless you explicitly state otherwise, any contribution intentionally submitted\nfor inclusion in backtrace-rs by you, as defined in the Apache-2.0 license, shall be\ndual licensed as above, without any additional terms or conditions.",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": "Backtraces in Rust",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-11-14T00:40:37.028326Z"
+  }
+}

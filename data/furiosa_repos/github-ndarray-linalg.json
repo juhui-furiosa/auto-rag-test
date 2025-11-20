@@ -1,0 +1,50 @@
+{
+  "name": "ndarray-linalg",
+  "url": "https://github.com/furiosa-ai/ndarray-linalg",
+  "visibility": "public",
+  "readme": {
+    "title": "ndarray-linalg",
+    "sections": [
+      {
+        "heading": "ndarray-linalg",
+        "text": "Linear algebra package for Rust with\nndarray\nbased on external LAPACK implementations.",
+        "children": [
+          {
+            "heading": "Examples",
+            "text": "See\nexamples\ndirectory.\nNote\n: To run examples, you must specify which backend will be used (as described below).\nFor example, you can execute the\nsolve\nexample with the OpenBLAS backend like this:\ncargo run --example solve --features=openblas\nand run all tests of ndarray-linalg with OpenBLAS\ncargo\ntest\n--features=openblas",
+            "children": []
+          },
+          {
+            "heading": "BLAS/LAPACK Backend",
+            "text": "Three BLAS/LAPACK implementations are supported:\nOpenBLAS\nneeds\ngfortran\n(or other Fortran compiler)\nNetlib\nneeds\ncmake\nand\ngfortran\nIntel MKL\n(non-free license, see the linked page)\nThere are three features corresponding to the backend implementations (\nopenblas\n/\nnetlib\n/\nintel-mkl\n):\n[\ndependencies\n]\nndarray\n=\n\"\n0.13\n\"\nndarray-linalg\n= {\nversion\n=\n\"\n0.12\n\"\n,\nfeatures\n= [\n\"\nopenblas\n\"\n] }",
+            "children": [
+              {
+                "heading": "Tested Environments",
+                "text": "Backend\nLinux\nWindows\nmacOS\nOpenBLAS\n✔️\n❌\n❌\nNetlib\n✔️\n❌\n❌\nIntel MKL\n✔️\n✔️\n✔️",
+                "children": []
+              },
+              {
+                "heading": "For librarian",
+                "text": "If you creating a library depending on this crate, we encourage you not to link any backend:\n[\ndependencies\n]\nndarray\n=\n\"\n0.13\n\"\nndarray-linalg\n=\n\"\n0.12\n\"",
+                "children": []
+              },
+              {
+                "heading": "Link backend crate manually",
+                "text": "For the sake of linking flexibility, you can provide LAPACKE implementation (as an\nextern crate\n) yourself.\nYou should link a LAPACKE implementation to a final crate (like binary executable or dylib) only, not to a Rust library.\n[\ndependencies\n]\nndarray\n=\n\"\n0.13\n\"\nndarray-linalg\n=\n\"\n0.12\n\"\nopenblas-src\n=\n\"\n0.7\n\"\n#\nor another backend of your choice\nYou must add\nextern crate\nto your code in this case:\nextern\ncrate\nndarray\n;\nextern\ncrate\nndarray_linalg\n;\nextern\ncrate\nopenblas_src\n;\n// or another backend of your choice",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": "Linear algebra package for rust-ndarray using LAPACK binding",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-11-14T00:42:45.719332Z"
+  }
+}

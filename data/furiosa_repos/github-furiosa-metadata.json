@@ -1,0 +1,23 @@
+{
+  "name": "furiosa-metadata",
+  "url": "https://github.com/furiosa-ai/furiosa-metadata",
+  "visibility": "public",
+  "readme": {
+    "title": "furiosa-metadata",
+    "sections": [
+      {
+        "heading": "furiosa-metadata",
+        "text": "This crate provides an utility to embed crate version, git revision (short and full), and build time as constants in Rust projects.\n[dependencies]\nfuriosa-metadata = { git = https://github.com/furiosa-ai/furiosa-metadata, tag = \"v0.5.0\" }",
+        "children": []
+      }
+    ]
+  },
+  "metadata": {
+    "description": null,
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-06-04T02:13:32Z"
+  }
+}

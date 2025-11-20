@@ -1,0 +1,64 @@
+{
+  "name": "riscv-isa-sim",
+  "url": "https://github.com/furiosa-ai/riscv-isa-sim",
+  "visibility": "public",
+  "readme": {
+    "title": "Spike RISC-V ISA Simulator",
+    "sections": [
+      {
+        "heading": "Spike RISC-V ISA Simulator",
+        "text": "",
+        "children": [
+          {
+            "heading": "About",
+            "text": "Spike, the RISC-V ISA Simulator, implements a functional model of one or more\nRISC-V harts.  It is named after the golden spike used to celebrate the\ncompletion of the US transcontinental railway.\nSpike supports the following RISC-V ISA features:\nRV32I and RV64I base ISAs, v2.1\nRV32E and RV64E base ISAs, v1.9\nZifencei extension, v2.0\nZicsr extension, v2.0\nZicntr extension, v2.0\nM extension, v2.0\nA extension, v2.1\nB extension, v1.0\nF extension, v2.2\nD extension, v2.2\nQ extension, v2.2\nC extension, v2.0\nZbkb, Zbkc, Zbkx, Zknd, Zkne, Zknh, Zksed, Zksh scalar cryptography extensions (Zk, Zkn, and Zks groups), v1.0\nZkr virtual entropy source emulation, v1.0\nV extension, v1.0 (\nrequires a 64-bit host\n)\nP extension, v0.9.2\nZba extension, v1.0\nZbb extension, v1.0\nZbc extension, v1.0\nZbs extension, v1.0\nZfh and Zfhmin half-precision floating-point extensions, v1.0\nZfa extension, v1.0\nZfinx extension, v1.0\nZmmul integer multiplication extension, v1.0\nZicbom, Zicbop, Zicboz cache-block maintenance extensions, v1.0\nConformance to both RVWMO and RVTSO (Spike is sequentially consistent)\nMachine, Supervisor, and User modes, v1.11\nHypervisor extension, v1.0\nSvnapot extension, v1.0\nSvpbmt extension, v1.0\nSvinval extension, v1.0\nSvadu extension, v1.0\nSvade extension, v1.0\nSdext extension, v1.0-STABLE\nSdtrig extension, v1.0-STABLE\nSmepmp extension v1.0\nSmstateen extension, v1.0\nSmdbltrp extension, v1.0\nSscofpmf v0.5.2\nSsdbltrp extension, v1.0\nSsqosid extension, v1.0\nZaamo extension, v1.0\nZalrsc extension, v1.0\nZabha extension, v1.0\nZacas extension, v1.0\nZawrs extension, v1.0\nZicfiss extension, v1.0\nZicfilp extension, v1.0\nZca extension, v1.0\nZcb extension, v1.0\nZcf extension, v1.0\nZcd extension, v1.0\nZcmp extension, v1.0\nZcmt extension, v1.0\nZfbfmin extension, v0.6\nZvfbfmin extension, v0.6\nZvfbfwma extension, v0.6\nZvbb extension, v1.0\nZvbc extension, v1.0\nZvkg extension, v1.0\nZvkned extension, v1.0\nZvknha, Zvknhb extension, v1.0\nZvksed extension, v1.0\nZvksh extension, v1.0\nZvkt  extension, v1.0\nZvkn, Zvknc, Zvkng extension, v1.0\nZvks, Zvksc, Zvksg extension, v1.0\nZicond extension, v1.0\nZilsd extension, v1.0\nZclsd extension, v1.0\nZimop extension, v1.0",
+            "children": []
+          },
+          {
+            "heading": "Versioning and APIs",
+            "text": "Projects are versioned primarily to indicate when the API has been extended or\nrendered incompatible.  In that spirit, Spike aims to follow the\nSemVer\nversioning scheme, in which\nmajor version numbers are incremented when backwards-incompatible API changes\nare made; minor version numbers are incremented when new APIs are added; and\npatch version numbers are incremented when bugs are fixed in\na backwards-compatible manner.\nSpike's principal public API is the RISC-V ISA.\nThe C++ interface to Spike's\ninternals is\nnot\nconsidered a public API at this time\n, and\nbackwards-incompatible changes to this interface\nwill\nbe made without\nincrementing the major version number.",
+            "children": []
+          },
+          {
+            "heading": "Build Steps",
+            "text": "We assume that the RISCV environment variable is set to the RISC-V tools\ninstall path.\n$ apt-get install device-tree-compiler libboost-regex-dev libboost-system-dev\n$ mkdir build\n$ cd build\n$ ../configure --prefix=$RISCV\n$ make\n$ [sudo] make install\nIf your system uses the\nyum\npackage manager, you can substitute\nyum install dtc\nfor the first step.",
+            "children": []
+          },
+          {
+            "heading": "Build Steps on OpenBSD",
+            "text": "Install bash, gmake, dtc, and use clang.\n$ pkg_add bash gmake dtc\n$ exec bash\n$ export CC=cc; export CXX=c++\n$ mkdir build\n$ cd build\n$ ../configure --prefix=$RISCV\n$ gmake\n$ [doas] make install",
+            "children": []
+          },
+          {
+            "heading": "Compiling and Running a Simple C Program",
+            "text": "Install spike (see Build Steps), riscv-gnu-toolchain, and riscv-pk.\nWrite a short C program and name it hello.c.  Then, compile it into a RISC-V\nELF binary named hello:\n$ riscv64-unknown-elf-gcc -o hello hello.c\nNow you can simulate the program atop the proxy kernel:\n$ spike pk hello",
+            "children": []
+          },
+          {
+            "heading": "Simulating a New Instruction",
+            "text": "Adding an instruction to the simulator requires two steps:\nDescribe the instruction's functional behavior in the file\nriscv/insns/<new_instruction_name>.h.  Examine other instructions\nin that directory as a starting point.\nAdd the opcode and opcode mask to riscv/opcodes.h.  Alternatively,\nadd it to the riscv-opcodes package, and it will do so for you:\n$ cd ../riscv-opcodes\n $ vi opcodes       // add a line for the new instruction\n $ make install\nAdd the instruction to riscv/riscv.mk.in. Otherwise, the instruction\nwill not be included in the build and will be treated as an illegal instruction.\nRebuild the simulator.",
+            "children": []
+          },
+          {
+            "heading": "Interactive Debug Mode",
+            "text": "To invoke interactive debug mode, launch spike with -d:\n$ spike -d pk hello\nTo see the contents of an integer register (0 is for core 0):\n: reg 0 a0\nTo see the contents of a floating point register:\n: fregs 0 ft0\nor:\n: fregd 0 ft0\ndepending upon whether you wish to print the register as single- or double-precision.\nTo see the contents of a memory location (physical address in hex):\n: mem 2020\nTo see the contents of memory with a virtual address (0 for core 0):\n: mem 0 2020\nYou can advance by one instruction by pressing the enter key. You can also\nexecute until a desired equality is reached:\n: until pc 0 2020                   (stop when pc=2020)\n: until reg 0 mie a                 (stop when register mie=0xa)\n: until mem 2020 50a9907311096993   (stop when mem[2020]=50a9907311096993)\nAlternatively, you can execute as long as an equality is true:\n: while mem 2020 50a9907311096993\nYou can continue execution indefinitely by:\n: r\nAt any point during execution (even without -d), you can enter the\ninteractive debug mode with\n<control>-<c>\n.\nTo end the simulation from the debug prompt, press\n<control>-<c>\nor:\n: q",
+            "children": []
+          },
+          {
+            "heading": "Debugging With Gdb",
+            "text": "An alternative to interactive debug mode is to attach using gdb. Because spike\ntries to be like real hardware, you also need OpenOCD to do that. OpenOCD\ndoesn't currently know about address translation, so it's not possible to\neasily debug programs that are run under\npk\n. We'll use the following test\nprogram:\n$ cat rot13.c \nchar text[] = \"Vafgehpgvba frgf jnag gb or serr!\";\n\n// Don't use the stack, because sp isn't set up.\nvolatile int wait = 1;\n\nint main()\n{\n    while (wait)\n        ;\n\n    // Doesn't actually go on the stack, because there are lots of GPRs.\n    int i = 0;\n    while (text[i]) {\n        char lower = text[i] | 32;\n        if (lower >= 'a' && lower <= 'm')\n            text[i] += 13;\n        else if (lower > 'm' && lower <= 'z')\n            text[i] -= 13;\n        i++;\n    }\n\ndone:\n    while (!wait)\n        ;\n}\n$ cat spike.lds \nOUTPUT_ARCH( \"riscv\" )\n\nSECTIONS\n{\n  . = 0x10110000;\n  .text : { *(.text) }\n  .data : { *(.data) }\n}\n$ riscv64-unknown-elf-gcc -g -Og -o rot13-64.o -c rot13.c\n$ riscv64-unknown-elf-gcc -g -Og -T spike.lds -nostartfiles -o rot13-64 rot13-64.o\nTo debug this program, first run spike telling it to listen for OpenOCD:\n$ spike --rbb-port=9824 -m0x10100000:0x20000 rot13-64\nListening for remote bitbang connection on port 9824.\nIn a separate shell run OpenOCD with the appropriate configuration file:\n$ cat spike.cfg \nadapter driver remote_bitbang\nremote_bitbang host localhost\nremote_bitbang port 9824\n\nset _CHIPNAME riscv\njtag newtap $_CHIPNAME cpu -irlen 5 -expected-id 0xdeadbeef\n\nset _TARGETNAME $_CHIPNAME.cpu\ntarget create $_TARGETNAME riscv -chain-position $_TARGETNAME\n\ngdb_report_data_abort enable\n\ninit\nhalt\n$ openocd -f spike.cfg\nOpen On-Chip Debugger 0.10.0-dev-00002-gc3b344d (2017-06-08-12:14)\n...\nriscv.cpu: target state: halted\nIn yet another shell, start your gdb debug session:\ntnewsome@compy-vm:~/SiFive/spike-test$ riscv64-unknown-elf-gdb rot13-64\nGNU gdb (GDB) 8.0.50.20170724-git\nCopyright (C) 2017 Free Software Foundation, Inc.\nLicense GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>\nThis is free software: you are free to change and redistribute it.\nThere is NO WARRANTY, to the extent permitted by law.  Type \"show copying\"\nand \"show warranty\" for details.\nThis GDB was configured as \"--host=x86_64-pc-linux-gnu --target=riscv64-unknown-elf\".\nType \"show configuration\" for configuration details.\nFor bug reporting instructions, please see:\n<http://www.gnu.org/software/gdb/bugs/>.\nFind the GDB manual and other documentation resources online at:\n<http://www.gnu.org/software/gdb/documentation/>.\nFor help, type \"help\".\nType \"apropos word\" to search for commands related to \"word\"...\nReading symbols from rot13-64...done.\n(gdb) target remote localhost:3333\nRemote debugging using localhost:3333\n0x0000000010010004 in main () at rot13.c:8\n8\t    while (wait)\n(gdb) print wait\n$1 = 1\n(gdb) print wait=0\n$2 = 0\n(gdb) print text\n$3 = \"Vafgehpgvba frgf jnag gb or serr!\"\n(gdb) b done \nBreakpoint 1 at 0x10110064: file rot13.c, line 22.\n(gdb) c\nContinuing.\nDisabling abstract command writes to CSRs.\n\nBreakpoint 1, main () at rot13.c:23\n23\t    while (!wait)\n(gdb) print wait\n$4 = 0\n(gdb) print text\n...",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": "Spike, a RISC-V ISA Simulator",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-11-14T00:37:06.441714Z"
+  }
+}

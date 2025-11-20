@@ -1,0 +1,7 @@
+vectordb:
+- client_type: persistent
+  collection_name: furiosa_default
+  db_type: chroma
+  embedding_model: openai_embed_3_large
+  name: furiosa_store
+  path: vector_store/default

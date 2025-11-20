@@ -1,0 +1,64 @@
+{
+  "name": "mlflow",
+  "url": "https://github.com/furiosa-ai/mlflow",
+  "visibility": "public",
+  "readme": {
+    "title": "MLflow: A Machine Learning Lifecycle Platform",
+    "sections": [
+      {
+        "heading": "MLflow: A Machine Learning Lifecycle Platform",
+        "text": "MLflow is a platform to streamline machine learning development, including tracking experiments, packaging code\ninto reproducible runs, and sharing and deploying models. MLflow offers a set of lightweight APIs that can be\nused with any existing machine learning application or library (TensorFlow, PyTorch, XGBoost, etc), wherever you\ncurrently run ML code (e.g. in notebooks, standalone applications or the cloud). MLflow's current components are:\nMLflow Tracking\n: An API to log parameters, code, and\nresults in machine learning experiments and compare them using an interactive UI.\nMLflow Projects\n: A code packaging format for reproducible\nruns using Conda and Docker, so you can share your ML code with others.\nMLflow Models\n: A model packaging format and tools that let\nyou easily deploy the same model (from any ML library) to batch and real-time scoring on platforms such as\nDocker, Apache Spark, Azure ML and AWS SageMaker.\nMLflow Model Registry\n: A centralized model store, set of APIs, and UI, to collaboratively manage the full lifecycle of MLflow Models.",
+        "children": [
+          {
+            "heading": "Installing",
+            "text": "Install MLflow from PyPI via\npip install mlflow\nMLflow requires\nconda\nto be on the\nPATH\nfor the projects feature.\nNightly snapshots of MLflow master are also available\nhere\n.",
+            "children": []
+          },
+          {
+            "heading": "Documentation",
+            "text": "Official documentation for MLflow can be found at\nhttps://mlflow.org/docs/latest/index.html\n.",
+            "children": []
+          },
+          {
+            "heading": "Community",
+            "text": "For help or questions about MLflow usage (e.g. \"how do I do X?\") see the\ndocs\nor\nStack Overflow\n.\nTo report a bug, file a documentation issue, or submit a feature request, please open a GitHub issue.\nFor release announcements and other discussions, please subscribe to our mailing list (\nmlflow-users@googlegroups.com\n)\nor join us on\nSlack\n.",
+            "children": []
+          },
+          {
+            "heading": "Running a Sample App With the Tracking API",
+            "text": "The programs in\nexamples\nuse the MLflow Tracking API. For instance, run:\npython examples/quickstart/mlflow_tracking.py\nThis program will use\nMLflow Tracking API\n,\nwhich logs tracking data in\n./mlruns\n. This can then be viewed with the Tracking UI.",
+            "children": []
+          },
+          {
+            "heading": "Launching the Tracking UI",
+            "text": "The MLflow Tracking UI will show runs logged in\n./mlruns\nat\nhttp://localhost:5000\n.\nStart it with:\nmlflow ui\nNote:\nRunning\nmlflow ui\nfrom within a clone of MLflow is not recommended - doing so will\nrun the dev UI from source. We recommend running the UI from a different working directory,\nspecifying a backend store via the\n--backend-store-uri\noption. Alternatively, see\ninstructions for running the dev UI in the\ncontributor guide\n.",
+            "children": []
+          },
+          {
+            "heading": "Running a Project from a URI",
+            "text": "The\nmlflow run\ncommand lets you run a project packaged with a MLproject file from a local path\nor a Git URI:\nmlflow run examples/sklearn_elasticnet_wine -P alpha=0.4\n\nmlflow run https://github.com/mlflow/mlflow-example.git -P alpha=0.4\nSee\nexamples/sklearn_elasticnet_wine\nfor a sample project with an MLproject file.",
+            "children": []
+          },
+          {
+            "heading": "Saving and Serving Models",
+            "text": "To illustrate managing models, the\nmlflow.sklearn\npackage can log scikit-learn models as\nMLflow artifacts and then load them again for serving. There is an example training application in\nexamples/sklearn_logistic_regression/train.py\nthat you can run as follows:\n$ python examples/sklearn_logistic_regression/train.py\nScore: 0.666\nModel saved in run <run-id>\n\n$ mlflow models serve --model-uri runs:/<run-id>/model\n\n$ curl -d '{\"columns\":[0],\"index\":[0,1],\"data\":[[1],[-1]]}' -H 'Content-Type: application/json'  localhost:5000/invocations",
+            "children": []
+          },
+          {
+            "heading": "Contributing",
+            "text": "We happily welcome contributions to MLflow. Please see our\ncontribution guide\nfor details.",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": "Open source platform for the machine learning lifecycle",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2021-05-25T23:21:44.000Z"
+  }
+}

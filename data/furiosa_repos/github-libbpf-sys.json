@@ -1,0 +1,50 @@
+{
+  "name": "libbpf-sys",
+  "url": "https://github.com/furiosa-ai/libbpf-sys",
+  "visibility": "public",
+  "readme": {
+    "title": "libbpf-sys",
+    "sections": [
+      {
+        "heading": "libbpf-sys",
+        "text": "Rust bindings to\nlibbpf\nfrom the Linux kernel\nMaintainer:\nAlex Forster <\nalex@alexforster.com\n>\nLicense:\nBSD-2-Clause\nlibbpf-sys\nis the packaged result of using\nbindgen\nto automatically generate Rust FFI bindings to\nlibbpf\nfrom the Linux kernel.\nWarning:\nthis crate does not provide a high-level or \"safe\" API wrapper around\nlibbpf\n. If you are looking for an easier way to use\nlibbpf\n, check out these other crates that implement higher-level APIs using\nlibbpf-sys\n...\nafxdp:\na Rust interface for AF_XDP –\nGitHub\n|\nCrates.io\nlibbpf-cargo:\nCargo plugin to build bpf programs –\nGitHub\n|\nCrates.io\nlibbpf-rs:\na safe, idiomatic, and opinionated wrapper around libbpf-sys –\nGitHub\n|\nCrates.io\nrebpf:\nwrite and load eBPF programs in Rust –\nGitHub\n|\nCrates.io\nxsk-rs:\na Rust interface for Linux AF_XDP sockets –\nGithub\n|\nCrates.io\nThe community is encouraged to build higher-level crates using\nlibbpf-sys\n. Please let me know if you do!",
+        "children": [
+          {
+            "heading": "Building",
+            "text": "As part of the\ncargo build\nprocess, an included copy of\nlibbpf\nis compiled and statically linked into the resulting binary. This means that, in order to build a project that depends on this crate, your system must provide a working C compiler toolchain (GCC and Clang should both work). Additionally, your system must provide development headers for\nzlib\nand\nlibelf\n, and they must be discoverable via\npkgconfig\n.\nBuilding on a fresh Debian/Ubuntu installation:\n$ apt-get install git rustc cargo build-essential pkgconf zlib1g-dev libelf-dev\n$ git clone --recurse-submodules https://github.com/libbpf/libbpf-sys.git\n&&\ncd\nlibbpf-sys\n$ cargo build\nBuilding on a fresh RHEL/Fedora installation:\n$ yum install git rust cargo gcc make pkgconf zlib-devel elfutils-libelf-devel\n$ git clone --recurse-submodules https://github.com/libbpf/libbpf-sys.git\n&&\ncd\nlibbpf-sys\n$ cargo build",
+            "children": [
+              {
+                "heading": "Environment Variables",
+                "text": "LIBBPF_SYS_EXTRA_CFLAGS\ncan be used to pass extra cflags when vendoring libbpf, libz or libelf.\nLIBBPF_SYS_LIBRARY_PATH\n: colon separated paths for the linker to find native libs.",
+                "children": []
+              }
+            ]
+          },
+          {
+            "heading": "Distribution",
+            "text": "When you add this crate as a dependency to your project, your resulting binaries will dynamically link with\nlibz\nand\nlibelf\n. This means that the systems where you run your binaries must have these libraries installed.",
+            "children": []
+          },
+          {
+            "heading": "Versioning",
+            "text": "Because the API of this crate is automatically generated from\nlibbpf\nsources, it uses a versioning scheme based on the version of\nlibbpf\nthat it provides.\nThe \"Major.Minor\" semver numbers correspond exactly to the\nlibbpf\nversion that each release provides. For example, the\n0.6.x\nreleases of this crate provides the API for the\nlibbpf v0.6.x\nreleases.\nIn order to allow for human error, the \"Patch\" semver number is used by this crate and does not necessarily match the provided\nlibbpf\nversion. For example, both the\n0.6.1\nand\n0.6.2\nreleases of this crate contain bindings to\nlibbpf v0.6.1\n, but the later release contains bugfixes and/or enhancements to the crate itself.\nThe exact version of\nlibbpf\nthat is provided by any given release can be found in the \"Build Metadata\" semver section, which comes after the\n+\nin the version string. For example,\n0.6.2+v0.6.1\nindicates that the crate version is\n0.6.2\nand the upstream\nlibbpf\nversion is\nv0.6.1\n.",
+            "children": []
+          },
+          {
+            "heading": "Licensing and Dependencies",
+            "text": "This crate is released under the BSD 2-Clause license, and is careful to avoid infecting users with viral licenses.\nIt currently depends on the following third-party libraries:\nWebsite\nLicense\nLinkage\nlibbpf\ngithub.com/libbpf/libbpf\nLGPL-2.1-only OR BSD-2-Clause\nStatic\nlibelf\nsourceware.org/elfutils\nLGPL-2.1-or-later OR LGPL-3.0-or-later\nDynamic\nzlib\nzlib.net\nZlib\nDynamic",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": "Rust bindings to libbpf from the Linux kernel",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-11-14T00:39:35.619093Z"
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "name": "good_lp",
+  "url": "https://github.com/furiosa-ai/good_lp",
+  "visibility": "public",
+  "readme": {
+    "title": "good_lp",
+    "sections": [
+      {
+        "heading": "good_lp",
+        "text": "A Mixed Integer Linear Programming modeler that is easy to use, performant with large problems, and well-typed.\nuse\nstd\n::\nerror\n::\nError\n;\nuse\ngood_lp\n::\n{\nconstraint\n,\ndefault_solver\n,\nSolution\n,\nSolverModel\n,\nvariables\n}\n;\nfn\nmain\n(\n)\n->\nResult\n<\n(\n)\n,\nBox\n<\ndyn\nError\n>\n>\n{\nvariables\n!\n{\nvars\n:\na <=\n1\n;\n2\n<= b <=\n4\n;\n}\n// variables can also be added dynamically\nlet\nsolution = vars\n.\nmaximise\n(\n10\n*\n(\na - b /\n5\n)\n- b\n)\n.\nusing\n(\ndefault_solver\n)\n// multiple solvers available\n.\nwith\n(\nconstraint\n!\n(\na +\n2\n<= b\n)\n)\n.\nwith\n(\nconstraint\n!\n(\n1\n+ a >=\n4\n- b\n)\n)\n.\nsolve\n(\n)\n?\n;\nprintln\n!\n(\n\"a={}   b={}\"\n,\nsolution\n.\nvalue\n(\na\n)\n,\nsolution\n.\nvalue\n(\nb\n)\n)\n;\nprintln\n!\n(\n\"a + b = {}\"\n,\nsolution\n.\neval\n(\na + b\n)\n)\n;\nOk\n(\n(\n)\n)\n}",
+        "children": [
+          {
+            "heading": "Features and limitations",
+            "text": "Linear programming\n. This crate currently supports only the definition of linear programs. You cannot use it with\nquadratic functions. For instance:\nyou can maximise\n3 * x + y\n, but not\n3 * x * y\n.\nContinuous and integer variables\n. good_lp itself supports mixed integer-linear programming (MILP),\nbut not all underlying solvers support integer variables.\nNot a solver\n. This crate uses other rust crates to provide the solvers.\nThere is no solving algorithm in good_lp itself. If you have an issue with a solver,\nreport it to the solver directly. See below for the list of supported solvers.",
+            "children": [
+              {
+                "heading": "Contributing",
+                "text": "Pull requests are welcome !\nIf you need a feature that is not yet implemented, get in touch.\nAlso, do not hesitate to open issues to discuss the implementation.",
+                "children": []
+              },
+              {
+                "heading": "Alternatives",
+                "text": "If you need non-linear programming, you can use\nlp-modeler\n.\nHowever, it is currently very slow with large problems.\nYou can also directly use the underlying solver libraries, such as\ncoin_cbc\nor\nminilp\nif you don't need a way to express your objective function and\nconstraints using an idiomatic rust syntax.",
+                "children": []
+              }
+            ]
+          },
+          {
+            "heading": "Usage examples",
+            "text": "You can find a resource allocation problem example in\nresource_allocation_problem.rs\n.",
+            "children": []
+          },
+          {
+            "heading": "Solvers",
+            "text": "This library offers an abstraction over multiple solvers. By default, it uses\ncbc\n, but\nyou can also activate other solvers using cargo features.\nsolver feature name\ninteger variables\nno C compiler*\nno additional libs**\nfast\ncoin_cbc\n✅\n✅\n❌\n✅\nhighs\n✅\n❌\n✅\n✅\nlpsolve\n✅\n❌\n✅\n❌\nminilp\n❌\n✅\n✅\n❌\nlp-solvers\n✅\n✅\n✅\n❌\n* no C compiler: builds with only cargo, without requiring you to install a C compiler\n** no additional libs: works without additional libraries at runtime, all the dependencies are statically linked\nTo use an alternative solver, put the following in your\nCargo.toml\n:\ngood_lp\n= {\nversion\n=\n\"\n*\n\"\n,\nfeatures\n= [\n\"\nyour solver feature name\n\"\n],\ndefault-features\n=\nfalse\n}",
+            "children": [
+              {
+                "heading": "cbc",
+                "text": "Used by default, performant, but requires to have the cbc C library headers available on the build machine,\nand the cbc dynamic library available on any machine where you want to run your program.\nIn ubuntu, you can install it with:\nsudo apt-get install coinor-cbc coinor-libcbc-dev\nIn MacOS, using\nhomebrew\n:\nbrew install cbc",
+                "children": []
+              },
+              {
+                "heading": "minilp",
+                "text": "minilp is a pure rust solver, which means it works out of the box without installing anything else.\nMinilp is written in pure rust, so you can use it without having to install a C compiler on your machine,\nor having to install any external library, but it is slower than other solvers.\nIt performs very poorly when compiled in debug mode, so be sure to compile your code\nin\n--release\nmode when solving large problems.",
+                "children": []
+              },
+              {
+                "heading": "HiGHS",
+                "text": "HiGHS is a free (\nMIT\n) parallel mixed integer linear programming\nsolver written in C++.\nIt is able to use\nOpenMP\nto fully leverage all the available processor cores\nto solve a problem.\ngood_lp uses the\nhighs crate\nto call HiGHS.\nYou will need a C compiler, but you shouldn't have to install any additional library on linux\n(it depends only on OpenMP and the C++ standard library).\nMore information in the\nhighs-sys crate\n.",
+                "children": []
+              },
+              {
+                "heading": "lpsolve",
+                "text": "lp_solve is a free (\nLGPL\n) linear (integer) programming solver\nwritten in C and based on the revised simplex method.\ngood_lp uses the\nlpsolve crate\nto call lpsolve.\nYou will need a C compiler, but you won't have to install any additional library.",
+                "children": []
+              },
+              {
+                "heading": "lp-solvers",
+                "text": "The\nlp-solvers\nfeature is particular: it doesn't contain any solver.\nInstead, it calls other solvers at runtime.\nIt writes the given problem to a\n.lp\nfile, and launches an external solver command\n(such as\ngurobi\n,\ncplex\n,\ncbc\n, or\nglpk\n) to solve it.\nThere is some overhead associated to this method: it can take a few hundred milliseconds\nto write the problem to a file, launch the external solver, wait for it to finish, and then parse its solution.\nIf you are not solving a few large problems but many small ones (in a web server, for instance),\nthen this method may not be appropriate.\nAdditionally, the end user of your program will have to install the desired solver on his own.",
+                "children": []
+              },
+              {
+                "heading": "License",
+                "text": "This library is published under the MIT license.\nThe solver themselves have various licenses, please refer to their individual documentation.",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": "Linear Programming for Rust, with an user-friendly API. This crate allows modeling LP problems, and let's you solve them with various solvers.",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2021-03-29T18:08:26.000Z"
+  }
+}

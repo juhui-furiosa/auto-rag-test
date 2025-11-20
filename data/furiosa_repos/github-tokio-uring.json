@@ -1,0 +1,50 @@
+{
+  "name": "tokio-uring",
+  "url": "https://github.com/furiosa-ai/tokio-uring",
+  "visibility": "public",
+  "readme": {
+    "title": "tokio-uring",
+    "sections": [
+      {
+        "heading": "tokio-uring",
+        "text": "This crate provides\nio-uring\nfor\nTokio\nby exposing a new Runtime that is\ncompatible with Tokio but also can drive\nio-uring\n-backed resources. Any\nlibrary that works with\nTokio\nalso works with\ntokio-uring\n. The crate\nprovides new resource types that work with\nio-uring\n.\nAPI Docs\n|\nChat",
+        "children": []
+      },
+      {
+        "heading": "Getting started",
+        "text": "Using\ntokio-uring\nrequires starting a [\ntokio-uring\n] runtime. This\nruntime internally manages the main Tokio runtime and a\nio-uring\ndriver.\nIn your Cargo.toml:\n[\ndependencies\n]\ntokio-uring\n= {\nversion\n=\n\"\n0.4.0\n\"\n}\nIn your main.rs:\nuse\ntokio_uring\n::\nfs\n::\nFile\n;\nfn\nmain\n(\n)\n->\nResult\n<\n(\n)\n,\nBox\n<\ndyn\nstd\n::\nerror\n::\nError\n>\n>\n{\ntokio_uring\n::\nstart\n(\nasync\n{\n// Open a file\nlet\nfile =\nFile\n::\nopen\n(\n\"hello.txt\"\n)\n.\nawait\n?\n;\nlet\nbuf =\nvec\n!\n[\n0\n;\n4096\n]\n;\n// Read some data, the buffer is passed by ownership and\n// submitted to the kernel. When the operation completes,\n// we get the buffer back.\nlet\n(\nres\n,\nbuf\n)\n= file\n.\nread_at\n(\nbuf\n,\n0\n)\n.\nawait\n;\nlet\nn = res?\n;\n// Display the contents\nprintln\n!\n(\n\"{:?}\"\n,\n&\nbuf\n[\n..n\n]\n)\n;\nOk\n(\n(\n)\n)\n}\n)\n}",
+        "children": [
+          {
+            "heading": "Requirements",
+            "text": "tokio-uring\nrequires a very recent linux kernel. (Not even all kernels with io_uring support will work)\nIn particular\n5.4.0\ndoes not work (This is standard on Ubuntu 20.4). However\n5.11.0\n(the ubuntu hwe image) does work.",
+            "children": []
+          },
+          {
+            "heading": "Project status",
+            "text": "The\ntokio-uring\nproject is still very young. Currently, we are focusing on\nsupporting filesystem and network operations. Eventually, we will add safe APIs for all\nio-uring compatible operations.",
+            "children": []
+          },
+          {
+            "heading": "License",
+            "text": "This project is licensed under the\nMIT license\n.",
+            "children": [
+              {
+                "heading": "Contribution",
+                "text": "Unless you explicitly state otherwise, any contribution intentionally submitted\nfor inclusion in tokio-uring by you, shall be licensed as MIT, without any\nadditional terms or conditions.",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": "An io_uring backed runtime for Rust",
+    "license": null,
+    "stars": 2,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-11-14T00:38:42.377739Z"
+  }
+}

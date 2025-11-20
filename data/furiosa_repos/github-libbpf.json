@@ -1,0 +1,53 @@
+{
+  "name": "libbpf",
+  "url": "https://github.com/furiosa-ai/libbpf",
+  "visibility": "public",
+  "readme": {
+    "title": "libbpf",
+    "sections": [
+      {
+        "heading": "libbpf",
+        "text": "This is the official home of the libbpf library.\nPlease use this Github repository for building and packaging libbpf\nand when using it in your projects through Git submodule.\nLibbpf\nauthoritative source code\nis developed as part of\nbpf-next Linux source\ntree\nunder\ntools/lib/bpf\nsubdirectory and is periodically synced to Github. As such, all the\nlibbpf changes should be sent to\nBPF mailing list\n,\nplease don't open PRs here unless you are changing Github-specific parts of libbpf\n(e.g., Github-specific Makefile).",
+        "children": []
+      },
+      {
+        "heading": "Libbpf and general BPF usage questions",
+        "text": "Libbpf documentation can be found\nhere\n.\nIt's an ongoing effort and has ways to go, but please take a look and consider contributing as well.\nPlease check out\nlibbpf-bootstrap\nand\nthe companion blog post\nfor\nthe examples of building BPF applications with libbpf.\nlibbpf-tools\nare also\na good source of the real-world libbpf-based tracing tools.\nSee also\n\"BPF CO-RE reference guide\"\nfor the coverage of practical aspects of building BPF CO-RE applications and\n\"BPF CO-RE\"\nfor\ngeneral introduction into BPF portability issues and BPF CO-RE origins.\nAll general BPF questions, including kernel functionality, libbpf APIs and\ntheir application, should be sent to\nbpf@vger.kernel.org\nmailing list. You can\nsubscribe to it\nhere\nand search\nits archive\nhere\n. Please search the archive\nbefore asking new questions. It very well might be that this was already\naddressed or answered before.\nbpf@vger.kernel.org\nis monitored by many more people and they will happily try\nto help you with whatever issue you have. This repository's PRs and issues\nshould be opened only for dealing with issues pertaining to specific way this\nlibbpf mirror repo is set up and organized.",
+        "children": []
+      },
+      {
+        "heading": "Building libbpf",
+        "text": "libelf is an internal dependency of libbpf and thus it is required to link\nagainst and must be installed on the system for applications to work.\npkg-config is used by default to find libelf, and the program called can be\noverridden with\nPKG_CONFIG\n.\nIf using\npkg-config\nat build time is not desired, it can be disabled by\nsetting\nNO_PKG_CONFIG=1\nwhen calling make.\nTo build both static libbpf.a and shared libbpf.so:\n$\ncd\nsrc\n$ make\nTo build only static libbpf.a library in directory\nbuild/ and install them together with libbpf headers in a staging directory\nroot/:\n$\ncd\nsrc\n$ mkdir build root\n$ BUILD_STATIC_ONLY=y OBJDIR=build DESTDIR=root make install\nTo build both static libbpf.a and shared libbpf.so against a custom libelf\ndependency installed in /build/root/ and install them together with libbpf\nheaders in a build directory /build/root/:\n$\ncd\nsrc\n$ PKG_CONFIG_PATH=/build/root/lib64/pkgconfig DESTDIR=/build/root make install",
+        "children": []
+      },
+      {
+        "heading": "BPF CO-RE (Compile Once – Run Everywhere)",
+        "text": "Libbpf supports building BPF CO-RE-enabled applications, which, in contrast to\nBCC\n, do not require Clang/LLVM runtime\nbeing deployed to target servers and doesn't rely on kernel-devel headers\nbeing available.\nIt does rely on kernel to be built with\nBTF type\ninformation\n, though.\nSome major Linux distributions come with kernel BTF already built in:\nFedora 31+\nRHEL 8.2+\nOpenSUSE Tumbleweed (in the next release, as of 2020-06-04)\nArch Linux (from kernel 5.7.1.arch1-1)\nManjaro (from kernel 5.4 if compiled after 2021-06-18)\nUbuntu 20.10\nDebian 11 (amd64/arm64)\nIf your kernel doesn't come with BTF built-in, you'll need to build custom\nkernel. You'll need:\npahole\n1.16+ tool (part of\ndwarves\npackage), which performs DWARF to\nBTF conversion;\nkernel built with\nCONFIG_DEBUG_INFO_BTF=y\noption;\nyou can check if your kernel has BTF built-in by looking for\n/sys/kernel/btf/vmlinux\nfile:\n$ ls -la /sys/kernel/btf/vmlinux\n-r--r--r--. 1 root root 3541561 Jun  2 18:16 /sys/kernel/btf/vmlinux\nTo develop and build BPF programs, you'll need Clang/LLVM 10+. The following\ndistributions have Clang/LLVM 10+ packaged by default:\nFedora 32+\nUbuntu 20.04+\nArch Linux\nUbuntu 20.10 (LLVM 11)\nDebian 11 (LLVM 11)\nAlpine 3.13+\nOtherwise, please make sure to update it on your system.\nThe following resources are useful to understand what BPF CO-RE is and how to\nuse it:\nBPF CO-RE reference guide\nBPF Portability and CO-RE\nHOWTO: BCC to libbpf conversion\nlibbpf-tools in BCC repo\ncontain lots of real-world tools converted from BCC to BPF CO-RE. Consider\nconverting some more to both contribute to the BPF community and gain some\nmore experience with it.",
+        "children": []
+      },
+      {
+        "heading": "Distributions",
+        "text": "Distributions packaging libbpf from this mirror:\nFedora\nGentoo\nDebian\nArch\nUbuntu\nAlpine\nBenefits of packaging from the mirror over packaging from kernel sources:\nConsistent versioning across distributions.\nNo ties to any specific kernel, transparent handling of older kernels.\nLibbpf is designed to be kernel-agnostic and work across multitude of\nkernel versions. It has built-in mechanisms to gracefully handle older\nkernels, that are missing some of the features, by working around or\ngracefully degrading functionality. Thus libbpf is not tied to a specific\nkernel version and can/should be packaged and versioned independently.\nContinuous integration testing via\nGitHub Actions\n.\nStatic code analysis via\nLGTM\nand\nCoverity\n.\nPackage dependencies of libbpf, package names may vary across distros:\nzlib\nlibelf",
+        "children": []
+      },
+      {
+        "heading": "bpf-next to Github sync",
+        "text": "All the gory details of syncing can be found in\nscripts/sync-kernel.sh\nscript. See\nSYNC.md\nfor instruction.\nSome header files in this repo (\ninclude/linux/*.h\n) are reduced versions of\ntheir counterpart files at\nbpf-next\n's\ntools/include/linux/*.h\nto make compilation successful.",
+        "children": []
+      },
+      {
+        "heading": "License",
+        "text": "This work is dual-licensed under BSD 2-clause license and GNU LGPL v2.1 license.\nYou can choose between one of them if you use this work.\nSPDX-License-Identifier: BSD-2-Clause OR LGPL-2.1",
+        "children": []
+      }
+    ]
+  },
+  "metadata": {
+    "description": "Automated upstream mirror for libbpf stand-alone build.",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-03-10T22:35:17.000Z"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "name": "tracing-chrometrace",
+  "url": "https://github.com/furiosa-ai/tracing-chrometrace",
+  "visibility": "public",
+  "readme": {
+    "title": "tracing-chrometrace",
+    "sections": [
+      {
+        "heading": "tracing-chrometrace",
+        "text": "",
+        "children": []
+      },
+      {
+        "heading": "Overview",
+        "text": "A tracing\nLayer\nthat for logs formatted representations of\ntracing\nevents viewed by the\nChrome Trace Viewer\nat\nchrome://tracing\n.",
+        "children": []
+      },
+      {
+        "heading": "Usage",
+        "text": "use\ntracing_chrometrace\n::\nChromeLayer\n;\nuse\ntracing_subscriber\n::\n{\nRegistry\n,\nprelude\n::\n*\n}\n;\ntracing_subscriber\n::\nregistry\n(\n)\n.\nwith\n(\nChromeLayer\n::\ndefault\n(\n)\n)\n.\ninit\n(\n)\n;",
+        "children": []
+      }
+    ]
+  },
+  "metadata": {
+    "description": "A tracing layer for chrome trace.",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-11-14T00:40:27.497488Z"
+  }
+}

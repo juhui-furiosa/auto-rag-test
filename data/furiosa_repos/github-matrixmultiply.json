@@ -1,0 +1,44 @@
+{
+  "name": "matrixmultiply",
+  "url": "https://github.com/furiosa-ai/matrixmultiply",
+  "visibility": "public",
+  "readme": {
+    "title": "matrixmultiply",
+    "sections": [
+      {
+        "heading": "matrixmultiply",
+        "text": "General matrix multiplication for f32, f64, and complex matrices. Operates on\nmatrices with general layout (they can use arbitrary row and column stride).\nPlease read the\nAPI documentation here\nWe presently provide a few good microkernels, portable and for x86-64 and\nAArch64 NEON, and only one operation: the general matrix-matrix multiplication\n(“gemm”).\nThis crate was inspired by the macro/microkernel approach to matrix\nmultiplication that is used by the\nBLIS\nproject.",
+        "children": [
+          {
+            "heading": "Development Goals",
+            "text": "Code clarity and maintainability\nPortability and stable Rust\nPerformance: provide target-specific microkernels when it is beneficial\nTesting: Test diverse inputs and test and benchmark all microkernels\nSmall code footprint and fast compilation\nWe are not reimplementing BLAS.",
+            "children": []
+          },
+          {
+            "heading": "Benchmarks",
+            "text": "cargo bench\nis useful for special cases and small matrices\nThe best gemm and threading benchmark is is\nexamples/benchmarks.rs\nwhich supports custom sizes,\nsome configuration, and csv output.\nUse the script\nbenches/benchloop.py\nto run benchmarks over parameter ranges.",
+            "children": []
+          },
+          {
+            "heading": "Blog Posts About This Crate",
+            "text": "gemm: a rabbit hole",
+            "children": []
+          },
+          {
+            "heading": "Recent Changes",
+            "text": "0.3.7\nRename a directory, avoiding spaces in filenames, to be compatible with\nBazel. By @xander-zitara\n0.3.6\nFix the build for the combination of cgemm and no_std (#76)\n0.3.5\nSignificant improvements to complex matrix packing and kernels (#75)\nUse a specialized AVX2 matrix packing function for sgemm, dgemm when this\nfeature is detected on x86-64\n0.3.4\nSgemm, dgemm microkernel implementations for AArch64 NEON (ARM)\nMatrixmultiply now uses autocfg to detect rust version to enable these kernels\nwhen AArch64 intrinsics are available from Rust 1.61.\nSmall change to matrix packing functions so that they in some cases optimize\nbetter due to improvements to pointer alias information.\n0.3.3\nAttempt to fix macos bug #55 again (manifesting as a debug assertion, only\nin debug builds.)\nUpdated comments for x86 kernels by @Tastaturtaste\nUpdates to MIRI/CI by @jturner314\nSilenced Send/Sync future compatibility warnings for a raw pointer wrapper\n0.3.2\nAdd optional feature\ncgemm\nfor complex matmult functions\ncgemm\nand\nzgemm\nAdd optional feature\nconstconf\nfor compile-time configuration of matrix\nkernel parameters for chunking. Improved scripts for benchmarking over ranges\nof different settings. With thanks to @DutchGhost for the const-time\nparsing functions.\nImproved benchmarking and testing.\nThreading is now slightly more eager to threads (depending on matrix element count).\n0.3.1\nAttempt to fix bug #55 were the mask buffer in TLS did not seem to\nget its requested alignment on macos. The mask buffer pointer is now\naligned manually (again, like it was in 0.2.x).\nFix a minor issue where we were passing a buffer pointer as\n&T\nwhen it should have been\n&[T]\n.\n0.3.0\nImplement initial support for threading using a bespoke thread pool with\nlittle contention.\nTo use, enable feature\nthreading\n(and configure number of threads with the\nvariable\nMATMUL_NUM_THREADS\n).\nInitial support is for up to 4 threads - will be updated with more\nexperience in coming versions.\nAdded a better benchmarking program for arbitrary size and layout, see\nexamples/benchmark.rs\nfor this; it supports csv output for better\nrecording of measurements\nMinimum supported rust version is 1.41.1 and the version update policy\nhas been updated.\nUpdated to Rust 2018 edition\nMoved CI to github actions (so long travis and thanks for all the fish).\n0.2.4\nSupport no-std mode by @vadixidav and @jturner314\nNew (default) feature flag \"std\"; use default-features = false to disable\nand use no-std.\nNote that runtime CPU feature detection requires std.\nFix tests so that they build correctly on non-x86 #49 platforms, and manage\nthe release by @bluss\n0.2.3\nUpdate rawpointer dependency to 0.2\nMinor changes to inlining for\n-Ctarget-cpu=native\nuse (not recommended -\nuse automatic runtime feature detection.\nMinor improvements to kernel masking (#42, #41) by @bluss and @SuperFluffy\n0.2.2\nNew dgemm avx and fma kernels implemented by R. Janis Goldschmidt\n(@SuperFluffy). With fast cases for both row and column major output.\nBenchmark improvements: Using fma instructions reduces execution time on\ndgemm benchmarks by 25-35% compared with the avx kernel, see issue\n#35\nUsing the avx dgemm kernel reduces execution time on dgemm benchmarks by\n5-7% compared with the previous version's autovectorized kernel.\nNew fma adaption of the sgemm avx kernel by R. Janis Goldschmidt\n(@SuperFluffy).\nBenchmark improvement: Using fma instructions reduces execution time on\nsgemm benchmarks by 10-15% compared with the avx kernel, see issue\n#35\nMore flexible kernel selection allows kernels to individually set all\ntheir parameters, ensures the fallback (plain Rust) kernels can be tuned\nfor performance as well, and moves feature detection out of the gemm loop.\nBenchmark improvement: Reduces execution time on various benchmarks\nby 1-2% in the avx kernels, see\n#37\n.\nImproved testing to cover input/output strides of more diversity.\n0.2.1\nImprove matrix packing by taking better advantage of contiguous inputs.\nBenchmark improvement: execution time for 64×64 problem where inputs are either\nboth row major or both column major changed by -5% sgemm and -1% for dgemm.\n(#26)\nIn the sgemm avx kernel, handle column major output arrays just like\nit does row major arrays.\nBenchmark improvement: execution time for 32×32 problem where output is column\nmajor changed by -11%. (#27)\n0.2.0\nUse runtime feature detection on x86 and x86-64 platforms, to enable\nAVX-specific microkernels at runtime if available on the currently\nexecuting configuration.\nThis means no special compiler flags are needed to enable native\ninstruction performance!\nImplement a specialized 8×8 sgemm (f32) AVX microkernel, this speeds up\nmatrix multiplication by another 25%.\nUse\nstd::alloc\nfor allocation of aligned packing buffers\nWe now require Rust 1.28 as the minimal version\n0.1.15\nFix bug where the result matrix C was not updated in the case of a M × K by\nK × N matrix multiplication where K was zero. (This resulted in the output\nC potentially being left uninitialized or with incorrect values in this\nspecific scenario.) By @jturner314 (PR #21)\n0.1.14\nAvoid an unused code warning\n0.1.13\nPick 8x8 sgemm (f32) kernel when AVX target feature is enabled\n(with Rust 1.14 or later, no effect otherwise).\nUse\nrawpointer\n, a µcrate with raw pointer methods taken from this\nproject.\n0.1.12\nInternal cleanup with retained performance\n0.1.11\nAdjust sgemm (f32) kernel to optimize better on recent Rust.\n0.1.10\nUpdate doc links to docs.rs\n0.1.9\nWorkaround optimization regression in rust nightly (1.12-ish) (#9)\n0.1.8\nImproved docs\n0.1.7\nReduce overhead slightly for small matrix multiplication problems by using\nonly one allocation call for both packing buffers.\n0.1.6\nDisable manual loop unrolling in debug mode (quicker debug builds)\n0.1.5\nUpdate sgemm to use a 4x8 microkernel (“still in simplistic rust”),\nwhich improves throughput by 10%.\n0.1.4\nPrepare support for aligned packed buffers\nUpdate dgemm to use a 8x4 microkernel, still in simplistic rust,\nwhich improves throughput by 10-20% when using AVX.\n0.1.3\nSilence some debug prints\n0.1.2\nMajor performance improvement for sgemm and dgemm (20-30% when using AVX).\nSince it all depends on what the optimizer does, I'd love to get\nissue reports that report good or bad performance.\nMade the kernel masking generic, which is a cleaner design\n0.1.1\nMinor improvement in the kernel",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": "Internal patches to bluss/matrixmultiply",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-11-14T00:40:55.904900Z"
+  }
+}

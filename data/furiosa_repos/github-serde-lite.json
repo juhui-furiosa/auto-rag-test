@@ -1,0 +1,60 @@
+{
+  "name": "serde-lite",
+  "url": "https://github.com/furiosa-ai/serde-lite",
+  "visibility": "public",
+  "readme": {
+    "title": "Serde Lite",
+    "sections": [
+      {
+        "heading": "Serde Lite",
+        "text": "This library provides a bit more lightweight implementation (compared to Serde)\nof general-purpose serialization and de-serialization.\nThe intention here is\nnot to replace Serde completely\nthough. Serde does an amazing job and it\nwouldn't make much sense to compete with Serde in terms of\nserialization/de-serialization speed and the amount of memory used in runtime.\nWe focus mainly on the one thing where Serde can be a pain in the... code :) -\nand it's the size of the resulting binary. Depending on the complexity of the\ntypes that you try to serialize/de-serialize, Serde can produce quite a lot of\ncode. Plus there is also some monomorphization which may add even more code to\nyour binary.\nIn order to achieve it's goal, this library does some assumptions about the\nunderlying format. It uses an intermediate data representation that is similar\nto JSON. The intermediate format can be then serialized/deserialized using\nSerde. This implies that this library will never be as fast as Serde itself.",
+        "children": [
+          {
+            "heading": "Usage",
+            "text": "You can use this library as a drop-in replacement for Serde. There are\nSerialize\nand\nDeserialize\ntraits that can be automatically derived and\nthere are also some attributes (compatible with Serde), so all you really have\nto do is to put\nserde-lite\ninstead of\nserde\ninto your\nCargo.toml\n.",
+            "children": [
+              {
+                "heading": "Serialization",
+                "text": "Here is a brief example of serialization into JSON:\nuse\nserde_lite\n::\nSerialize\n;\nuse\nserde_lite_derive\n::\nSerialize\n;\n#\n[\nderive\n(\nSerialize\n)\n]\nstruct\nMyStruct\n{\nfield1\n:\nu32\n,\nfield2\n:\nString\n,\n}\nlet\ninstance =\nMyStruct\n{\nfield1\n:\n10\n,\nfield2\n:\nString\n::\nfrom\n(\n\"Hello, World!\"\n)\n,\n}\n;\nlet\nintermediate = instance\n.\nserialize\n(\n)\n.\nunwrap\n(\n)\n;\nlet\njson = serde_json\n::\nto_string_pretty\n(\n&\nintermediate\n)\n.\nunwrap\n(\n)\n;",
+                "children": []
+              },
+              {
+                "heading": "De-serialization",
+                "text": "Here is a brief example of de-serialization from JSON:\nuse\nserde_lite\n::\nDeserialize\n;\nuse\nserde_lite_derive\n::\nDeserialize\n;\n#\n[\nderive\n(\nDeserialize\n)\n]\nstruct\nMyStruct\n{\nfield1\n:\nu32\n,\nfield2\n:\nString\n,\n}\nlet\ninput =\nr#\"{\n\"field1\": 10,\n\"field2\": \"Hello, World!\"\n}\"#\n;\nlet\nintermediate = serde_json\n::\nfrom_str\n(\ninput\n)\n.\nunwrap\n(\n)\n;\nlet\ninstance =\nMyStruct\n::\ndeserialize\n(\n&\nintermediate\n)\n.\nunwrap\n(\n)\n;",
+                "children": []
+              },
+              {
+                "heading": "Update",
+                "text": "Wait. What? Yes, this library has one more cool feature - partial updates.\nSimply derive\nUpdate\nthe same way you'd derive\nDeserialize\n. Example:\nuse\nserde_lite\n::\n{\nDeserialize\n,\nUpdate\n}\n;\nuse\nserde_lite_derive\n::\n{\nDeserialize\n,\nUpdate\n}\n;\n#\n[\nderive\n(\nDeserialize\n,\nUpdate\n)\n]\nstruct\nMyStruct\n{\nfield1\n:\nu32\n,\nfield2\n:\nString\n,\n}\nlet\nmut\ninstance =\nMyStruct\n{\nfield1\n:\n10\n,\nfield2\n:\nString\n::\nnew\n(\n)\n,\n}\n;\nlet\ninput =\nr#\"{\n\"field2\": \"Hello, World!\"\n}\"#\n;\nlet\nintermediate = serde_json\n::\nfrom_str\n(\ninput\n)\n.\nunwrap\n(\n)\n;\nlet\ninstance = instance\n.\nupdate\n(\n&\nintermediate\n)\n.\nunwrap\n(\n)\n;\nThis feature can be especially handy if you're constructing a REST API and\nyou'd like to allow partial updates of your data.",
+                "children": []
+              },
+              {
+                "heading": "Supported attributes",
+                "text": "The library does not support all Serde attributes at this moment. Patches are\ndefinitely welcome. These attributes are supported:\nContainer attributes:\ntag\ncontent\nField attributes:\ndefault\nflatten\nrename\nskip\nskip_serializing\nskip_serializing_if\nskip_deserializing\nserialize_with\ndeserialize_with\nupdate_with\nEnum variant attributes:\nrename",
+                "children": []
+              }
+            ]
+          },
+          {
+            "heading": "When to use this library",
+            "text": "You can use this library whenever you need to serialize/de-serialize some\ncomplex types and the size of the resulting binary matters to you. It is also\nvery useful in projects where you need to be able to partially update your data\nbased on the user input (e.g. REST APIs).",
+            "children": []
+          },
+          {
+            "heading": "When to avoid using this library",
+            "text": "If the only thing that matters to you is the runtime performance, you probably\ndon't want to use this library. It also isn't very useful for\nserializing/de-serializing huge amount of data because it needs to be\ntransformed into the intermediate representation at first. And, finally, this\nlibrary can only be used with self-describing formats like JSON.",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": "A general-purpose serialization/de-serialization library",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-06-26T14:16:27.000Z"
+  }
+}

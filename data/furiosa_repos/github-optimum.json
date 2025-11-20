@@ -1,0 +1,134 @@
+{
+  "name": "optimum",
+  "url": "https://github.com/furiosa-ai/optimum",
+  "visibility": "public",
+  "readme": {
+    "title": "(FuriosaAI) How to use optimum.litmus",
+    "sections": [
+      {
+        "heading": "(FuriosaAI) How to use optimum.litmus",
+        "text": "",
+        "children": [
+          {
+            "heading": "Prerequisites",
+            "text": "furiosa-libcompiler >= 0.9.0(See for detailed instructions,\nhttps://www.notion.so/furiosa/K8s-Pod-SDK-27680e93c9e9484e9b6f49ad11989c82?pvs=4\n)",
+            "children": []
+          },
+          {
+            "heading": "Installation",
+            "text": "$ python3 -m venv env\n$ . env/bin/activate\n$ pip3 install --upgrade pip setuptools wheel\n$ pip3 install -e .",
+            "children": []
+          },
+          {
+            "heading": "Usage",
+            "text": "",
+            "children": [
+              {
+                "heading": "GPT-Neo",
+                "text": "https://huggingface.co/docs/transformers/model_doc/gpt_neo\n$ python3 -m optimum.litmus.nlp.gpt-neo --help\nusage: FuriosaAI litmus GPT Neo using HF Optimum API. [-h] [--model-size {125m,1.3b,2.7b}] [--batch-size BATCH_SIZE] [--input-len INPUT_LEN] [--gen-step GEN_STEP]\n                                                      [--task {text-generation-with-past}]\n                                                      output_dir\n\npositional arguments:\n  output_dir            path to directory to save outputs\n\noptional arguments:\n  -h, --help            show this help message and exit\n  --model-size {125m,1.3b,2.7b}, -s {125m,1.3b,2.7b}\n                        available model sizes\n  --batch-size BATCH_SIZE, -b BATCH_SIZE\n                        Batch size for model inputs\n  --input-len INPUT_LEN\n                        Length of input prommpt\n  --gen-step GEN_STEP   Generation step to simplify onnx graph\n  --task {text-generation-with-past}\n                        Task to export model for",
+                "children": []
+              },
+              {
+                "heading": "GPT2",
+                "text": "https://huggingface.co/docs/transformers/model_doc/gpt2\n$ python3 -m optimum.litmus.nlp.gpt2 --help\nusage: FuriosaAI litmus GPT2 using HF Optimum API. [-h] [--model-size {s,m,l,xl}] [--batch-size BATCH_SIZE] [--input-len INPUT_LEN] [--gen-step GEN_STEP] [--task {text-generation-with-past}]\n                                                   output_dir\n\npositional arguments:\n  output_dir            path to directory to save outputs\n\noptional arguments:\n  -h, --help            show this help message and exit\n  --model-size {s,m,l,xl}, -s {s,m,l,xl}\n                        available model sizes\n  --batch-size BATCH_SIZE, -b BATCH_SIZE\n                        Batch size for model inputs\n  --input-len INPUT_LEN\n                        Length of input prommpt\n  --gen-step GEN_STEP   Generation step to simplify onnx graph\n  --task {text-generation-with-past}\n                        Task to export model for",
+                "children": []
+              },
+              {
+                "heading": "OPT",
+                "text": "https://huggingface.co/docs/transformers/model_doc/opt\nusage: FuriosaAI litmus OPT using HF Optimum API. [-h] [--model-size {125m,350m,1.3b,2.7b,6.7b,30b,66b}] [--batch-size BATCH_SIZE] [--input-len INPUT_LEN] [--gen-step GEN_STEP]\n                                                  [--task {text-generation-with-past}]\n                                                  output_dir\n\npositional arguments:\n  output_dir            path to directory to save outputs\n\noptions:\n  -h, --help            show this help message and exit\n  --model-size {125m,350m,1.3b,2.7b,6.7b,30b,66b}, -s {125m,350m,1.3b,2.7b,6.7b,30b,66b}\n                        available model sizes\n  --batch-size BATCH_SIZE, -b BATCH_SIZE\n                        Batch size for model inputs\n  --input-len INPUT_LEN\n                        Length of input prommpt\n  --gen-step GEN_STEP   Generation step to simplify onnx graph\n  --task {text-generation-with-past}\n                        Task to export model for",
+                "children": []
+              },
+              {
+                "heading": "LLaMA",
+                "text": "https://huggingface.co/docs/transformers/model_doc/llama\n$ python3 -m optimum.litmus.nlp.llama --help\nusage: FuriosaAI litmus LLaMA using HF Optimum API. [-h] [--model-size {7b,13b,30b,65b}] [--batch-size BATCH_SIZE] [--input-len INPUT_LEN] [--gen-step GEN_STEP]\n                                                    [--task {text-generation-with-past}]\n                                                    output_dir\n\npositional arguments:\n  output_dir            path to directory to save outputs\n\noptions:\n  -h, --help            show this help message and exit\n  --model-size {7b,13b,30b,65b}, -s {7b,13b,30b,65b}\n                        available model sizes\n  --batch-size BATCH_SIZE, -b BATCH_SIZE\n                        Batch size for model inputs\n  --input-len INPUT_LEN\n                        Length of input prommpt\n  --gen-step GEN_STEP   Generation step to simplify onnx graph\n  --task {text-generation-with-past}\n                        Task to export model for",
+                "children": []
+              },
+              {
+                "heading": "toy model",
+                "text": "(optimum) root@linux-warboy-jasonzcnl2:~/workspace/optimum# python3 -m optimum.litmus.nlp.toy_model --help\nusage: FuriosaAI litmus exporting toy model(w/o pretrained weights) using HF Optimum API. [-h] [--config-path CONFIG_PATH] [--batch-size BATCH_SIZE]\n                                                                                          [--input-len INPUT_LEN] [--gen-step GEN_STEP]\n                                                                                          [--task {text-generation-with-past}]\n                                                                                          output_dir\n\npositional arguments:\n  output_dir            path to directory to save outputs\n\noptions:\n  -h, --help            show this help message and exit\n  --config-path CONFIG_PATH, -c CONFIG_PATH\n                        path to model config saved in json format\n  --batch-size BATCH_SIZE, -b BATCH_SIZE\n                        Batch size for model inputs\n  --input-len INPUT_LEN\n                        Length of input prommpt\n  --gen-step GEN_STEP   Generation step to simplify onnx graph\n  --task {text-generation-with-past}\n                        Task to export model for",
+                "children": []
+              },
+              {
+                "heading": "Stable Diffusion",
+                "text": "https://huggingface.co/docs/diffusers/api/pipelines/stable_diffusion/text2img\nhttps://huggingface.co/docs/diffusers/api/pipelines/stable_diffusion/stable_diffusion_2\n$ python3 -m optimum.litmus.multimodal.stable-diffusion -h\nusage: FuriosaAI litmus Stable Diffusion using HF Optimum API. [-h] --version {1.5,2.1} [--batch-size BATCH_SIZE] [--latent_shape latent_height latent_width] [--input-len INPUT_LEN] output_dir\n\npositional arguments:\n  output_dir            path to directory to save outputs\n\noptions:\n  -h, --help            show this help message and exit\n  --version {1.5,2.1}, -v {1.5,2.1}\n                        Available model versions\n  --batch-size BATCH_SIZE, -b BATCH_SIZE\n                        Batch size for latent and prompt inputs\n  --latent_shape latent_height latent_width\n                        Shape of latent input. Note it is 1/8 of output image sizes\n  --input-len INPUT_LEN\n                        Length of input prompt",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "heading": "Hugging Face Optimum",
+        "text": "🤗 Optimum is an extension of 🤗 Transformers and Diffusers, providing a set of optimization tools enabling maximum efficiency to train and run models on targeted hardware, while keeping things easy to use.",
+        "children": [
+          {
+            "heading": "Installation",
+            "text": "🤗 Optimum can be installed using\npip\nas follows:\npython -m pip install optimum\nIf you'd like to use the accelerator-specific features of 🤗 Optimum, you can install the required dependencies according to the table below:\nAccelerator\nInstallation\nONNX Runtime\npython -m pip install optimum[onnxruntime]\nIntel Neural Compressor\npython -m pip install optimum[neural-compressor]\nOpenVINO\npython -m pip install optimum[openvino,nncf]\nHabana Gaudi Processor (HPU)\npython -m pip install optimum[habana]\nTo install from source:\npython -m pip install git+https://github.com/huggingface/optimum.git\nFor the accelerator-specific features, append\n#egg=optimum[accelerator_type]\nto the above command:\npython -m pip install git+https://github.com/huggingface/optimum.git#egg=optimum[onnxruntime]",
+            "children": []
+          },
+          {
+            "heading": "Accelerated Inference",
+            "text": "🤗 Optimum provides multiple tools to export and run optimized models on various ecosystems:\nONNX\n/\nONNX Runtime\nTensorFlow Lite\nOpenVINO\nHabana first-gen Gaudi / Gaudi2, more details\nhere\nThe\nexport\nand optimizations can be done both programmatically and with a command line.",
+            "children": [
+              {
+                "heading": "Features summary",
+                "text": "Features\nONNX Runtime\nNeural Compressor\nOpenVINO\nTensorFlow Lite\nGraph optimization\n✔️\nN/A\n✔️\nN/A\nPost-training dynamic quantization\n✔️\n✔️\nN/A\n✔️\nPost-training static quantization\n✔️\n✔️\n✔️\n✔️\nQuantization Aware Training (QAT)\nN/A\n✔️\n✔️\nN/A\nFP16 (half precision)\n✔️\nN/A\n✔️\n✔️\nPruning\nN/A\n✔️\n✔️\nN/A\nKnowledge Distillation\nN/A\n✔️\n✔️\nN/A",
+                "children": []
+              },
+              {
+                "heading": "OpenVINO",
+                "text": "This requires to install the OpenVINO extra by doing\npip install optimum[openvino,nncf]\nTo load a model and run inference with OpenVINO Runtime, you can just replace your\nAutoModelForXxx\nclass with the corresponding\nOVModelForXxx\nclass. To load a PyTorch checkpoint and convert it to the OpenVINO format on-the-fly, you can set\nexport=True\nwhen loading your model.\n-\nfrom transformers import AutoModelForSequenceClassification\n+\nfrom optimum.intel import OVModelForSequenceClassification\nfrom transformers import AutoTokenizer, pipeline\n\n  model_id = \"distilbert-base-uncased-finetuned-sst-2-english\"\n  tokenizer = AutoTokenizer.from_pretrained(model_id)\n-\nmodel = AutoModelForSequenceClassification.from_pretrained(model_id)\n+\nmodel = OVModelForSequenceClassification.from_pretrained(model_id, export=True)\nmodel.save_pretrained(\"./distilbert\")\n\n  classifier = pipeline(\"text-classification\", model=model, tokenizer=tokenizer)\n  results = classifier(\"He's a dreadful magician.\")\nYou can find more examples in the\ndocumentation\nand in the\nexamples\n.",
+                "children": []
+              },
+              {
+                "heading": "Neural Compressor",
+                "text": "This requires to install the Neural Compressor extra by doing\npip install optimum[neural-compressor]\nDynamic quantization can be applied on your model:\noptimum-cli inc quantize --model distilbert-base-cased-distilled-squad --output ./quantized_distilbert\nTo load a model quantized with Intel Neural Compressor, hosted locally or on the 🤗 hub, you can do as follows :\nfrom\noptimum\n.\nintel\nimport\nINCModelForSequenceClassification\nmodel_id\n=\n\"Intel/distilbert-base-uncased-finetuned-sst-2-english-int8-dynamic\"\nmodel\n=\nINCModelForSequenceClassification\n.\nfrom_pretrained\n(\nmodel_id\n)\nYou can find more examples in the\ndocumentation\nand in the\nexamples\n.",
+                "children": []
+              },
+              {
+                "heading": "ONNX + ONNX Runtime",
+                "text": "This requires to install the ONNX Runtime extra by doing\npip install optimum[exporters,onnxruntime]\nIt is possible to export 🤗 Transformers models to the\nONNX\nformat and perform graph optimization as well as quantization easily:\noptimum-cli export onnx -m deepset/roberta-base-squad2 --optimize O2 roberta_base_qa_onnx\nThe model can then be quantized using\nonnxruntime\n:\noptimum-cli onnxruntime quantize \\\n  --avx512 \\\n  --onnx_model roberta_base_qa_onnx \\\n  -o quantized_roberta_base_qa_onnx\nThese commands will export\ndeepset/roberta-base-squad2\nand perform\nO2 graph optimization\non the exported model, and finally quantize it with the\navx512 configuration\n.\nFor more information on the ONNX export, please check the\ndocumentation\n.",
+                "children": [
+                  {
+                    "heading": "Run the exported model using ONNX Runtime",
+                    "text": "Once the model is exported to the ONNX format, we provide Python classes enabling you to run the exported ONNX model in a seemless manner using\nONNX Runtime\nin the backend:\n-\nfrom transformers import AutoModelForQuestionAnswering\n+\nfrom optimum.onnxruntime import ORTModelForQuestionAnswering\nfrom transformers import AutoTokenizer, pipeline\n\n  model_id = \"deepset/roberta-base-squad2\"\n  tokenizer = AutoTokenizer.from_pretrained(model_id)\n-\nmodel = AutoModelForQuestionAnswering.from_pretrained(model_id)\n+\nmodel = ORTModelForQuestionAnswering.from_pretrained(\"roberta_base_qa_onnx\")\nqa_pipe = pipeline(\"question-answering\", model=model, tokenizer=tokenizer)\n  question = \"What's Optimum?\"\n  context = \"Optimum is an awesome library everyone should use!\"\n  results = qa_pipe(question=question, context=context)\nMore details on how to run ONNX models with\nORTModelForXXX\nclasses\nhere\n.",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "heading": "TensorFlow Lite",
+                "text": "This requires to install the Exporters extra by doing\npip install optimum[exporters-tf]\nJust as for ONNX, it is possible to export models to\nTensorFlow Lite\nand quantize them:\noptimum-cli export tflite \\\n  -m deepset/roberta-base-squad2 \\\n  --sequence_length 384  \\\n  --quantize int8-dynamic roberta_tflite_model",
+                "children": []
+              }
+            ]
+          },
+          {
+            "heading": "Accelerated training",
+            "text": "🤗 Optimum provides wrappers around the original 🤗 Transformers\nTrainer\nto enable training on powerful hardware easily.\nWe support many providers:\nHabana's Gaudi processors\nONNX Runtime (optimized for GPUs)",
+            "children": [
+              {
+                "heading": "Habana",
+                "text": "This requires to install the Habana extra by doing\npip install optimum[habana]\n-\nfrom transformers import Trainer, TrainingArguments\n+\nfrom optimum.habana import GaudiTrainer, GaudiTrainingArguments\n# Download a pretrained model from the Hub\n  model = AutoModelForXxx.from_pretrained(\"bert-base-uncased\")\n\n  # Define the training arguments\n-\ntraining_args = TrainingArguments(\n+\ntraining_args = GaudiTrainingArguments(\noutput_dir=\"path/to/save/folder/\",\n+\nuse_habana=True,\n+\nuse_lazy_mode=True,\n+\ngaudi_config_name=\"Habana/bert-base-uncased\",\n...\n  )\n\n  # Initialize the trainer\n-\ntrainer = Trainer(\n+\ntrainer = GaudiTrainer(\nmodel=model,\n      args=training_args,\n      train_dataset=train_dataset,\n      ...\n  )\n\n  # Use Habana Gaudi processor for training!\n  trainer.train()\nYou can find more examples in the\ndocumentation\nand in the\nexamples\n.",
+                "children": []
+              },
+              {
+                "heading": "ONNX Runtime",
+                "text": "-\nfrom transformers import Trainer, TrainingArguments\n+\nfrom optimum.onnxruntime import ORTTrainer, ORTTrainingArguments\n# Download a pretrained model from the Hub\n  model = AutoModelForSequenceClassification.from_pretrained(\"bert-base-uncased\")\n\n  # Define the training arguments\n-\ntraining_args = TrainingArguments(\n+\ntraining_args = ORTTrainingArguments(\noutput_dir=\"path/to/save/folder/\",\n      optim=\"adamw_ort_fused\",\n      ...\n  )\n\n  # Create a ONNX Runtime Trainer\n-\ntrainer = Trainer(\n+\ntrainer = ORTTrainer(\nmodel=model,\n      args=training_args,\n      train_dataset=train_dataset,\n+\nfeature=\"sequence-classification\", # The model type to export to ONNX\n...\n  )\n\n  # Use ONNX Runtime for training!\n  trainer.train()\nYou can find more examples in the\ndocumentation\nand in the\nexamples\n.",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": "🚀 Accelerate training and inference of 🤗 Transformers and 🤗 Diffusers with easy to use hardware optimization tools",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-11-14T00:40:49.866510Z"
+  }
+}

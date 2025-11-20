@@ -1,0 +1,45 @@
+{
+  "name": "helm-charts",
+  "url": "https://github.com/furiosa-ai/helm-charts",
+  "visibility": "public",
+  "readme": {
+    "title": "FuriosaAI Cloud Native Toolkit Helm Charts",
+    "sections": [
+      {
+        "heading": "FuriosaAI Cloud Native Toolkit Helm Charts",
+        "text": "",
+        "children": [
+          {
+            "heading": "Usage",
+            "text": "Helm\nmust be installed to use the charts.\nPlease refer to Helm's\ndocumentation\nto get started.\nhelm repo add furiosa https://furiosa-ai.github.io/helm-charts\nYou can then run\nhelm search repo furiosa\nto see the charts.",
+            "children": []
+          },
+          {
+            "heading": "Known Issues",
+            "text": "",
+            "children": [
+              {
+                "heading": "furiosa-feature-discovery",
+                "text": "If you’re using a Kubernetes cluster with a version lower than v1.24, installing the furiosa-feature-discovery Helm chart may fail due to a resource version issue with its dependency chart node-feature-discovery.\nTo work around this, manually install an older version of node-feature-discovery on your cluster.\nThen, in the\nvalues.yaml\nfile of the furiosa-feature-discovery chart, set\nnode-feature-discovery.enabled\nto\nfalse\nto prevent automatic installation.",
+                "children": []
+              }
+            ]
+          },
+          {
+            "heading": "License",
+            "text": "Copyright 2023 FuriosaAI, Inc.\n\nLicensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": null,
+    "license": null,
+    "stars": 2,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-08-12T07:32:14Z"
+  }
+}

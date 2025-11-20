@@ -1,0 +1,39 @@
+{
+  "name": "rusty-fork",
+  "url": "https://github.com/furiosa-ai/rusty-fork",
+  "visibility": "public",
+  "readme": {
+    "title": "rusty-fork",
+    "sections": [
+      {
+        "heading": "rusty-fork",
+        "text": "Rusty-fork provides a way to \"fork\" unit tests into separate processes.\nThere are a number of reasons to want to run some tests in isolated\nprocesses:\nWhen tests share a process, if any test causes the process to abort,\nsegfault, overflow the stack, etc., the entire test runner process dies. If\nthe test is in a subprocess, only the subprocess dies and the test runner\nsimply fails the test.\nIsolating a test to a subprocess makes it possible to add a timeout to\nthe test and forcibly terminate it and produce a normal test failure.\nTests which need to interact with some inherently global property, such\nas the current working directory, can do so without interfering with other\ntests.\nThis crate itself provides two things:\nThe\nrusty_fork_test!\nmacro, which is a\nsimple way to wrap standard Rust tests to be run in subprocesses with\noptional timeouts.\nThe\nfork\nfunction which can be used as a building block\nto make other types of process isolation strategies.",
+        "children": [
+          {
+            "heading": "Quick Start",
+            "text": "If you just want to run normal Rust tests in isolated processes, getting\nstarted is pretty quick.\nIn\nCargo.toml\n, add\n[\ndev-dependencies\n]\nrusty-fork\n=\n\"\n0.2.1\n\"\nand to your crate root add\n#\n[\nmacro_use\n]\nextern\ncrate\nrusty_fork\n;\nThen, you can simply wrap any test(s) to be isolated with the\nrusty_fork_test!\nmacro.\n#\n[\nmacro_use\n]\nextern\ncrate\nrusty_fork\n;\nrusty_fork_test\n!\n{\n#\n[\ntest\n]\nfn\nmy_test\n(\n)\n{\nassert_eq!\n(\n2\n,\n1\n+\n1\n)\n;\n}\n// more tests...\n}\nFor more advanced usage, have a look at the\nfork\nfunction.",
+            "children": []
+          },
+          {
+            "heading": "How rusty-fork works",
+            "text": "Unix-style process forking isn't really viable within the standard Rust\ntest environment for a number of reasons.\nWhile true process forking can be done on Windows, it's neither fast nor\nreliable.\nThe Rust test environment is multi-threaded, so attempting to do anything\nnon-trivial after a process fork would result in undefined behaviour.\nRusty-fork instead works by\nspawning\na fresh instance of the current\nprocess, after adjusting the command-line to ensure that only the desired\ntest is entered. Some additional coordination establishes the parent/child\nbranches and (not quite seamlessly) integrates the child's output with the\ntest output capture system.\nCoordination between the processes is performed via environment variables,\nsince there is otherwise no way to pass parameters to a test.\nSince it needs to spawn new copies of the test runner executable,\nrusty-fork does need to know about the meaning of every flag passed by the\nuser. If any unknown flags are encountered, forking will fail. Please do\nnot hesitate to file\nissues\nif rusty-fork fails\nto recognise any valid flags passed to the test runner.\nIt is possible to inform rusty-fork of new flags without patching by\nsetting environment variables. For example, if a new\n--frob-widgets\nflag\nwere added to the test runner, you could set\nRUSTY_FORK_FLAG_FROB_WIDGETS\nto one of the following:\npass\n— Pass the flag (just the flag) to the child process\npass-arg\n— Pass the flag and its following argument to the child process\ndrop\n— Don't pass the flag to the child process\ndrop-arg\n— Don't pass the flag to the child process, and ignore whatever\nargument follows.\nIn general, arguments that affect which tests are run should be dropped,\nand others should be passed.",
+            "children": []
+          },
+          {
+            "heading": "Contribution",
+            "text": "Unless you explicitly state otherwise, any contribution intentionally submitted\nfor inclusion in the work by you, as defined in the Apache-2.0 license, shall\nbe dual licensed as above, without any additional terms or conditions.",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": "Run Rust tests in isolated subprocesses",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2019-04-10T04:13:41.000Z"
+  }
+}

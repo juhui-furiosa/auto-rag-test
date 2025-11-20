@@ -1,0 +1,100 @@
+{
+  "name": "transformers_llama3",
+  "url": "https://github.com/furiosa-ai/transformers_llama3",
+  "visibility": "public",
+  "readme": {
+    "title": "(no title)",
+    "sections": [
+      {
+        "heading": "English | 简体中文 | 繁體中文 | 한국어 | Español | 日本語 | हिन्दी | Русский | Рortuguês | తెలుగు | Français | Deutsch | Tiếng Việt |",
+        "text": "",
+        "children": []
+      },
+      {
+        "heading": "State-of-the-art Machine Learning for JAX, PyTorch and TensorFlow",
+        "text": "",
+        "children": []
+      },
+      {
+        "heading": "",
+        "text": "🤗 Transformers provides thousands of pretrained models to perform tasks on different modalities such as text, vision, and audio.\nThese models can be applied on:\n📝 Text, for tasks like text classification, information extraction, question answering, summarization, translation, and text generation, in over 100 languages.\n🖼️ Images, for tasks like image classification, object detection, and segmentation.\n🗣️ Audio, for tasks like speech recognition and audio classification.\nTransformer models can also perform tasks on\nseveral modalities combined\n, such as table question answering, optical character recognition, information extraction from scanned documents, video classification, and visual question answering.\n🤗 Transformers provides APIs to quickly download and use those pretrained models on a given text, fine-tune them on your own datasets and then share them with the community on our\nmodel hub\n. At the same time, each python module defining an architecture is fully standalone and can be modified to enable quick research experiments.\n🤗 Transformers is backed by the three most popular deep learning libraries —\nJax\n,\nPyTorch\nand\nTensorFlow\n— with a seamless integration between them. It's straightforward to train your models with one before loading them for inference with the other.",
+        "children": []
+      },
+      {
+        "heading": "Online demos",
+        "text": "You can test most of our models directly on their pages from the\nmodel hub\n. We also offer\nprivate model hosting, versioning, & an inference API\nfor public and private models.\nHere are a few examples:\nIn Natural Language Processing:\nMasked word completion with BERT\nNamed Entity Recognition with Electra\nText generation with Mistral\nNatural Language Inference with RoBERTa\nSummarization with BART\nQuestion answering with DistilBERT\nTranslation with T5\nIn Computer Vision:\nImage classification with ViT\nObject Detection with DETR\nSemantic Segmentation with SegFormer\nPanoptic Segmentation with Mask2Former\nDepth Estimation with Depth Anything\nVideo Classification with VideoMAE\nUniversal Segmentation with OneFormer\nIn Audio:\nAutomatic Speech Recognition with Whisper\nKeyword Spotting with Wav2Vec2\nAudio Classification with Audio Spectrogram Transformer\nIn Multimodal tasks:\nTable Question Answering with TAPAS\nVisual Question Answering with ViLT\nImage captioning with LLaVa\nZero-shot Image Classification with SigLIP\nDocument Question Answering with LayoutLM\nZero-shot Video Classification with X-CLIP\nZero-shot Object Detection with OWLv2\nZero-shot Image Segmentation with CLIPSeg\nAutomatic Mask Generation with SAM",
+        "children": []
+      },
+      {
+        "heading": "100 projects using Transformers",
+        "text": "Transformers is more than a toolkit to use pretrained models: it's a community of projects built around it and the\nHugging Face Hub. We want Transformers to enable developers, researchers, students, professors, engineers, and anyone\nelse to build their dream projects.\nIn order to celebrate the 100,000 stars of transformers, we have decided to put the spotlight on the\ncommunity, and we have created the\nawesome-transformers\npage which lists 100\nincredible projects built in the vicinity of transformers.\nIf you own or use a project that you believe should be part of the list, please open a PR to add it!",
+        "children": []
+      },
+      {
+        "heading": "If you are looking for custom support from the Hugging Face team",
+        "text": "",
+        "children": []
+      },
+      {
+        "heading": "Quick tour",
+        "text": "To immediately use a model on a given input (text, image, audio, ...), we provide the\npipeline\nAPI. Pipelines group together a pretrained model with the preprocessing that was used during that model's training. Here is how to quickly use a pipeline to classify positive versus negative texts:\n>\n>>\nfrom\ntransformers\nimport\npipeline\n# Allocate a pipeline for sentiment-analysis\n>\n>>\nclassifier\n=\npipeline\n(\n'sentiment-analysis'\n)\n>\n>>\nclassifier\n(\n'We are very happy to introduce pipeline to the transformers repository.'\n)\n[{\n'label'\n:\n'POSITIVE'\n,\n'score'\n:\n0.9996980428695679\n}]\nThe second line of code downloads and caches the pretrained model used by the pipeline, while the third evaluates it on the given text. Here, the answer is \"positive\" with a confidence of 99.97%.\nMany tasks have a pre-trained\npipeline\nready to go, in NLP but also in computer vision and speech. For example, we can easily extract detected objects in an image:\n>\n>>\nimport\nrequests\n>\n>>\nfrom\nPIL\nimport\nImage\n>\n>>\nfrom\ntransformers\nimport\npipeline\n# Download an image with cute cats\n>\n>>\nurl\n=\n\"https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/coco_sample.png\"\n>\n>>\nimage_data\n=\nrequests\n.\nget\n(\nurl\n,\nstream\n=\nTrue\n).\nraw\n>\n>>\nimage\n=\nImage\n.\nopen\n(\nimage_data\n)\n# Allocate a pipeline for object detection\n>\n>>\nobject_detector\n=\npipeline\n(\n'object-detection'\n)\n>\n>>\nobject_detector\n(\nimage\n)\n[{\n'score'\n:\n0.9982201457023621\n,\n'label'\n:\n'remote'\n,\n'box'\n: {\n'xmin'\n:\n40\n,\n'ymin'\n:\n70\n,\n'xmax'\n:\n175\n,\n'ymax'\n:\n117\n}},\n {\n'score'\n:\n0.9960021376609802\n,\n'label'\n:\n'remote'\n,\n'box'\n: {\n'xmin'\n:\n333\n,\n'ymin'\n:\n72\n,\n'xmax'\n:\n368\n,\n'ymax'\n:\n187\n}},\n {\n'score'\n:\n0.9954745173454285\n,\n'label'\n:\n'couch'\n,\n'box'\n: {\n'xmin'\n:\n0\n,\n'ymin'\n:\n1\n,\n'xmax'\n:\n639\n,\n'ymax'\n:\n473\n}},\n {\n'score'\n:\n0.9988006353378296\n,\n'label'\n:\n'cat'\n,\n'box'\n: {\n'xmin'\n:\n13\n,\n'ymin'\n:\n52\n,\n'xmax'\n:\n314\n,\n'ymax'\n:\n470\n}},\n {\n'score'\n:\n0.9986783862113953\n,\n'label'\n:\n'cat'\n,\n'box'\n: {\n'xmin'\n:\n345\n,\n'ymin'\n:\n23\n,\n'xmax'\n:\n640\n,\n'ymax'\n:\n368\n}}]\nHere, we get a list of objects detected in the image, with a box surrounding the object and a confidence score. Here is the original image on the left, with the predictions displayed on the right:",
+        "children": [
+          {
+            "heading": "",
+            "text": "You can learn more about the tasks supported by the\npipeline\nAPI in\nthis tutorial\n.\nIn addition to\npipeline\n, to download and use any of the pretrained models on your given task, all it takes is three lines of code. Here is the PyTorch version:\n>\n>>\nfrom\ntransformers\nimport\nAutoTokenizer\n,\nAutoModel\n>\n>>\ntokenizer\n=\nAutoTokenizer\n.\nfrom_pretrained\n(\n\"google-bert/bert-base-uncased\"\n)\n>\n>>\nmodel\n=\nAutoModel\n.\nfrom_pretrained\n(\n\"google-bert/bert-base-uncased\"\n)\n>\n>>\ninputs\n=\ntokenizer\n(\n\"Hello world!\"\n,\nreturn_tensors\n=\n\"pt\"\n)\n>\n>>\noutputs\n=\nmodel\n(\n**\ninputs\n)\nAnd here is the equivalent code for TensorFlow:\n>\n>>\nfrom\ntransformers\nimport\nAutoTokenizer\n,\nTFAutoModel\n>\n>>\ntokenizer\n=\nAutoTokenizer\n.\nfrom_pretrained\n(\n\"google-bert/bert-base-uncased\"\n)\n>\n>>\nmodel\n=\nTFAutoModel\n.\nfrom_pretrained\n(\n\"google-bert/bert-base-uncased\"\n)\n>\n>>\ninputs\n=\ntokenizer\n(\n\"Hello world!\"\n,\nreturn_tensors\n=\n\"tf\"\n)\n>\n>>\noutputs\n=\nmodel\n(\n**\ninputs\n)\nThe tokenizer is responsible for all the preprocessing the pretrained model expects and can be called directly on a single string (as in the above examples) or a list. It will output a dictionary that you can use in downstream code or simply directly pass to your model using the ** argument unpacking operator.\nThe model itself is a regular\nPytorch\nnn.Module\nor a\nTensorFlow\ntf.keras.Model\n(depending on your backend) which you can use as usual.\nThis tutorial\nexplains how to integrate such a model into a classic PyTorch or TensorFlow training loop, or how to use our\nTrainer\nAPI to quickly fine-tune on a new dataset.",
+            "children": []
+          }
+        ]
+      },
+      {
+        "heading": "Why should I use transformers?",
+        "text": "Easy-to-use state-of-the-art models:\nHigh performance on natural language understanding & generation, computer vision, and audio tasks.\nLow barrier to entry for educators and practitioners.\nFew user-facing abstractions with just three classes to learn.\nA unified API for using all our pretrained models.\nLower compute costs, smaller carbon footprint:\nResearchers can share trained models instead of always retraining.\nPractitioners can reduce compute time and production costs.\nDozens of architectures with over 400,000 pretrained models across all modalities.\nChoose the right framework for every part of a model's lifetime:\nTrain state-of-the-art models in 3 lines of code.\nMove a single model between TF2.0/PyTorch/JAX frameworks at will.\nSeamlessly pick the right framework for training, evaluation, and production.\nEasily customize a model or an example to your needs:\nWe provide examples for each architecture to reproduce the results published by its original authors.\nModel internals are exposed as consistently as possible.\nModel files can be used independently of the library for quick experiments.",
+        "children": []
+      },
+      {
+        "heading": "Why shouldn't I use transformers?",
+        "text": "This library is not a modular toolbox of building blocks for neural nets. The code in the model files is not refactored with additional abstractions on purpose, so that researchers can quickly iterate on each of the models without diving into additional abstractions/files.\nThe training API is not intended to work on any model but is optimized to work with the models provided by the library. For generic machine learning loops, you should use another library (possibly,\nAccelerate\n).\nWhile we strive to present as many use cases as possible, the scripts in our\nexamples folder\nare just that: examples. It is expected that they won't work out-of-the-box on your specific problem and that you will be required to change a few lines of code to adapt them to your needs.",
+        "children": []
+      },
+      {
+        "heading": "Installation",
+        "text": "",
+        "children": [
+          {
+            "heading": "With pip",
+            "text": "This repository is tested on Python 3.8+, Flax 0.4.1+, PyTorch 1.11+, and TensorFlow 2.6+.\nYou should install 🤗 Transformers in a\nvirtual environment\n. If you're unfamiliar with Python virtual environments, check out the\nuser guide\n.\nFirst, create a virtual environment with the version of Python you're going to use and activate it.\nThen, you will need to install at least one of Flax, PyTorch, or TensorFlow.\nPlease refer to\nTensorFlow installation page\n,\nPyTorch installation page\nand/or\nFlax\nand\nJax\ninstallation pages regarding the specific installation command for your platform.\nWhen one of those backends has been installed, 🤗 Transformers can be installed using pip as follows:\npip install transformers\nIf you'd like to play with the examples or need the bleeding edge of the code and can't wait for a new release, you must\ninstall the library from source\n.",
+            "children": []
+          },
+          {
+            "heading": "With conda",
+            "text": "🤗 Transformers can be installed using conda as follows:\nconda install conda-forge::transformers\nNOTE:\nInstalling\ntransformers\nfrom the\nhuggingface\nchannel is deprecated.\nFollow the installation pages of Flax, PyTorch or TensorFlow to see how to install them with conda.\nNOTE:\nOn Windows, you may be prompted to activate Developer Mode in order to benefit from caching. If this is not an option for you, please let us know in\nthis issue\n.",
+            "children": []
+          }
+        ]
+      },
+      {
+        "heading": "Model architectures",
+        "text": "All the model checkpoints\nprovided by 🤗 Transformers are seamlessly integrated from the huggingface.co\nmodel hub\n, where they are uploaded directly by\nusers\nand\norganizations\n.\nCurrent number of checkpoints:\n🤗 Transformers currently provides the following architectures: see\nhere\nfor a high-level summary of each them.\nTo check if each model has an implementation in Flax, PyTorch or TensorFlow, or has an associated tokenizer backed by the 🤗 Tokenizers library, refer to\nthis table\n.\nThese implementations have been tested on several datasets (see the example scripts) and should match the performance of the original implementations. You can find more details on performance in the Examples section of the\ndocumentation\n.",
+        "children": []
+      },
+      {
+        "heading": "Learn more",
+        "text": "Section\nDescription\nDocumentation\nFull API documentation and tutorials\nTask summary\nTasks supported by 🤗 Transformers\nPreprocessing tutorial\nUsing the\nTokenizer\nclass to prepare data for the models\nTraining and fine-tuning\nUsing the models provided by 🤗 Transformers in a PyTorch/TensorFlow training loop and the\nTrainer\nAPI\nQuick tour: Fine-tuning/usage scripts\nExample scripts for fine-tuning models on a wide range of tasks\nModel sharing and uploading\nUpload and share your fine-tuned models with the community",
+        "children": []
+      },
+      {
+        "heading": "Citation",
+        "text": "We now have a\npaper\nyou can cite for the 🤗 Transformers library:\n@inproceedings\n{\nwolf-etal-2020-transformers\n,\ntitle\n=\n\"\nTransformers: State-of-the-Art Natural Language Processing\n\"\n,\nauthor\n=\n\"\nThomas Wolf and Lysandre Debut and Victor Sanh and Julien Chaumond and Clement Delangue and Anthony Moi and Pierric Cistac and Tim Rault and Rémi Louf and Morgan Funtowicz and Joe Davison and Sam Shleifer and Patrick von Platen and Clara Ma and Yacine Jernite and Julien Plu and Canwen Xu and Teven Le Scao and Sylvain Gugger and Mariama Drame and Quentin Lhoest and Alexander M. Rush\n\"\n,\nbooktitle\n=\n\"\nProceedings of the 2020 Conference on Empirical Methods in Natural Language Processing: System Demonstrations\n\"\n,\nmonth\n= oct,\nyear\n=\n\"\n2020\n\"\n,\naddress\n=\n\"\nOnline\n\"\n,\npublisher\n=\n\"\nAssociation for Computational Linguistics\n\"\n,\nurl\n=\n\"\nhttps://www.aclweb.org/anthology/2020.emnlp-demos.6\n\"\n,\npages\n=\n\"\n38--45\n\"\n}",
+        "children": []
+      }
+    ]
+  },
+  "metadata": {
+    "description": "🤗 Transformers: State-of-the-art Machine Learning for Pytorch, TensorFlow, and JAX.",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2024-07-30T14:49:14.000Z"
+  }
+}

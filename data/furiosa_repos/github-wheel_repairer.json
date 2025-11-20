@@ -1,0 +1,107 @@
+{
+  "name": "wheel_repairer",
+  "url": "https://github.com/furiosa-ai/wheel_repairer",
+  "visibility": "public",
+  "readme": {
+    "title": "WheelRepairer",
+    "sections": [
+      {
+        "heading": "WheelRepairer",
+        "text": "WheelRepairer is a Python tool designed to modify wheel files by removing specific libraries, updating RPATH, and replacing library names. It's particularly useful for customizing wheels built with Maturin or other tools, allowing for fine-grained control over the contents and dependencies of wheel files.",
+        "children": [
+          {
+            "heading": "Features",
+            "text": "Remove specific files from wheel based on glob patterns and regular expressions\nSet RPATH for .so files\nReplace library names using glob patterns or regular expressions\nApply different configurations for different .so files using wildcard patterns\nSupport for dry-run mode to preview changes without modifying files\nPreserve wheel integrity while modifying its contents\nDisplay dynamic state of .so files after patching, including RPATH, NEEDED libraries, and detailed dynamic section information",
+            "children": []
+          },
+          {
+            "heading": "Installation",
+            "text": "You can install WheelRepairer either directly using pip or by cloning the repository.",
+            "children": [
+              {
+                "heading": "Method 1: Direct installation using pip",
+                "text": "You can install WheelRepairer directly from the GitHub repository using pip:\npip install git+https://github.com/furiosa-ai/wheel_repairer.git",
+                "children": []
+              },
+              {
+                "heading": "Method 2: Cloning the repository",
+                "text": "Clone this repository:\ngit clone https://github.com/furiosa-ai/wheel_repairer.git\ncd\nwheel-repairer\nInstall the required Python dependencies:\npip install -r requirements.txt",
+                "children": []
+              },
+              {
+                "heading": "System Dependencies",
+                "text": "Regardless of the installation method, you need to install the following system dependencies:\npatchelf:\nOn Ubuntu/Debian:\nsudo apt-get install patchelf\nOn CentOS/RHEL:\nsudo yum install patchelf\nreadelf (part of binutils):\nOn Ubuntu/Debian:\nsudo apt-get install binutils\nOn CentOS/RHEL:\nsudo yum install binutils\nAfter installation, you can verify the installation by running:\nwheel_repairer --version\nThis should display the version of WheelRepairer if it's correctly installed.",
+                "children": []
+              }
+            ]
+          },
+          {
+            "heading": "Usage",
+            "text": "Basic usage:\npython wheel_repairer.py /path/to/your/wheel.whl --config config.json --dry-run",
+            "children": [
+              {
+                "heading": "Arguments",
+                "text": "wheel_path\n: Path to the wheel file to repair (required)\n-o, --output-dir\n: Output directory for repaired wheels (default: \"repaired_wheels\")\n--config\n: Path to JSON configuration file (required)\n--dry-run\n: Perform a dry run without making changes",
+                "children": []
+              }
+            ]
+          },
+          {
+            "heading": "Configuration File",
+            "text": "WheelRepairer supports both YAML and JSON configuration files. YAML is recommended for its better readability.",
+            "children": [
+              {
+                "heading": "YAML Configuration (config.yaml)",
+                "text": "exclude\n:\n  -\n\"\nlibtorch_cpu-*.so\n\"\n-\n\"\nlibgomp-*.so.1\n\"\n-\n\"\nlibc10-*.so\n\"\nexclude_regex\n:\n  -\n\"\n^furiosa\n\\\\\n.libs/libc10.*\n\\\\\n.so$\n\"\nso_configs\n:\n\"\nnative_runtime.*.so\n\"\n:\nrpath\n:\n\"\n$ORIGIN:$ORIGIN/../\n\"\nreplace\n:\n      -\n[\"libtorch_cpu*.so\", \"libtorch_cpu.so\"]\n-\n['r\"^(?P<path>.*?/)?(?P<basename>[^/-]+)(?:-(?P<hash>[0-9a-f]{8}))(?P<extension>\\.so(?:\\.[0-9]+)*)$\"', '\\g<path>\\g<basename>\\g<extension>']",
+                "children": []
+              },
+              {
+                "heading": "JSON Configuration (config.json)",
+                "text": "{\n\"exclude\"\n: [\n\"\nlibtorch_cpu-*.so\n\"\n,\n\"\nlibgomp-*.so.1\n\"\n,\n\"\nlibc10-*.so\n\"\n],\n\"exclude_regex\"\n: [\n\"\n^furiosa\n\\\\\n.libs/libc10.*\n\\\\\n.so$\n\"\n],\n\"so_configs\"\n: {\n\"native_runtime.*.so\"\n: {\n\"rpath\"\n:\n\"\n$ORIGIN/../furiosa.libs:$ORIGIN:$ORIGIN/../\n\"\n,\n\"replace\"\n: [\n        [\n\"\nlibtorch_cpu*.so\n\"\n,\n\"\nlibtorch_cpu.so\n\"\n],\n        [\n\"\nr\n\\\"\n^(?P<path>.*?/)?(?P<basename>[^/-]+)(?:-(?P<hash>[0-9a-f]{8}))?(?P<extension>\n\\\\\n.so(?:\n\\\\\n.[0-9]+)*)$\n\\\"\n\"\n,\n\"\n\\\\\ng<path>\n\\\\\ng<basename>\n\\\\\ng<extension>\n\"\n]\n      ]\n    }\n  }\n}\nConfiguration file structure:\nexclude\n: List of glob patterns for files to exclude\nexclude_regex\n: List of regex patterns for files to exclude\nso_configs\n: Configurations for .so files\nKeys are wildcard patterns that match .so file names\nrpath\n: Specifies the new RPATH to set for matching .so files\nreplace\n: A list of [pattern, replacement] pairs for library name replacements\nIf the pattern starts with\nr\"\nand ends with\n\"\n, it's treated as a regular expression\nOtherwise, it's treated as a glob pattern",
+                "children": []
+              }
+            ]
+          },
+          {
+            "heading": "Workflow",
+            "text": "WheelRepairer operates in three main steps:\nInitialization and File Inspection\nParse command line arguments and configuration file\nInitialize WheelRepairer with wheel_path, output_dir, and configurations\nInspect wheel contents\nIdentify files to exclude based on glob patterns and regex from the config\nInputs used:\nConfig file: 'exclude', 'exclude_regex'\nWheel Modification\nExtract wheel contents to temporary directory\nRemove excluded files (or simulate removal in dry-run mode)\nFor each .so file:\nFind matching configuration using wildcard patterns\nApply specific configurations (RPATH and replacements) if available (or simulate in dry-run mode)\nDisplay dynamic state of the .so file after patching, including RPATH, NEEDED libraries, and detailed dynamic section information\nUpdate RECORD file to reflect changes\nInputs used:\nConfig file: 'so_configs' (including 'rpath' and 'replace' sub-fields)\nWheel Reconstruction and Finalization\nCreate new wheel file with modified contents (skipped in dry-run mode)\nSave new wheel file to output directory (skipped in dry-run mode)\nClean up temporary files\nThis workflow ensures that the wheel file is systematically modified according to the specified parameters, maintaining its integrity while applying the desired changes. The dry-run option allows users to preview the changes without actually modifying the wheel file.\nConfig File Fields Used:\n'exclude': List of glob patterns for files to exclude (used in step 1)\n'exclude_regex': List of regex patterns for files to exclude (used in step 1)\n'so_configs': Configurations for .so files (used in step 2)\nKeys are wildcard patterns that match .so file names\n'rpath': Specifies the new RPATH to set for matching .so files\n'replace': A list of [pattern, replacement] pairs for library name replacements",
+            "children": []
+          },
+          {
+            "heading": "Requirements",
+            "text": "Python 3.6+\npatchelf\nreadelf (part of binutils)\nPyYAML",
+            "children": []
+          },
+          {
+            "heading": "License",
+            "text": "This project is licensed under the MIT License - see the\nLICENSE\nfile for details.",
+            "children": []
+          },
+          {
+            "heading": "Contributing",
+            "text": "Contributions are welcome! Please feel free to submit a Pull Request.",
+            "children": []
+          },
+          {
+            "heading": "Troubleshooting",
+            "text": "If you encounter any issues or errors, please check the following:\nEnsure that patchelf and readelf are installed and accessible in your system PATH.\nVerify that the wheel file you're trying to modify is accessible and not corrupted.\nCheck your configuration file for any syntax errors.\nIf problems persist, please open an issue on the GitHub repository with a detailed description of the problem, including any error messages and your command-line arguments.",
+            "children": []
+          },
+          {
+            "heading": "Acknowledgments",
+            "text": "This tool uses\npatchelf\nfor modifying ELF files and\nreadelf\nfor displaying dynamic information.\nInspired by the need to customize Python wheels for specific environments and dependencies.",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": null,
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-11-14T00:40:12.992785Z"
+  }
+}

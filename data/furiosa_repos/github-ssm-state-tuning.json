@@ -1,0 +1,50 @@
+{
+  "name": "ssm-state-tuning",
+  "url": "https://github.com/furiosa-ai/ssm-state-tuning",
+  "visibility": "public",
+  "readme": {
+    "title": "State-offset Tuning: State-based Parameter-Efficient Fine-Tuning for State Space Models",
+    "sections": [
+      {
+        "heading": "State-offset Tuning: State-based Parameter-Efficient Fine-Tuning for State Space Models",
+        "text": "",
+        "children": [
+          {
+            "heading": "Wonjun Kang 1,2* , Kevin Galim 2* , Yuchen Zeng 3* , Minjae Lee 2 , Hyung Il Koo 2,4 , Nam Ik Cho 1 1 Seoul National University , 2 FuriosaAI , 3 UW-Madison , 4 Ajou University",
+            "text": "Paper Link\n:\narXiv\nState Space Models (SSMs) have emerged as efficient alternatives to Transformers, mitigating their quadratic computational cost. However, the application of Parameter-Efficient Fine-Tuning (PEFT) methods to SSMs remains largely unexplored. In particular, prompt-based methods like Prompt Tuning and Prefix-Tuning, which are widely used in Transformers, do not perform well on SSMs. To address this, we propose\nstate-based methods\nas a superior alternative to prompt-based methods. This new family of methods naturally stems from the architectural characteristics of SSMs. State-based methods adjust state-related features directly instead of depending on external prompts. Furthermore, we introduce a novel state-based PEFT method:\nState-offset Tuning\n. At every timestep, our method directly affects the state at the current step, leading to more effective adaptation. Through extensive experiments across diverse datasets, we demonstrate the effectiveness of our method.",
+            "children": []
+          },
+          {
+            "heading": "Updates",
+            "text": "2025-05-15\nAccepted to ACL 2025 Main.\n2025-03-05\nCode released.",
+            "children": [
+              {
+                "heading": "Setup",
+                "text": "Install dependencies\n#\nCreate env\nconda create -n mamba-ssm python=3.10\nconda activate mamba-ssm\n#\nInstall pytorch, e.g.,\nconda install pytorch==1.13.1 torchvision==0.14.1 torchaudio==0.13.1 pytorch-cuda=11.6 -c pytorch -c nvidia\n\npip install\n\"\nnumpy<2\n\"\n#\nInstall mamba\npip install\n\"\ncausal-conv1d==1.2.0.post2\n\"\ncd\nsrc/mamba\npip install -e\n.\n--no-build-isolation\ncd\n-\n#\nInstall requirements\npip install -r requirements.txt\npip install peft==0.9.0 accelerate --no-deps\nFor Spider evaluation, download\nSpider\nand extract to \"data/xlangai_spider/spider\"",
+                "children": []
+              },
+              {
+                "heading": "Run",
+                "text": "#\ntrain\npython run_all.py train.py --device 0 --cfg cfg/final/exps/mamba-\n*\n/\n*\n/\n*\n.yaml",
+                "children": []
+              }
+            ]
+          },
+          {
+            "heading": "Citation",
+            "text": "@article{kang2025state,\n  title={State-offset Tuning: State-based Parameter-Efficient Fine-Tuning for State Space Models},\n  author={Kang, Wonjun and Galim, Kevin and Zeng, Yuchen and Lee, Minjae and Koo, Hyung Il and Cho, Nam Ik},\n  journal={arXiv preprint arXiv:2503.03499},\n  year={2025}\n}",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": "[ACL 2025 Main] Official Pytorch Implementation for \"State-offset Tuning: State-based Parameter-Efficient Fine-Tuning for State Space Models\"",
+    "license": null,
+    "stars": 8,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-06-09T11:39:27.000Z"
+  }
+}

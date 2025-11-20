@@ -1,0 +1,50 @@
+{
+  "name": "highs-sys",
+  "url": "https://github.com/furiosa-ai/highs-sys",
+  "visibility": "public",
+  "readme": {
+    "title": "highs-sys",
+    "sections": [
+      {
+        "heading": "highs-sys",
+        "text": "Rust binding for the HiGHS linear programming solver.\nSee\nhttp://highs.dev\n.\nThis repository contains the source for HiGHS itself as a submodule.\nYou should clone it with\ngit clone --recursive git@github.com:rust-or/highs-sys.git",
+        "children": [
+          {
+            "heading": "Dependencies",
+            "text": "This library depends on libstdc++ and libgomp at runtime.\nIn order to build, it requires cmake and a C++ compiler.",
+            "children": [
+              {
+                "heading": "Install on debian",
+                "text": "sudo apt-get install libstdc++6 libgomp1\n(These are probably already installed on your system)",
+                "children": []
+              },
+              {
+                "heading": "Install on MacOS",
+                "text": "brew install libomp\nHiGHS itself is built statically, so you don't need to install it\nseparately on the target system.",
+                "children": []
+              },
+              {
+                "heading": "Install on Windows",
+                "text": "You need to install\nCMake\nand\nClang (available in LLVM)\n.\nThey are available in\nwinget\n.\nwinget install\n-\ne\n--\nid Kitware.CMake\nwinget install\n-\ne\n--\nid LLVM.LLVM\nHiGHS itself is built statically, so you don't need to install it\nseparately on the target system.",
+                "children": []
+              }
+            ]
+          },
+          {
+            "heading": "Example",
+            "text": "// This illustrates the use of Highs_call, the simple C interface to\n// HiGHS. It's designed to solve the general LP problem\n//\n// Min c^Tx subject to L <= Ax <= U; l <= x <= u\n//\n// where A is a matrix with m rows and n columns\n//\n// The scalar n is numcol\n// The scalar m is numrow\n//\n// The vector c is colcost\n// The vector l is collower\n// The vector u is colupper\n// The vector L is rowlower\n// The vector U is rowupper\n//\n// The matrix A is represented in packed column-wise form: only its\n// nonzeros are stored\n//\n// * The number of nonzeros in A is nnz\n//\n// * The row indices of the nonnzeros in A are stored column-by-column\n// in aindex\n//\n// * The values of the nonnzeros in A are stored column-by-column in\n// avalue\n//\n// * The position in aindex/avalue of the index/value of the first\n// nonzero in each column is stored in astart\n//\n// Note that astart[0] must be zero\n//\n// After a successful call to Highs_call, the primal and dual\n// solution, and the simplex basis are returned as follows\n//\n// The vector x is colvalue\n// The vector Ax is rowvalue\n// The vector of dual values for the variables x is coldual\n// The vector of dual values for the variables Ax is rowdual\n// The basic/nonbasic status of the variables x is colbasisstatus\n// The basic/nonbasic status of the variables Ax is rowbasisstatus\n//\n// The status of the solution obtained is modelstatus\n//\n// To solve maximization problems, the values in c must be negated\n//\n// The use of Highs_call is illustrated for the LP\n//\n// Min    f  = 2x_0 + 3x_1\n// s.t.                x_1 <= 6\n//       10 <=  x_0 + 2x_1 <= 14\n//        8 <= 2x_0 +  x_1\n// 0 <= x_0 <= 3; 1 <= x_1\nfn\nmain\n(\n)\n{\nlet\nnumcol\n:\nusize\n=\n2\n;\nlet\nnumrow\n:\nusize\n=\n3\n;\nlet\nnnz\n:\nusize\n=\n5\n;\n// Define the column costs, lower bounds and upper bounds\nlet\ncolcost\n:\n&\nmut\n[\nf64\n]\n=\n&\nmut\n[\n2.0\n,\n3.0\n]\n;\nlet\ncollower\n:\n&\nmut\n[\nf64\n]\n=\n&\nmut\n[\n0.0\n,\n1.0\n]\n;\nlet\ncolupper\n:\n&\nmut\n[\nf64\n]\n=\n&\nmut\n[\n3.0\n,\n1.0e30\n]\n;\n// Define the row lower bounds and upper bounds\nlet\nrowlower\n:\n&\nmut\n[\nf64\n]\n=\n&\nmut\n[\n-\n1.0e30\n,\n10.0\n,\n8.0\n]\n;\nlet\nrowupper\n:\n&\nmut\n[\nf64\n]\n=\n&\nmut\n[\n6.0\n,\n14.0\n,\n1.0e30\n]\n;\n// Define the constraint matrix column-wise\nlet\nastart\n:\n&\nmut\n[\nc_int\n]\n=\n&\nmut\n[\n0\n,\n2\n]\n;\nlet\naindex\n:\n&\nmut\n[\nc_int\n]\n=\n&\nmut\n[\n1\n,\n2\n,\n0\n,\n1\n,\n2\n]\n;\nlet\navalue\n:\n&\nmut\n[\nf64\n]\n=\n&\nmut\n[\n1.0\n,\n2.0\n,\n1.0\n,\n2.0\n,\n1.0\n]\n;\nlet\ncolvalue\n:\n&\nmut\n[\nf64\n]\n=\n&\nmut\nvec\n!\n[\n0.\n;\nnumcol\n]\n;\nlet\ncoldual\n:\n&\nmut\n[\nf64\n]\n=\n&\nmut\nvec\n!\n[\n0.\n;\nnumcol\n]\n;\nlet\nrowvalue\n:\n&\nmut\n[\nf64\n]\n=\n&\nmut\nvec\n!\n[\n0.\n;\nnumrow\n]\n;\nlet\nrowdual\n:\n&\nmut\n[\nf64\n]\n=\n&\nmut\nvec\n!\n[\n0.\n;\nnumrow\n]\n;\nlet\ncolbasisstatus\n:\n&\nmut\n[\nc_int\n]\n=\n&\nmut\nvec\n!\n[\n0\n;\nnumcol\n]\n;\nlet\nrowbasisstatus\n:\n&\nmut\n[\nc_int\n]\n=\n&\nmut\nvec\n!\n[\n0\n;\nnumrow\n]\n;\nlet\nmodelstatus\n:\n&\nmut\nc_int\n=\n&\nmut\n0\n;\nlet\nstatus\n:\nc_int\n=\nunsafe\n{\nHighs_call\n(\nnumcol\n.\ntry_into\n(\n)\n.\nunwrap\n(\n)\n,\nnumrow\n.\ntry_into\n(\n)\n.\nunwrap\n(\n)\n,\nnnz\n.\ntry_into\n(\n)\n.\nunwrap\n(\n)\n,\ncolcost\n.\nas_mut_ptr\n(\n)\n,\ncollower\n.\nas_mut_ptr\n(\n)\n,\ncolupper\n.\nas_mut_ptr\n(\n)\n,\nrowlower\n.\nas_mut_ptr\n(\n)\n,\nrowupper\n.\nas_mut_ptr\n(\n)\n,\nastart\n.\nas_mut_ptr\n(\n)\n,\naindex\n.\nas_mut_ptr\n(\n)\n,\navalue\n.\nas_mut_ptr\n(\n)\n,\ncolvalue\n.\nas_mut_ptr\n(\n)\n,\ncoldual\n.\nas_mut_ptr\n(\n)\n,\nrowvalue\n.\nas_mut_ptr\n(\n)\n,\nrowdual\n.\nas_mut_ptr\n(\n)\n,\ncolbasisstatus\n.\nas_mut_ptr\n(\n)\n,\nrowbasisstatus\n.\nas_mut_ptr\n(\n)\n,\nmodelstatus\n)\n}\n;\nassert_eq\n!\n(\nstatus\n,\n0\n)\n;\n// The solution is x_0 = 2 and x_1 = 4\nassert_eq\n!\n(\ncolvalue\n,\n&\n[\n2.\n,\n4.\n]\n)\n;\n}\nFor more examples, have a look at\ntests\n.",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": "Rust binding for the HiGHS linear programming solver",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-11-14T00:41:17.180340Z"
+  }
+}

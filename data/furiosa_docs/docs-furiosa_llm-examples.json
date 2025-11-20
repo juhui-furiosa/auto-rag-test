@@ -1,0 +1,7 @@
+{
+  "title": "Examples",
+  "url": "https://developer.furiosa.ai/latest/en/furiosa_llm/examples.html",
+  "version": "2025.3.1",
+  "content": "# Examples[#](#examples \"Link to this heading\")\n\n* [Chat](examples/llm_chat.html)\n* [Chat with tools](examples/llm_chat_with_tools.html)",
+  "external_links": []
+}

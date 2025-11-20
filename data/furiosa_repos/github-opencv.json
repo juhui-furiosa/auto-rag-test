@@ -1,0 +1,34 @@
+{
+  "name": "opencv",
+  "url": "https://github.com/furiosa-ai/opencv",
+  "visibility": "public",
+  "readme": {
+    "title": "(no title)",
+    "sections": [
+      {
+        "heading": "OpenCV: Open Source Computer Vision Library",
+        "text": "",
+        "children": [
+          {
+            "heading": "Resources",
+            "text": "Homepage:\nhttp://opencv.org\nDocs:\nhttp://docs.opencv.org\nQ&A forum:\nhttp://answers.opencv.org\nIssue tracking:\nhttp://code.opencv.org",
+            "children": []
+          },
+          {
+            "heading": "Contributing",
+            "text": "Please read before starting work on a pull request:\nhttp://code.opencv.org/projects/opencv/wiki/How_to_contribute\nSummary of guidelines:\nOne pull request per issue;\nChoose the right base branch;\nInclude tests and documentation;\nClean up \"oops\" commits before submitting;\nFollow the coding style guide.",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": "Open Source Computer Vision Library",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-11-14T00:41:30.068996Z"
+  }
+}

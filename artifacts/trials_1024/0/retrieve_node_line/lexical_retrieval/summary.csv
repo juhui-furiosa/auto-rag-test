@@ -1,0 +1,3 @@
+filename,module_name,module_params,execution_time,retrieval_f1,retrieval_recall,retrieval_precision,is_best
+0.parquet,BM25,"{'top_k': 5, 'bm25_tokenizer': 'space'}",0.001591784954071045,0.21666666666666667,0.65,0.13,False
+1.parquet,BM25,"{'top_k': 5, 'bm25_tokenizer': 'porter_stemmer'}",0.0012958955764770508,0.26777777777777784,0.8033333333333333,0.16066666666666665,True

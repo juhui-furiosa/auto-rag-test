@@ -1,0 +1,61 @@
+{
+  "name": "multi_npu_demo",
+  "url": "https://github.com/furiosa-ai/multi_npu_demo",
+  "visibility": "public",
+  "readme": {
+    "title": "multi_npu_demo",
+    "sections": [
+      {
+        "heading": "multi_npu_demo",
+        "text": "FuriosaAI Warboy와 SDK를 사용한 Object Detection 데모 코드가 담긴 레포지토리입니다.\n자세한 코드에 대한 설명은\n슬라이드\n를 통해 확인 가능합니다.",
+        "children": [
+          {
+            "heading": "0. 의존성 설치하기",
+            "text": "pip install -r requirements.txt",
+            "children": []
+          }
+        ]
+      },
+      {
+        "heading": "YOLOv7",
+        "text": "",
+        "children": [
+          {
+            "heading": "1. 모델 준비 하기",
+            "text": "Object Detection 모델로는 공개되어 있는\nYOLOv7\n을 사용하고 있습니다.\nYOLOv7 Weight 파일 다운로드 및 ONNX Export\n$ cd model_export\n$ wget https://github.com/WongKinYiu/yolov7/releases/download/v0.1/yolov7.pt\n$ python onnx_export.py --weights=yolov7.pt --onnx_path=yolov7.onnx\nCalibration 데이터 다운로드\n: Calibration을 위해 coco val2017 데이터 셋을 다운로드합니다.\n$ cd ..\n$ wget http://images.cocodataset.org/zips/val2017.zip\n$ unzip val2017.zip\nYOLOv7 모델 Quantization 및 컴파일\n: coco val 2017 데이터셋을 사용하여 Calibration과 Quantization을 진행합니다. 이후,\nfuriosa-compiler\n를 사용하여\n.enf\n파일을 생성합니다.\n$ cd model_export\n$ python furiosa_quantizer.py --onnx_path=yolov7.onnx --output_path=yolov7_i8.onnx --calib_data=../val2017\n$ furiosa-compiler yolov7_i8.onnx -o ../demo/yolov7.enf --target-npu=warboy",
+            "children": []
+          },
+          {
+            "heading": "2. Object Detection 데모 실행",
+            "text": "$ cd demo\n$ python run_demo.py",
+            "children": []
+          }
+        ]
+      },
+      {
+        "heading": "YOLOv8",
+        "text": "",
+        "children": [
+          {
+            "heading": "1. 모델 준비 하기",
+            "text": "Object Detection 모델로는 공개되어 있는\nYOLOv8n\n을 사용하고 있습니다.\nYOLOv8 Weight 파일 다운로드 및 ONNX Export\n$ cd model_export_yolov8\n$ wget https://github.com/ultralytics/assets/releases/download/v0.0.0/yolov8n.pt\n$ python onnx_export.py --weights=yolov8n.pt --onnx_path=yolov8n.onnx\nCalibration 데이터 다운로드\n: Calibration을 위해 coco val2017 데이터 셋을 다운로드합니다.\n$ cd ..\n$ wget http://images.cocodataset.org/zips/val2017.zip\n$ unzip val2017.zip\nYOLOv7 모델 Quantization 및 컴파일\n: coco val 2017 데이터셋을 사용하여 Calibration과 Quantization을 진행합니다. 이후,\nfuriosa-compiler\n를 사용하여\n.enf\n파일을 생성합니다.\n$ cd model_export_yolov8\n$ python furiosa_quantizer.py --onnx_path=yolov8n.onnx --output_path=yolov8n_i8.onnx --calib_data=../val2017\n$ furiosa-compiler yolov8n_i8.onnx -o ../demo/yolov8n.enf --target-npu=warboy",
+            "children": []
+          },
+          {
+            "heading": "2. Object Detection 데모 실행",
+            "text": "$ cd demo_yolov8\n$ python run_demo.py",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": null,
+    "license": null,
+    "stars": 4,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-11-14T00:40:32.645538Z"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "name": "pyucis",
+  "url": "https://github.com/furiosa-ai/pyucis",
+  "visibility": "public",
+  "readme": {
+    "title": "pyucis",
+    "sections": [
+      {
+        "heading": "pyucis",
+        "text": "Python API to Unified Coverage Interoperability Standard (UCIS) Data Model",
+        "children": []
+      }
+    ]
+  },
+  "metadata": {
+    "description": "Python API to Unified Coverage Interoperability Standard (UCIS) Data",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-11-14T00:41:57.458896Z"
+  }
+}

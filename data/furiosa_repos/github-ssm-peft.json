@@ -1,0 +1,44 @@
+{
+  "name": "ssm-peft",
+  "url": "https://github.com/furiosa-ai/ssm-peft",
+  "visibility": "public",
+  "readme": {
+    "title": "Parameter-Efficient Fine-Tuning of State Space Models",
+    "sections": [
+      {
+        "heading": "Parameter-Efficient Fine-Tuning of State Space Models",
+        "text": "",
+        "children": [
+          {
+            "heading": "Kevin Galim *1 , Wonjun Kang *1 , Yuchen Zeng *2 , Hyung Il Koo 1 , Kangwook Lee 2 1 FuriosaAI, 2 UW-Madison",
+            "text": "Abstract\n: Deep State Space Models (SSMs), such as Mamba (Gu & Dao, 2024), have become powerful tools for language modeling, offering high performance and linear scalability with sequence length. However, the application of parameter-efficient fine-tuning (PEFT) methods to SSM-based models remains largely underexplored. We start by investigating two fundamental questions on existing PEFT methods: (i) How do they perform on SSM-based models? (ii) Which parameters should they target for optimal results? Our analysis shows that LoRA and its variants consistently outperform all other PEFT methods. While LoRA is effective for linear projection matrices, it fails on SSM modules—yet still outperforms other methods applicable to SSMs, indicating their limitations. This underscores the need for a specialized SSM tuning approach. To address this, we propose Sparse Dimension Tuning (SDT), a PEFT method tailored for SSM modules. Combining SDT for SSMs with LoRA for linear projection matrices, we achieve state-of-the-art performance across extensive experiments.",
+            "children": []
+          }
+        ]
+      },
+      {
+        "heading": "News  🚀",
+        "text": "2025-05-01\nOur paper has been accepted to\nICML 2025\n! 🎉🎉🎉\n2024-11-01\nOur paper is selected for oral presentation (5 of 92 accepted papers) at\nNeurIPS 2024 Workshop FITML\n! 🎉🎉\n2024-10-11\nOur paper is available on\narXiv\n!\n2024-10-09\nOur paper has been accepted to\nNeurIPS 2024 Workshop FITML\n! 🎉",
+        "children": []
+      },
+      {
+        "heading": "Usage",
+        "text": "PEFT implementation on\nS4\n: Refer to the\nS4 folder\n.\nPEFT implementation on\nMamba\n: Refer to the\nmamba-peft folder\n.",
+        "children": []
+      },
+      {
+        "heading": "Citation",
+        "text": "@article{galim2024parameter,\n  title={Parameter-Efficient Fine-Tuning of State Space Models},\n  author={Galim, Kevin and Kang, Wonjun and Zeng, Yuchen and Koo, Hyung Il and Lee, Kangwook},\n  journal={arXiv preprint arXiv:2410.09016},\n  year={2024}\n}",
+        "children": []
+      }
+    ]
+  },
+  "metadata": {
+    "description": "Parameter-Efficient Fine-Tuning of State Space Models (ICML 2025)",
+    "license": null,
+    "stars": 18,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-11-14T00:39:24.061418Z"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "name": "ironic",
+  "url": "https://github.com/furiosa-ai/ironic",
+  "visibility": "public",
+  "readme": {
+    "title": "Ironic",
+    "sections": [
+      {
+        "heading": "Ironic",
+        "text": "",
+        "children": [
+          {
+            "heading": "Team and repository tags",
+            "text": "",
+            "children": []
+          },
+          {
+            "heading": "Overview",
+            "text": "Ironic consists of an API and plug-ins for managing and provisioning\nphysical machines in a security-aware and fault-tolerant manner. It can be\nused with nova as a hypervisor driver, or standalone service using bifrost.\nBy default, it will use PXE and IPMI to interact with bare metal machines.\nIronic also supports vendor-specific plug-ins which may implement additional\nfunctionality.\nIronic is distributed under the terms of the Apache License, Version 2.0. The\nfull terms and conditions of this license are detailed in the LICENSE file.",
+            "children": [
+              {
+                "heading": "Project resources",
+                "text": "Documentation:\nhttps://docs.openstack.org/ironic/latest\nSource:\nhttps://opendev.org/openstack/ironic\nBugs:\nhttps://storyboard.openstack.org/#!/project/943\nWiki:\nhttps://wiki.openstack.org/wiki/Ironic\nAPIs:\nhttps://docs.openstack.org/api-ref/baremetal/index.html\nRelease Notes:\nhttps://docs.openstack.org/releasenotes/ironic/\nDesign Specifications:\nhttps://specs.openstack.org/openstack/ironic-specs/\nProject status, bugs, and requests for feature enhancements (RFEs) are tracked\nin StoryBoard:\nhttps://storyboard.openstack.org/#!/project/943\nFor information on how to contribute to ironic, see\nhttps://docs.openstack.org/ironic/latest/contributor",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": "A service for managing and provisioning Bare Metal servers. Mirror of code maintained at opendev.org.",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-11-14T00:41:24.980355Z"
+  }
+}

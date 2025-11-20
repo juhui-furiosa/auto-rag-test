@@ -1,0 +1,96 @@
+{
+  "name": "evalplus",
+  "url": "https://github.com/furiosa-ai/evalplus",
+  "visibility": "public",
+  "readme": {
+    "title": "EvalPlus(📖) => 📚",
+    "sections": [
+      {
+        "heading": "EvalPlus(📖) => 📚",
+        "text": "📙About\n•\n🔥Quick Start\n•\n🚀LLM Backends\n•\n📚Documents\n•\n📜Citation\n•\n🙏Acknowledgement",
+        "children": [
+          {
+            "heading": "📢 News",
+            "text": "Who's using EvalPlus datasets? EvalPlus has been used by various LLM teams, including:\nMeta Llama 3.1 and 3.3\nAllen AI TÜLU 1/2/3\nQwen2.5-Coder\nCodeQwen 1.5\nDeepSeek-Coder V2\nQwen2\nSnowflake Arctic\nStarCoder2\nMagicoder\nWizardCoder\nBelow tracks the notable updates of EvalPlus:\n[2024-10-20\nv0.3.1\n]\n: EvalPlus\nv0.3.1\nis officially released! Highlights:\n(i)\nCode efficiency evaluation via EvalPerf,\n(ii)\none command to run all: generation + post-processing + evaluation,\n(iii)\nsupport for more inference backends such as Google Gemini & Anthropic, etc.\n[2024-06-09 pre\nv0.3.0\n]\n: Improved ground-truth solutions for MBPP+ tasks (IDs: 459, 102, 559). Thanks to\nEvalArena\n.\n[2024-04-17 pre\nv0.3.0\n]\n: MBPP+ is upgraded to\nv0.2.0\nby removing some broken tasks (399 -> 378 tasks). ~4pp pass@1 improvement could be expected.",
+            "children": []
+          },
+          {
+            "heading": "📙 About",
+            "text": "EvalPlus is a rigorous evaluation framework for LLM4Code, with:\n✨\nHumanEval+\n: 80x more tests than the original HumanEval!\n✨\nMBPP+\n: 35x more tests than the original MBPP!\n✨\nEvalPerf\n: evaluating the efficiency of LLM-generated code!\n✨\nFramework\n: our packages/images/tools can easily and safely evaluate LLMs on above benchmarks.\nWhy EvalPlus?\n✨\nPrecise evaluation\n: See\nour leaderboard\nfor latest LLM rankings before & after rigorous evaluation.\n✨\nCoding rigorousness\n: Look at the score differences! esp. before & after using EvalPlus tests! Less drop means more rigorousness in code generation; while a bigger drop means the generated code tends to be fragile.\n✨\nCode efficiency\n: Beyond correctness, our EvalPerf dataset evaluates the efficiency of LLM-generated code via performance-exercising coding tasks and test inputs.\nWant to know more details? Read our papers & materials!\nEvalPlus\n:\nNeurIPS'23 paper\n,\nSlides\n,\nPoster\n,\nLeaderboard\nEvalPerf\n:\nCOLM'24 paper\n,\nPoster\n,\nDocumentation\n,\nLeaderboard",
+            "children": []
+          },
+          {
+            "heading": "🔥 Quick Start",
+            "text": "",
+            "children": [
+              {
+                "heading": "Code Correctness Evaluation: HumanEval(+) or MBPP(+)",
+                "text": "pip install --upgrade\n\"\nevalplus[vllm] @ git+https://github.com/evalplus/evalplus\n\"\n#\nOr `pip install \"evalplus[vllm]\" --upgrade` for the latest stable release\nevalplus.evaluate --model\n\"\nise-uiuc/Magicoder-S-DS-6.7B\n\"\n\\\n                  --dataset [humaneval\n|\nmbpp]             \\\n                  --backend vllm                         \\\n                  --greedy",
+                "children": []
+              },
+              {
+                "heading": "Code Efficiency Evaluation: EvalPerf (*nix only)",
+                "text": "pip install --upgrade\n\"\nevalplus[perf,vllm] @ git+https://github.com/evalplus/evalplus\n\"\n#\nOr `pip install \"evalplus[perf,vllm]\" --upgrade` for the latest stable release\nsudo sh -c\n'\necho 0 > /proc/sys/kernel/perf_event_paranoid\n'\n#\nEnable perf\nevalplus.evalperf --model\n\"\nise-uiuc/Magicoder-S-DS-6.7B\n\"\n--backend vllm",
+                "children": []
+              }
+            ]
+          },
+          {
+            "heading": "🚀 LLM Backends",
+            "text": "",
+            "children": [
+              {
+                "heading": "HuggingFace models",
+                "text": "transformers\nbackend:\nevalplus.evaluate --model\n\"\nise-uiuc/Magicoder-S-DS-6.7B\n\"\n\\\n                  --dataset [humaneval\n|\nmbpp]             \\\n                  --backend hf                           \\\n                  --greedy\nNote\nEvalPlus uses different prompts for base and chat models.\nBy default it is detected by\ntokenizer.chat_template\nwhen using\nhf\n/\nvllm\nas backend.\nFor other backends, only chat mode is allowed.\nTherefore, if your base models come with a\ntokenizer.chat_template\n,\nplease add\n--force-base-prompt\nto avoid being evaluated\nin a chat mode.\nvllm\nbackend:\nevalplus.evaluate --model\n\"\nise-uiuc/Magicoder-S-DS-6.7B\n\"\n\\\n                  --dataset [humaneval\n|\nmbpp]             \\\n                  --backend vllm                         \\\n                  --tp [TENSOR_PARALLEL_SIZE]            \\\n                  --greedy\nopenai\ncompatible servers (e.g.,\nvLLM\n):\n#\nOpenAI models\nexport\nOPENAI_API_KEY=\n\"\n{KEY}\n\"\n#\nhttps://platform.openai.com/settings/organization/api-keys\nevalplus.evaluate --model\n\"\ngpt-4o-2024-08-06\n\"\n\\\n                  --dataset [humaneval\n|\nmbpp]   \\\n                  --backend openai --greedy\n#\nDeepSeek\nexport\nOPENAI_API_KEY=\n\"\n{KEY}\n\"\n#\nhttps://platform.deepseek.com/api_keys\nevalplus.evaluate --model\n\"\ndeepseek-chat\n\"\n\\\n                  --dataset [humaneval\n|\nmbpp]           \\\n                  --base-url https://api.deepseek.com  \\\n                  --backend openai --greedy\n#\nGrok\nexport\nOPENAI_API_KEY=\n\"\n{KEY}\n\"\n#\nhttps://console.x.ai/\nevalplus.evaluate --model\n\"\ngrok-beta\n\"\n\\\n                  --dataset [humaneval\n|\nmbpp]      \\\n                  --base-url https://api.x.ai/v1  \\\n                  --backend openai --greedy\n#\nvLLM server\n#\nFirst, launch a vLLM server: https://docs.vllm.ai/en/latest/serving/deploying_with_docker.html\nevalplus.evaluate --model\n\"\nise-uiuc/Magicoder-S-DS-6.7B\n\"\n\\\n                  --dataset [humaneval\n|\nmbpp]             \\\n                  --base-url http://localhost:8000/v1    \\\n                  --backend openai --greedy\n#\nGPTQModel\nevalplus.evaluate --model\n\"\nModelCloud/Llama-3.2-1B-Instruct-gptqmodel-4bit-vortex-v1\n\"\n\\\n                  --dataset [humaneval\n|\nmbpp]                                          \\\n                  --backend gptqmodel --greedy",
+                "children": []
+              },
+              {
+                "heading": "OpenAI models",
+                "text": "Access OpenAI APIs from\nOpenAI Console\nexport\nOPENAI_API_KEY=\n\"\n[YOUR_API_KEY]\n\"\nevalplus.evaluate --model\n\"\ngpt-4o\n\"\n\\\n                  --dataset [humaneval\n|\nmbpp]  \\\n                  --backend openai            \\\n                  --greedy",
+                "children": []
+              },
+              {
+                "heading": "Anthropic models",
+                "text": "Access Anthropic APIs from\nAnthropic Console\nexport\nANTHROPIC_API_KEY=\n\"\n[YOUR_API_KEY]\n\"\nevalplus.evaluate --model\n\"\nclaude-3-haiku-20240307\n\"\n\\\n                  --dataset [humaneval\n|\nmbpp]        \\\n                  --backend anthropic               \\\n                  --greedy",
+                "children": []
+              },
+              {
+                "heading": "Google Gemini models",
+                "text": "Access Gemini APIs from\nGoogle AI Studio\nexport\nGOOGLE_API_KEY=\n\"\n[YOUR_API_KEY]\n\"\nevalplus.evaluate --model\n\"\ngemini-1.5-pro\n\"\n\\\n                  --dataset [humaneval\n|\nmbpp]  \\\n                  --backend google            \\\n                  --greedy",
+                "children": []
+              },
+              {
+                "heading": "Amazon Bedrock models",
+                "text": "Amazon Bedrock\nexport\nBEDROCK_ROLE_ARN=\n\"\n[BEDROCK_ROLE_ARN]\n\"\nevalplus.evaluate --model\n\"\nanthropic.claude-3-5-sonnet-20241022-v2:0\n\"\n\\\n                  --dataset [humaneval\n|\nmbpp]                          \\\n                  --backend bedrock                                   \\\n                  --greedy\nYou can checkout the generation and results at\nevalplus_results/[humaneval|mbpp]/",
+                "children": []
+              }
+            ]
+          },
+          {
+            "heading": "📚 Documents",
+            "text": "To learn more about how to use EvalPlus, please refer to:\nEvalPlus Commands\nEvalPerf\nProgram Execution",
+            "children": []
+          },
+          {
+            "heading": "📜 Citation",
+            "text": "@inproceedings\n{\nevalplus\n,\ntitle\n=\n{\nIs Your Code Generated by Chat{GPT} Really Correct? Rigorous Evaluation of Large Language Models for Code Generation\n}\n,\nauthor\n=\n{\nLiu, Jiawei and Xia, Chunqiu Steven and Wang, Yuyao and Zhang, Lingming\n}\n,\nbooktitle\n=\n{\nThirty-seventh Conference on Neural Information Processing Systems\n}\n,\nyear\n=\n{\n2023\n}\n,\nurl\n=\n{\nhttps://openreview.net/forum?id=1qvx610Cu7\n}\n,\n}\n@inproceedings\n{\nevalperf\n,\ntitle\n=\n{\nEvaluating Language Models for Efficient Code Generation\n}\n,\nauthor\n=\n{\nLiu, Jiawei and Xie, Songrun and Wang, Junhao and Wei, Yuxiang and Ding, Yifeng and Zhang, Lingming\n}\n,\nbooktitle\n=\n{\nFirst Conference on Language Modeling\n}\n,\nyear\n=\n{\n2024\n}\n,\nurl\n=\n{\nhttps://openreview.net/forum?id=IBCBMeAhmC\n}\n,\n}",
+            "children": []
+          },
+          {
+            "heading": "🙏 Acknowledgement",
+            "text": "HumanEval\nMBPP",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": "Rigourous evaluation of LLM-synthesized code - NeurIPS 2023 & COLM 2024",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-11-14T00:38:59.248274Z"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "name": "TABED",
+  "url": "https://github.com/furiosa-ai/TABED",
+  "visibility": "public",
+  "readme": {
+    "title": "TABED: Test-Time Adaptive Ensemble Drafting for Robust Speculative Decoding in LVLMs",
+    "sections": [
+      {
+        "heading": "TABED: Test-Time Adaptive Ensemble Drafting for Robust Speculative Decoding in LVLMs",
+        "text": "|\nArxiv Paper\n|",
+        "children": [
+          {
+            "heading": "Abstract",
+            "text": "Speculative decoding (SD) has proven effective in accelerating LLM inference by swiftly generating draft tokens and verifying them in parallel.\nHowever, SD remains largely unexplored for Large Vision Language Models (LVLMs), advanced LLMs capable of processing both image and text prompts.\nTo address this gap, we first benchmark existing drafting methods for LVLMs across diverse scenarios and observe that methods using small draft models show scenario-specific performance fluctuations.\nMotivated by these findings, we propose Test-time Adaptive Batched Ensemble Draft (TABED), which dynamically ensembles multiple drafts obtained via batch inference by leveraging measurable deviations of the drafts from past ground truth available in SD setting.\nAcross diverse input scenarios, TABED achieves an average robust speedup of 1.8x and a 5% improvement compared to individual draftings, though it does not incur additional costs during training (i.e., training-free) or inference.\nTo further enhance its extensibility, we also explore and incorporate alternative draftings using image pooling and captioning.\nOur method maintains seamless compatibility with existing LVLM acceleration techniques, and we open-source custom-trained draft LVLMs to ensure reproducibility.",
+            "children": []
+          },
+          {
+            "heading": "Checkpoints",
+            "text": "In the\nGoogle-drive link\n, the following model checkpoints are released:\nLLaVA-1.5-68m\nLLaVA-OV-68m\nLLaVA-1.5-160m\nLLaVA-1.5-290m",
+            "children": []
+          },
+          {
+            "heading": "Coming Soon",
+            "text": "Inference code for TABED for each configuration",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": null,
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-11-14T00:39:40.889210Z"
+  }
+}

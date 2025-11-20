@@ -1,0 +1,23 @@
+{
+  "name": "power-dev",
+  "url": "https://github.com/furiosa-ai/power-dev",
+  "visibility": "public",
+  "readme": {
+    "title": "Power",
+    "sections": [
+      {
+        "heading": "Power",
+        "text": "This repo contains the development branch of MLPerf™ power measurement code. Everything is Apache 2.0 code developed by MLCommons™. Access is available to anyone.\nMLPerf™ is using [SPEC PTDaemon] tool for measuring power. Please see\nthis\nREADME for more details on how to use it.\nThis tutorial\ndemonstrates how to do a power measurement setup and do MLPerf™ Inference benchmarking with power measurements using\nMLCommons CK2/CM framework\n.",
+        "children": []
+      }
+    ]
+  },
+  "metadata": {
+    "description": "Dev repo for power measurement for the MLPerf™ benchmarks",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-11-14T00:40:29.018003Z"
+  }
+}

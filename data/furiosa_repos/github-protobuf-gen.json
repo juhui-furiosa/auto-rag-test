@@ -1,0 +1,23 @@
+{
+  "name": "protobuf-gen",
+  "url": "https://github.com/furiosa-ai/protobuf-gen",
+  "visibility": "public",
+  "readme": {
+    "title": "protobuf-gen",
+    "sections": [
+      {
+        "heading": "protobuf-gen",
+        "text": "",
+        "children": []
+      }
+    ]
+  },
+  "metadata": {
+    "description": null,
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-11-14T00:41:09.854550Z"
+  }
+}

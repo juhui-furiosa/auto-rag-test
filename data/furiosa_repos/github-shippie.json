@@ -1,0 +1,69 @@
+{
+  "name": "shippie",
+  "url": "https://github.com/furiosa-ai/shippie",
+  "visibility": "public",
+  "readme": {
+    "title": "Shippie 🚢 (formerly Code Review GPT)",
+    "sections": [
+      {
+        "heading": "Shippie 🚢 (formerly Code Review GPT)",
+        "text": "",
+        "children": [
+          {
+            "heading": "Helps you ship faster",
+            "text": "Shippie uses Large Language Models to review code in your CI/CD pipeline. It should pick up on common issues such as:\nExposed secrets\nSlow or inefficient code\nPotential bugs or unhandled edge cases\nIt can also be run locally in your command line to review staged files.\nnpx shippie review",
+            "children": []
+          },
+          {
+            "heading": "Demo",
+            "text": "",
+            "children": []
+          },
+          {
+            "heading": "Ethos 💭",
+            "text": "Beautiful CLI tool written in typescript and bun\nVertically integrated into your CI/CD pipeline\nFunctions as a human code reviewer, using a small set of optimised tools\nActs as a\nModel Context Protocol (MCP)\nclient for integration with external tools such as browser use, infrastructure deployments, observability monitoring.",
+            "children": []
+          },
+          {
+            "heading": "Setup Instructions 💫",
+            "text": "See the\nsetup instructions\nfor more docs on how to set up shippie in your CI/CD pipeline and use it locally.",
+            "children": []
+          },
+          {
+            "heading": "Development 🔧",
+            "text": "Clone the repository:\ngit clone https://github.com/mattzcarey/shippie.git\ncd\nshippie\nInstall dependencies (we use bun but you can use npm or pnpm if you prefer):\nbun i\nSet up the API key:\nRename the\n.env.example\nfile to\n.env\n.\nOpen the\n.env\nfile and replace\nYOUR_API_KEY\nwith your actual OPENAI API key.\nRun the application:\nbun start\nSee the package.json file for all the npm commands you can run.\nMake a PR 🎉\nWe use\nrelease-please\non this project. If you want to create a new release from your PR, please make sure your PR title follows the\nConventional Commits\nformat. The release-please bot will automatically create a new release for you when your PR is merged.\nfix: which represents bug fixes, and correlates to a patch version.\nfeat: which represents a new feature, and correlates to a SemVer minor.\nfeat!:, or fix!:, refactor!:, etc., which represent a breaking change (indicated by the !) and will result in a major version.",
+            "children": []
+          },
+          {
+            "heading": "Contributors 🙏",
+            "text": "Thanks to our wonderful contributors!",
+            "children": []
+          },
+          {
+            "heading": "Roadmap 🌏",
+            "text": "Have a look at the\ndiscussion tab\nfor the latest chat and ideas. I am actively working on the items in\ntodo.md\n.",
+            "children": []
+          },
+          {
+            "heading": "Sponsors ❤️",
+            "text": "",
+            "children": []
+          },
+          {
+            "heading": "Star History ⭐️",
+            "text": "",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": "an extensible code review agent 🚢",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-11-14T00:39:33.931997Z"
+  }
+}

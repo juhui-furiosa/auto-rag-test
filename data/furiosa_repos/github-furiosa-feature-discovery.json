@@ -1,0 +1,44 @@
+{
+  "name": "furiosa-feature-discovery",
+  "url": "https://github.com/furiosa-ai/furiosa-feature-discovery",
+  "visibility": "public",
+  "readme": {
+    "title": "Installing Furiosa Feature Discovery",
+    "sections": [
+      {
+        "heading": "Installing Furiosa Feature Discovery",
+        "text": "",
+        "children": [
+          {
+            "heading": "Furiosa Feature Discovery and NFD",
+            "text": "The Furiosa Feature Discovery automatically labels Kubernetes nodes with information\nabout FuriosaAI NPU properties, such as the NPU family, count, and various versions.\nUsing these labels, you can schedule your Kubernetes workloads based on specific NPU requirements.\nThe Furiosa Feature Discovery leverage NFD(Node Feature Discovery) which is a tool that detects\nhardware features and labels Kubernetes nodes. It is recommended to use NFD and\nFuriosa Feature Discovery to ensure that the Cloud Native Toolkit is deployed only on nodes\nequipped with FuriosaAI NPUs.\nNote\nIf multiple versions of device-level components (like firmware) exist on the same node, the related labels are removed to avoid conflicts.",
+            "children": []
+          },
+          {
+            "heading": "Labels",
+            "text": "The followings are the labels that the Furiosa Feature Discovery attaches and what they mean.\nLabel\nValue\nDescription\nfuriosa.ai/npu.count\nn\n# of NPU devices\nfuriosa.ai/npu.family\nwarboy\n,\nrngd\nChip family\nfuriosa.ai/npu.product\nwarboy\n,\nrngd\n,\nrngd-s\n,\nrngd-max\nChip product name\nfuriosa.ai/npu.driver.version\nx.y.z\nNPU device driver version\nfuriosa.ai/npu.driver.version.major\nx\nNPU device driver version major part\nfuriosa.ai/npu.driver.version.minor\ny\nNPU device driver version minor part\nfuriosa.ai/npu.driver.version.patch\nz\nNPU device driver version patch part\nfuriosa.ai/npu.driver.version.metadata\nabcxyz\nNPU device driver version metadata\nfuriosa.ai/npu.firmware.version\nx.y.z\nNPU firmware version\nfuriosa.ai/npu.firmware.version.major\nx\nNPU firmware version major part\nfuriosa.ai/npu.firmware.version.minor\ny\nNPU firmware version minor part\nfuriosa.ai/npu.firmware.version.patch\nz\nNPU firmware version patch part\nfuriosa.ai/npu.firmware.version.metadata\nabcxyz\nNPU firmware version metadata",
+            "children": []
+          },
+          {
+            "heading": "Deploying Furiosa Feature Discovery with Helm",
+            "text": "With the helm chart you can easily install Furiosa feature discovery and NFD into your Kubernetes cluster.\nFollowing command shows how to install them.\nThe Furiosa device plugin helm chart is available at\nhttps://github.com/furiosa-ai/helm-charts\n. To configure deployment as you need, you can modify\ncharts/furiosa-feature-discovery/values.yaml\n.\nhelm repo add furiosa https://furiosa-ai.github.io/helm-charts\nhelm repo update\nhelm install furiosa-feature-discovery furiosa/furiosa-feature-discovery -n kube-system",
+            "children": []
+          },
+          {
+            "heading": "License",
+            "text": "Copyright 2023 FuriosaAI, Inc.\n\nLicensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": null,
+    "license": null,
+    "stars": 1,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-07-04T00:15:19Z"
+  }
+}

@@ -1,0 +1,70 @@
+node_lines:
+- node_line_name: retrieve_node_line
+  nodes:
+  - modules:
+    - bm25_tokenizer: porter_stemmer
+      module_type: BM25
+      top_k: 5
+    node_type: lexical_retrieval
+    strategy:
+      metrics:
+      - retrieval_f1
+      - retrieval_recall
+      - retrieval_precision
+  - modules:
+    - module_type: VectorDB
+      top_k: 5
+      vectordb: furiosa_store
+    node_type: semantic_retrieval
+    strategy:
+      metrics:
+      - retrieval_f1
+      - retrieval_recall
+      - retrieval_precision
+  - modules:
+    - module_type: HybridRRF
+      top_k: 5
+      weight: 4.0
+      weight_range:
+      - 4
+      - 80
+    node_type: hybrid_retrieval
+    strategy:
+      metrics:
+      - retrieval_f1
+      - retrieval_recall
+      - retrieval_precision
+      - retrieval_ndcg
+      - retrieval_mrr
+- node_line_name: post_retrieve_node_line
+  nodes:
+  - modules:
+    - module_type: Fstring
+      prompt: 'Read the passages and answer the given question.\nQuestion: {query}\nPassage:
+        {retrieved_contents}\nAnswer:'
+    node_type: prompt_maker
+    strategy:
+      metrics:
+      - metric_name: meteor
+      - metric_name: rouge
+      - embedding_model: openai_embed_3_large
+        metric_name: sem_score
+  - modules:
+    - batch: 8
+      llm: openai
+      model: gpt-4o
+      module_type: LlamaIndexLLM
+    node_type: generator
+    strategy:
+      metrics:
+      - metric_name: meteor
+      - metric_name: rouge
+      - embedding_model: openai_embed_3_large
+        metric_name: sem_score
+vectordb:
+- client_type: persistent
+  collection_name: furiosa_default
+  db_type: chroma
+  embedding_model: openai_embed_3_large
+  name: furiosa_store
+  path: vector_store/default

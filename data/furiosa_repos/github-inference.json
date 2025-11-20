@@ -1,0 +1,169 @@
+{
+  "name": "inference",
+  "url": "https://github.com/furiosa-ai/inference",
+  "visibility": "public",
+  "readme": {
+    "title": "FuriosaAI Internal Evaluation(MLPerf v4.1 candidate)",
+    "sections": [
+      {
+        "heading": "FuriosaAI Internal Evaluation(MLPerf v4.1 candidate)",
+        "text": "",
+        "children": [
+          {
+            "heading": "Prerequisites",
+            "text": "Set up AWS credentials, following instructions on \"\n기타 - DVC & AWS S3 설정\n\".\nInstall Conda:\nhttps://docs.anaconda.com/free/anaconda/install/index.html",
+            "children": []
+          },
+          {
+            "heading": "Installation",
+            "text": "git clone --branch v4.1-internal https://github.com/furiosa-ai/inference.git\ncd inference\n\n# (optional, for mlperf loadgen) if GCC Compiler is not installed on Ubuntu,\napt-get update && apt-get install build-essential -y\n\n# (optional, for Stable Diffusion only) it requires cv2 related devian packages to run Stable Diffusion\nDEBIAN_FRONTEND=noninteractive apt-get update && apt-get install libgl1 libglib2.0-0 -y",
+            "children": []
+          },
+          {
+            "heading": "Submission Model",
+            "text": "",
+            "children": [
+              {
+                "heading": "Wi8Ai8KVi8 Quantized BERT (qBERT)",
+                "text": "Evaluation Result(v3.13.2)\nOur Result\nAccuracy Target (99%)\nF1\n91.0563 (100.20%*)\n89.9653\n*The percentage is calculated as follows:\n(Our Result [Accuracy] / Reference Accuracy) * 100\n. This formula applies to all the cases listed below.\nTo reproduce the results, run the following commands:\n.\nscripts/build_qbert_env.sh\n#\nSkip this step if the environment is already set up.\nmake qbert\nFor evaluations with different settings, modify the following environment variables:\nSCENARIO\n: The MLPerf benchmark scenario. Possible values are\nOffline\n,\nSingleStream\n,\nMultiStream\n, or\nServer\n. (default:\nOffline\n)\nN_COUNT\n: The number of data samples to evaluate. (range:\n[1, 10833]\n)\nCALIBRATE\n: Specifies whether to perform calibration during evaluation. (default:\nfalse\n)\nN_CALIB\n: The number of data samples to use for calibrating the quantized model. (range:\n[1, 100]\n)",
+                "children": []
+              },
+              {
+                "heading": "Wi8Ai8KVi8 Quantized GPT-J (qGPT-J)",
+                "text": "Evaluation Result(v3.13.2)\nOur Result\nAccuracy Target (99.9%)\nROUGE1\n43.0305 (100.10%)\n42.9435\nROUGE2\n20.1437 (100.10%)\n20.1034\nROUGEL\n30.0211 (100.11%)\n29.9581\nGEN_LEN\n3,978,315 (99.04%)\n3,615,191\n*\n*GEN_LEN is required to be at least 90% of the Reference.\nTo reproduce the results, run the following commands:\n.\nscripts/build_qgpt-j_env.sh\n#\nSkip this step if the environment is already set up.\nmake qgpt-j\nFor evaluations with different settings, modify the following environment variables:\nSCENARIO\n: The MLPerf benchmark scenario. Possible values are\nOffline\n,\nSingleStream\n, or\nServer\n. (default:\nOffline\n)\nN_COUNT\n: The number of data samples to evaluate. (range:\n[1, 13368]\n)\nCALIBRATE\n: Specifies whether to perform calibration during evaluation. (default:\nfalse\n)\nN_CALIB\n: The number of data samples to use for calibrating the quantized model. (range:\n[1, 1000]\n)",
+                "children": []
+              },
+              {
+                "heading": "Wi8Ai8KVi8 Quantized LLaMA2 (qLLaMA2)",
+                "text": "Evaluation Result(v3.13)\nOur Result\nAccuracy Target (99.9%)\nROUGE1\nTBA\n44.3868\nROUGE2\nTBA\n22.0132\nROUGEL\nTBA\n28.5876\nTOKENS_PER_SAMPLE\nTBA\n265.005\nTo reproduce the results, run the following commands:\n.\nscripts/build_qllama2-70b_env.sh\n#\nSkip this step if the environment is already set up.\nmake qllama2\nFor evaluations with different settings, modify the following environment variables:\nSCENARIO\n: The MLPerf benchmark scenario. Possible values are\nOffline\n,\nServer\n. (default:\nOffline\n)\nN_COUNT\n: The number of data samples to evaluate. (range:\n[1, 24576]\n)\nCALIBRATE\n: Specifies whether to perform calibration during evaluation. (default:\nfalse\n)\nN_CALIB\n: The number of data samples to use for calibrating the quantized model. (range:\n[1, 1000]\n)",
+                "children": []
+              }
+            ]
+          },
+          {
+            "heading": "How to run end-to-end evaluation",
+            "text": "End-to-end(E2E) evaluation is the process of downloading models and dataset, building a Python environment, and performing model accuracy evaluation. E2E scripts are developed based on\nf9a643c\n.\nTo run E2E evaluation:\nmake [model_name]\nor equivalently,\nbash scripts/build_[model_name]_env.sh\nbash scripts/eval_[model_name].sh\nmodel_name\nincludes [resnet, retinanet, 3d-unet, bert, gpt-j, rnnt, llama2, stablediffusion, all]\nFor example, to run E2E ResNet evaluation\nmake resnet\nor\n# build conda environment and download dataset\nbash scripts/build_resnet_env.sh\n\n# run evaluation on pre-built conda environment\nbash scripts/eval_resnet.sh",
+            "children": [
+              {
+                "heading": "Configurability",
+                "text": "Some parameters are configurable, for example,\nllama2-70b\nThe command\nmake llama2\nis equivalent to\nexport SCENARIO=Offline # SCENARIO is one of [Offline, Server]\nexport N_COUNT=24576   # N_COUNT is a number between [1, 24576]\nexport DATA_TYPE=float32    # DATA_TYPE is one of [float32, float16, bfloat16]\nexport DEVICE=cuda:0    # DEVICE is one of [cpu, cuda:0]\nmake llama2\nEach environment variable above has the value as default, which can be changed to another.\nLikewise,\nstable-diffusion-xl-base\nexport SCENARIO=Offline # SCENARIO is one of [Offline, SingleStream, MultiStream, Server]\nexport N_COUNT=5000   # N_COUNT is a number between [1, 5000]\nexport DATA_TYPE=fp32    # DATA_TYPE is one of [fp32, fp16, bf16]\nexport DEVICE=cuda    # DEVICE is one of [cpu, cuda]\nmake stablediffusion",
+                "children": []
+              }
+            ]
+          },
+          {
+            "heading": "Evaluation results",
+            "text": "",
+            "children": [
+              {
+                "heading": "Summary",
+                "text": "In this section, we present our evaluation result(our result) and\nmlperf reference accuracy(reference accuracy)\nin a comparative manner. It is expected that this will allow us to clearly see the goals we need to achieve and our current status.\nNote that all models are in Pytorch framework with float32 data type, and all experiments were conducted in Offline scenario.",
+                "children": [
+                  {
+                    "heading": "language",
+                    "text": "llama2-70b\nbenchmark\nour result\nreference accuracy\nROUGE1\n44.4312 (100.00%*)\n44.4312\nROUGE2\n22.0352 (100.00%)\n22.0352\nROUGEL\n28.6162 (100.00%)\n28.6162\nTOKENS_PER_SAMPLE\n294.4** (99.85%)\n294.45\n*\nround(our result / reference accuracy, 2)\n**\n294.4\n, our result, is\nrounded at the second decimal place\n, whereas\n294.4462890625\nis actual. It is estimated that the reference accuracy is rounded to the 3rd decimal place.\ngpt-j\nrngd_gelu\n(RNGD optimized GELU)\nour result\nreference accuracy\nROUGE1\n42.9865 (100.00%)\n42.9865\nROUGE2\n20.1036 (99.90%)\n20.1235\nROUGEL\n29.9737 (99.95%)\n29.9881\nGEN_LEN\n4017766 (100.02%)\n4016878\ngelu_new\n(MLPerf reference GELU)\nour result\nreference accuracy\nROUGE1\n42.9865 (100.00%)\n42.9865\nROUGE2\n20.1235 (100.00%)\n20.1235\nROUGEL\n29.9881 (100.00%)\n29.9881\nGEN_LEN\n4016878 (100.00%)\n4016878\nbert\nour result\nreference accuracy\nF1\n90.87487229720105 (100.00%)\n90.874",
+                    "children": []
+                  },
+                  {
+                    "heading": "vision",
+                    "text": "resnet\nour result\nreference accuracy\naccuracy(pytorch backend)\nacc(%)\n76.144 (99.59% / 100.17%)*\n76.46\n76.014\n* There are differences between the types of model framework. That is, our model used for our result is Pytorch backended, and the one used for reference accuracy is Tensorflow. The reference accuracy of Pytorch backended model can be checked in the accuracy(pytorch backend) item.\nretinanet\nour result\nreference accuracy\nmAP(%)\n37.552 (100.01%)\n37.55\n3d-unet\nour result\nreference accuracy\nDICE\n0.86173 (100.00%)\n0.86170",
+                    "children": []
+                  },
+                  {
+                    "heading": "speech recognition",
+                    "text": "rnnt\nour result\nreference accuracy\nWER(%)\n7.459018241673995\n7.452\n100-WER(%)\n92.5409817583 (99.99%*)\n92.548\n* Reason unknown.",
+                    "children": []
+                  },
+                  {
+                    "heading": "recommendation",
+                    "text": "dlrm-v2\nour result\nreference accuracy\nAUC\nTBA*\n80.31\n* 8 GPUs are needed for evaluation.",
+                    "children": []
+                  },
+                  {
+                    "heading": "text to image",
+                    "text": "stable-diffusion-xl-base\nour result\nreference accuracy\nCLIP_SCORE\n31.74663716465235 (100.19%)\n31.68631873\nFID_SCORE\n23.431448173651063 (101.83%)\n23.01085758\n* The gap between our result and reference accuracy is quite large. There is a possibility that the published weight and the one used in the experiment are different. It is neccesary to update evaluation result later.",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "heading": "v3.1",
+                "text": "Default settings:\nscenario: Offline\nmodel framework: pytorch\ndata type: f32\nDevice info:\nGPU: 1 NVIDIA A100-SXM4-80GB\nCPU: Intel(R) Xeon(R) Platinum 8358 CPU\nmodel name\nour result\nmlperf result\ninput shape*\ndataset\nresnet\n76.144%(top1 Acc.)\n76.014%(top1 Acc.)\n1x3x224x224(NxCxHxW)\nImagenet2012 validation\n(num_data: 50,000)\nretinanet\n0.3755(mAP)\n0.3755(mAP)\n1x3x800x800(NxCxHxW)\nMLPerf Openimages\n(num_data: 24,781)\n3d-unet\n0.86173(Dice)\n0.86170(Dice)\n1x1x128x128x128(NxCxDxHxW)\neval set of KiTS 2019\n(num_data: 2,761)\nbert\n90.874%(F1)\n90.874%(F1)\n1x384(NxS)\nSQuAD v1.1 validation set\n(num_data: 10,833)\ngpt-j\n42.9865(Rouge1)\n42.9865(Rouge1)\n1x1919(NxS)\nCNN-Daily Mail\n(num_data: 13,368)\nrnnt\n7.45901%(WER)\n74.45225%(WER)\n500x1x240(SxNxF)\nOpenSLR LibriSpeech Corpus\n(num_data: 2,513)\ndlrm-v2\nTBA\n80.31%(AUC)\nTBA\nCriteo Terabyte (day 23)\n(num_data: TBA)\n* Shape of preprocessed(transformed/tokenized) input. Notations:\nN: Batch size\nC: input Channel dimension\nH: Height dimension\nW: Width dimension\nD: Depth dimension\nS: max Sequence length\nF: input Feature dimension\nTo get verified evaluation log:\n# (optional) if not installed,\npip install dvc[s3]\n\nmake log_[model_name]\nmodel_name\nincludes [resnet, retinanet, 3d-unet, bert, gpt-j, rnnt, all]\nFor example, with\nmake log_resnet\nthe evaluation log of ResNet will be pulled to\nlogs/internal/resnet\n.",
+                "children": []
+              },
+              {
+                "heading": "v4.0",
+                "text": "Default settings:\nscenario: Offline\nmodel framework: pytorch\nLLaMA2-70b\ndata type\nour result\nmlperf result\nelapsed time\ndevice\nfloat32\n44.4312(Rouge1)\n44.4312(Rouge1)\n6.6 days\n6 H100 PCIe\nfloat16\n44.4362(Rouge1)\n-\n3.5 days\n3 A100-SXM4-80GB\nbfloat16\n44.4625(Rouge1)\n-\n3.6 days\n3 A100-SXM4-80GB\nStable Diffusion XL base\ndata type\nour result\nmlperf result\nelapsed time\ndevice\nfloat32\n31.7466(clip_score)\n31.6863(clip_score)\n24 hours\n1 GeForce RTX 3090\nfloat16\n31.7558(clip_score)\n-\n7.5 hours\n1 GeForce RTX 3090\nbfloat16\n31.7380(clip_score)\n-\n8.3 hours\n1 GeForce RTX 3090\nTo get verified evaluation log:\n# (optional) if not installed,\npip install dvc[s3]\n\nmake log_[model_name]\nmodel_name includes [llama2, stablediffusion, all]\nFor example, with\nmake log_llama2\nthe evaluation logs of LLaMA2-70b will be pulled to logs/internal/llama2-70b.",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "heading": "MLPerf™ Inference Benchmark Suite",
+        "text": "MLPerf Inference is a benchmark suite for measuring how fast systems can run models in a variety of deployment scenarios.\nPlease see the\nMLPerf Inference benchmark paper\nfor a detailed description of the benchmarks along with the motivation and guiding principles behind the benchmark suite. If you use any part of this benchmark (e.g., reference implementations, submissions, etc.), please cite the following:\n@misc{reddi2019mlperf,\n    title={MLPerf Inference Benchmark},\n    author={Vijay Janapa Reddi and Christine Cheng and David Kanter and Peter Mattson and Guenther Schmuelling and Carole-Jean Wu and Brian Anderson and Maximilien Breughe and Mark Charlebois and William Chou and Ramesh Chukka and Cody Coleman and Sam Davis and Pan Deng and Greg Diamos and Jared Duke and Dave Fick and J. Scott Gardner and Itay Hubara and Sachin Idgunji and Thomas B. Jablin and Jeff Jiao and Tom St. John and Pankaj Kanwar and David Lee and Jeffery Liao and Anton Lokhmotov and Francisco Massa and Peng Meng and Paulius Micikevicius and Colin Osborne and Gennady Pekhimenko and Arun Tejusve Raghunath Rajan and Dilip Sequeira and Ashish Sirasao and Fei Sun and Hanlin Tang and Michael Thomson and Frank Wei and Ephrem Wu and Lingjie Xu and Koichi Yamada and Bing Yu and George Yuan and Aaron Zhong and Peizhao Zhang and Yuchen Zhou},\n    year={2019},\n    eprint={1911.02549},\n    archivePrefix={arXiv},\n    primaryClass={cs.LG}\n}\nPlease see\nhere\nfor the MLPerf inference documentation website which includes automated commands to run MLPerf inference benchmarks using different implementations.",
+        "children": [
+          {
+            "heading": "MLPerf Inference v4.1 (submission deadline July 26, 2024)",
+            "text": "For submissions, please use the master branch and any commit since the\n4.1 seed release\nalthough it is best to use the latest commit. v4.1 tag will be created from the master branch after the result publication.\nFor power submissions please use\nSPEC PTD 1.10\n(needs special access) and any commit of the power-dev repository after the\ncode-freeze\nmodel\nreference app\nframework\ndataset\ncategory\nresnet50-v1.5\nvision/classification_and_detection\ntensorflow, onnx, tvm, ncnn\nimagenet2012\nedge,datacenter\nretinanet 800x800\nvision/classification_and_detection\npytorch, onnx\nopenimages resized to 800x800\nedge,datacenter\nbert\nlanguage/bert\ntensorflow, pytorch, onnx\nsquad-1.1\nedge,datacenter\ndlrm-v2\nrecommendation/dlrm_v2\npytorch\nMultihot Criteo Terabyte\ndatacenter\n3d-unet\nvision/medical_imaging/3d-unet-kits19\npytorch, tensorflow, onnx\nKiTS19\nedge,datacenter\ngpt-j\nlanguage/gpt-j\npytorch\nCNN-Daily Mail\nedge,datacenter\nstable-diffusion-xl\ntext_to_image\npytorch\nCOCO 2014\nedge,datacenter\nllama2-70b\nlanguage/llama2-70b\npytorch\nOpenOrca\ndatacenter\nmixtral-8x7b\nlanguage/mixtral-8x7b\npytorch\nOpenOrca, MBXP, GSM8K\ndatacenter\nFramework here is given for the reference implementation. Submitters are free to use their own frameworks to run the benchmark.",
+            "children": []
+          },
+          {
+            "heading": "MLPerf Inference v4.0 (submission February 23, 2024)",
+            "text": "There is an extra one-week extension allowed only for the llama2-70b submissions. For submissions, please use the master branch and any commit since the\n4.0 seed release\nalthough it is best to use the latest commit. v4.0 tag will be created from the master branch after the result publication.\nFor power submissions please use\nSPEC PTD 1.10\n(needs special access) and any commit of the power-dev repository after the\ncode-freeze\nmodel\nreference app\nframework\ndataset\ncategory\nresnet50-v1.5\nvision/classification_and_detection\ntensorflow, onnx, tvm, ncnn\nimagenet2012\nedge,datacenter\nretinanet 800x800\nvision/classification_and_detection\npytorch, onnx\nopenimages resized to 800x800\nedge,datacenter\nbert\nlanguage/bert\ntensorflow, pytorch, onnx\nsquad-1.1\nedge,datacenter\ndlrm-v2\nrecommendation/dlrm_v2\npytorch\nMultihot Criteo Terabyte\ndatacenter\n3d-unet\nvision/medical_imaging/3d-unet-kits19\npytorch, tensorflow, onnx\nKiTS19\nedge,datacenter\nrnnt\nspeech_recognition/rnnt\npytorch\nOpenSLR LibriSpeech Corpus\nedge,datacenter\ngpt-j\nlanguage/gpt-j\npytorch\nCNN-Daily Mail\nedge,datacenter\nstable-diffusion-xl\ntext_to_image\npytorch\nCOCO 2014\nedge,datacenter\nllama2-70b\nlanguage/llama2-70b\npytorch\nOpenOrca\ndatacenter\nFramework here is given for the reference implementation. Submitters are free to use their own frameworks to run the benchmark.",
+            "children": []
+          },
+          {
+            "heading": "MLPerf Inference v3.1 (submission August 18, 2023)",
+            "text": "Please use\nv3.1 tag\n(\ngit checkout v3.1\n) if you would like to reproduce the v3.1 results.\nFor reproducing power submissions please use the\nmaster\nbranch of the\nMLCommons power-dev\nrepository and checkout to\ne9e16b1299ef61a2a5d8b9abf5d759309293c440\n.\nYou can see the individual README files in the benchmark task folders for more details regarding the benchmarks. For reproducing the submitted results please see the README files under the respective submitter folders in the\ninference v3.1 results repository\n.\nmodel\nreference app\nframework\ndataset\ncategory\nresnet50-v1.5\nvision/classification_and_detection\ntensorflow, onnx, tvm, ncnn\nimagenet2012\nedge,datacenter\nretinanet 800x800\nvision/classification_and_detection\npytorch, onnx\nopenimages resized to 800x800\nedge,datacenter\nbert\nlanguage/bert\ntensorflow, pytorch, onnx\nsquad-1.1\nedge,datacenter\ndlrm-v2\nrecommendation/dlrm_v2\npytorch\nMultihot Criteo Terabyte\ndatacenter\n3d-unet\nvision/medical_imaging/3d-unet-kits19\npytorch, tensorflow, onnx\nKiTS19\nedge,datacenter\nrnnt\nspeech_recognition/rnnt\npytorch\nOpenSLR LibriSpeech Corpus\nedge,datacenter\ngpt-j\nlanguage/gpt-j\npytorch\nCNN-Daily Mail\nedge,datacenter",
+            "children": []
+          },
+          {
+            "heading": "MLPerf Inference v3.0 (submission 03/03/2023)",
+            "text": "Please use the v3.0 tag (\ngit checkout v3.0\n) if you would like to reproduce v3.0 results.\nYou can see the individual Readme files in the reference app for more details.\nmodel\nreference app\nframework\ndataset\ncategory\nresnet50-v1.5\nvision/classification_and_detection\ntensorflow, onnx, tvm\nimagenet2012\nedge,datacenter\nretinanet 800x800\nvision/classification_and_detection\npytorch, onnx\nopenimages resized to 800x800\nedge,datacenter\nbert\nlanguage/bert\ntensorflow, pytorch, onnx\nsquad-1.1\nedge,datacenter\ndlrm\nrecommendation/dlrm\npytorch, tensorflow\nCriteo Terabyte\ndatacenter\n3d-unet\nvision/medical_imaging/3d-unet-kits19\npytorch, tensorflow, onnx\nKiTS19\nedge,datacenter\nrnnt\nspeech_recognition/rnnt\npytorch\nOpenSLR LibriSpeech Corpus\nedge,datacenter",
+            "children": []
+          },
+          {
+            "heading": "MLPerf Inference v2.1 (submission 08/05/2022)",
+            "text": "Use the r2.1 branch (\ngit checkout r2.1\n) if you want to submit or reproduce v2.1 results.\nSee the individual Readme files in the reference app for details.\nmodel\nreference app\nframework\ndataset\ncategory\nresnet50-v1.5\nvision/classification_and_detection\ntensorflow, onnx\nimagenet2012\nedge,datacenter\nretinanet 800x800\nvision/classification_and_detection\npytorch, onnx\nopenimages resized to 800x800\nedge,datacenter\nbert\nlanguage/bert\ntensorflow, pytorch, onnx\nsquad-1.1\nedge,datacenter\ndlrm\nrecommendation/dlrm\npytorch, tensorflow\nCriteo Terabyte\ndatacenter\n3d-unet\nvision/medical_imaging/3d-unet-kits19\npytorch, tensorflow, onnx\nKiTS19\nedge,datacenter\nrnnt\nspeech_recognition/rnnt\npytorch\nOpenSLR LibriSpeech Corpus\nedge,datacenter",
+            "children": []
+          },
+          {
+            "heading": "MLPerf Inference v2.0 (submission 02/25/2022)",
+            "text": "Use the r2.0 branch (\ngit checkout r2.0\n) if you want to submit or reproduce v2.0 results.\nSee the individual Readme files in the reference app for details.\nmodel\nreference app\nframework\ndataset\ncategory\nresnet50-v1.5\nvision/classification_and_detection\ntensorflow, onnx\nimagenet2012\nedge,datacenter\nssd-mobilenet 300x300\nvision/classification_and_detection\ntensorflow, pytorch, onnx\ncoco resized to 300x300\nedge\nssd-resnet34 1200x1200\nvision/classification_and_detection\ntensorflow, pytorch, onnx\ncoco resized to 1200x1200\nedge,datacenter\nbert\nlanguage/bert\ntensorflow, pytorch, onnx\nsquad-1.1\nedge,datacenter\ndlrm\nrecommendation/dlrm\npytorch, tensorflow\nCriteo Terabyte\ndatacenter\n3d-unet\nvision/medical_imaging/3d-unet-kits19\npytorch, tensorflow, onnx\nKiTS19\nedge,datacenter\nrnnt\nspeech_recognition/rnnt\npytorch\nOpenSLR LibriSpeech Corpus\nedge,datacenter",
+            "children": []
+          },
+          {
+            "heading": "MLPerf Inference v1.1 (submission 08/13/2021)",
+            "text": "Use the r1.1 branch (\ngit checkout r1.1\n) if you want to submit or reproduce v1.1 results.\nSee the individual Readme files in the reference app for details.\nmodel\nreference app\nframework\ndataset\ncategory\nresnet50-v1.5\nvision/classification_and_detection\ntensorflow, onnx\nimagenet2012\nedge,datacenter\nssd-mobilenet 300x300\nvision/classification_and_detection\ntensorflow, pytorch, onnx\ncoco resized to 300x300\nedge\nssd-resnet34 1200x1200\nvision/classification_and_detection\ntensorflow, pytorch, onnx\ncoco resized to 1200x1200\nedge,datacenter\nbert\nlanguage/bert\ntensorflow, pytorch, onnx\nsquad-1.1\nedge,datacenter\ndlrm\nrecommendation/dlrm\npytorch, tensorflow\nCriteo Terabyte\ndatacenter\n3d-unet\nvision/medical_imaging/3d-unet\npytorch, tensorflow(?), onnx(?)\nBraTS 2019\nedge,datacenter\nrnnt\nspeech_recognition/rnnt\npytorch\nOpenSLR LibriSpeech Corpus\nedge,datacenter",
+            "children": []
+          },
+          {
+            "heading": "MLPerf Inference v1.0 (submission 03/19/2021)",
+            "text": "Use the r1.0 branch (\ngit checkout r1.0\n) if you want to submit or reproduce v1.0 results.\nSee the individual Readme files in the reference app for details.\nmodel\nreference app\nframework\ndataset\ncategory\nresnet50-v1.5\nvision/classification_and_detection\ntensorflow, onnx\nimagenet2012\nedge,datacenter\nssd-mobilenet 300x300\nvision/classification_and_detection\ntensorflow, pytorch, onnx\ncoco resized to 300x300\nedge\nssd-resnet34 1200x1200\nvision/classification_and_detection\ntensorflow, pytorch, onnx\ncoco resized to 1200x1200\nedge,datacenter\nbert\nlanguage/bert\ntensorflow, pytorch, onnx\nsquad-1.1\nedge,datacenter\ndlrm\nrecommendation/dlrm\npytorch, tensorflow(?)\nCriteo Terabyte\ndatacenter\n3d-unet\nvision/medical_imaging/3d-unet\npytorch, tensorflow(?), onnx(?)\nBraTS 2019\nedge,datacenter\nrnnt\nspeech_recognition/rnnt\npytorch\nOpenSLR LibriSpeech Corpus\nedge,datacenter",
+            "children": []
+          },
+          {
+            "heading": "MLPerf Inference v0.7 (submission 9/18/2020)",
+            "text": "Use the r0.7 branch (\ngit checkout r0.7\n) if you want to submit or reproduce v0.7 results.\nSee the individual Readme files in the reference app for details.\nmodel\nreference app\nframework\ndataset\nresnet50-v1.5\nvision/classification_and_detection\ntensorflow, pytorch, onnx\nimagenet2012\nssd-mobilenet 300x300\nvision/classification_and_detection\ntensorflow, pytorch, onnx\ncoco resized to 300x300\nssd-resnet34 1200x1200\nvision/classification_and_detection\ntensorflow, pytorch, onnx\ncoco resized to 1200x1200\nbert\nlanguage/bert\ntensorflow, pytorch, onnx\nsquad-1.1\ndlrm\nrecommendation/dlrm\npytorch, tensorflow(?), onnx(?)\nCriteo Terabyte\n3d-unet\nvision/medical_imaging/3d-unet\npytorch, tensorflow(?), onnx(?)\nBraTS 2019\nrnnt\nspeech_recognition/rnnt\npytorch\nOpenSLR LibriSpeech Corpus",
+            "children": []
+          },
+          {
+            "heading": "MLPerf Inference v0.5",
+            "text": "Use the r0.5 branch (\ngit checkout r0.5\n) if you want to reproduce v0.5 results.\nSee the individual Readme files in the reference app for details.\nmodel\nreference app\nframework\ndataset\nresnet50-v1.5\nv0.5/classification_and_detection\ntensorflow, pytorch, onnx\nimagenet2012\nmobilenet-v1\nv0.5/classification_and_detection\ntensorflow, pytorch, onnx\nimagenet2012\nssd-mobilenet 300x300\nv0.5/classification_and_detection\ntensorflow, pytorch, onnx\ncoco resized to 300x300\nssd-resnet34 1200x1200\nv0.5/classification_and_detection\ntensorflow, pytorch, onnx\ncoco resized to 1200x1200\ngnmt\nv0.5/translation/gnmt/\ntensorflow, pytorch\nSee Readme",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": "Reference implementations of MLPerf™ inference benchmarks",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-11-14T00:40:05.024052Z"
+  }
+}

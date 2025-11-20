@@ -1,0 +1,102 @@
+{
+  "name": "tracing",
+  "url": "https://github.com/furiosa-ai/tracing",
+  "visibility": "public",
+  "readme": {
+    "title": "The master branch is the pre-release, development version of tracing. Please see the v0.1.x branch for the versions of tracing released to crates.io.",
+    "sections": [
+      {
+        "heading": "The master branch is the pre-release, development version of tracing . Please see the v0.1.x branch for the versions of tracing released to crates.io.",
+        "text": "",
+        "children": [
+          {
+            "heading": "Overview",
+            "text": "tracing\nis a framework for instrumenting Rust programs to collect\nstructured, event-based diagnostic information.\ntracing\nis maintained by the\nTokio project, but does\nnot\nrequire the\ntokio\nruntime to be used.",
+            "children": []
+          },
+          {
+            "heading": "Usage",
+            "text": "",
+            "children": [
+              {
+                "heading": "In Applications",
+                "text": "In order to record trace events, executables have to use a collector\nimplementation compatible with\ntracing\n. A collector implements a way of\ncollecting trace data, such as by logging it to standard output.\ntracing-subscriber\n's\nfmt\nmodule\nprovides\na collector for logging traces with reasonable defaults. Additionally,\ntracing-subscriber\nis able to consume messages emitted by\nlog\n-instrumented\nlibraries and modules.\nTo use\ntracing-subscriber\n, add the following to your\nCargo.toml\n:\n[\ndependencies\n]\ntracing\n=\n\"\n0.1\n\"\ntracing-subscriber\n=\n\"\n0.2\n\"\nThen create and install a collector, for example using\ninit()\n:\nuse\ntracing\n::\ninfo\n;\nuse\ntracing_subscriber\n;\nfn\nmain\n(\n)\n{\n// install global collector configured based on RUST_LOG env var.\ntracing_subscriber\n::\nfmt\n::\ninit\n(\n)\n;\nlet\nnumber_of_yaks =\n3\n;\n// this creates a new event, outside of any spans.\ninfo\n!\n(\nnumber_of_yaks\n,\n\"preparing to shave yaks\"\n)\n;\nlet\nnumber_shaved = yak_shave\n::\nshave_all\n(\nnumber_of_yaks\n)\n;\ninfo\n!\n(\nall_yaks_shaved = number_shaved == number_of_yaks\n,\n\"yak shaving completed.\"\n)\n;\n}\nUsing\ninit()\ncalls\nset_global_default()\nso this collector will be used\nas the default in all threads for the remainder of the duration of the\nprogram, similar to how loggers work in the\nlog\ncrate.\nFor more control, a collector can be built in stages and not set globally,\nbut instead used to locally override the default collector. For example:\nuse\ntracing\n::\n{\ninfo\n,\nLevel\n}\n;\nuse\ntracing_subscriber\n;\nfn\nmain\n(\n)\n{\nlet\ncollector = tracing_subscriber\n::\nfmt\n(\n)\n// filter spans/events with level TRACE or higher.\n.\nwith_max_level\n(\nLevel\n::\nTRACE\n)\n// build but do not install the subscriber.\n.\nfinish\n(\n)\n;\ntracing\n::\ncollect\n::\nwith_default\n(\ncollector\n,\n||\n{\ninfo\n!\n(\n\"This will be logged to stdout\"\n)\n;\n}\n)\n;\ninfo\n!\n(\n\"This will _not_ be logged to stdout\"\n)\n;\n}\nAny trace events generated outside the context of a collector will not be collected.\nThis approach allows trace data to be collected by multiple collectors\nwithin different contexts in the program. Note that the override only applies to the\ncurrently executing thread; other threads will not see the change from with_default.\nOnce a collector has been set, instrumentation points may be added to the\nexecutable using the\ntracing\ncrate's macros.",
+                "children": []
+              },
+              {
+                "heading": "In Libraries",
+                "text": "Libraries should only rely on the\ntracing\ncrate and use the provided macros\nand types to collect whatever information might be useful to downstream consumers.\nuse\nstd\n::\n{\nerror\n::\nError\n,\nio\n}\n;\nuse\ntracing\n::\n{\ndebug\n,\nerror\n,\ninfo\n,\nspan\n,\nwarn\n,\nLevel\n}\n;\n// the `#[tracing::instrument]` attribute creates and enters a span\n// every time the instrumented function is called. The span is named after\n// the function or method. Parameters passed to the function are recorded as fields.\n#\n[\ntracing\n::\ninstrument\n]\npub\nfn\nshave\n(\nyak\n:\nusize\n)\n->\nResult\n<\n(\n)\n,\nBox\n<\ndyn\nError\n+\n'\nstatic\n>\n>\n{\n// this creates an event at the DEBUG level with two fields:\n// - `excitement`, with the key \"excitement\" and the value \"yay!\"\n// - `message`, with the key \"message\" and the value \"hello! I'm gonna shave a yak.\"\n//\n// unlike other fields, `message`'s shorthand initialization is just the string itself.\ndebug\n!\n(\nexcitement =\n\"yay!\"\n,\n\"hello! I'm gonna shave a yak.\"\n)\n;\nif\nyak ==\n3\n{\nwarn\n!\n(\n\"could not locate yak!\"\n)\n;\n// note that this is intended to demonstrate `tracing`'s features, not idiomatic\n// error handling! in a library or application, you should consider returning\n// a dedicated `YakError`. libraries like snafu or thiserror make this easy.\nreturn\nErr\n(\nio\n::\nError\n::\nnew\n(\nio\n::\nErrorKind\n::\nOther\n,\n\"shaving yak failed!\"\n)\n.\ninto\n(\n)\n)\n;\n}\nelse\n{\ndebug\n!\n(\n\"yak shaved successfully\"\n)\n;\n}\nOk\n(\n(\n)\n)\n}\npub\nfn\nshave_all\n(\nyaks\n:\nusize\n)\n->\nusize\n{\n// Constructs a new span named \"shaving_yaks\" at the TRACE level,\n// and a field whose key is \"yaks\". This is equivalent to writing:\n//\n// let span = span!(Level::TRACE, \"shaving_yaks\", yaks = yaks);\n//\n// local variables (`yaks`) can be used as field values\n// without an assignment, similar to struct initializers.\nlet\nspan =\nspan\n!\n(\nLevel\n::\nTRACE\n,\n\"shaving_yaks\"\n,\nyaks\n)\n;\nlet\n_enter = span\n.\nenter\n(\n)\n;\ninfo\n!\n(\n\"shaving yaks\"\n)\n;\nlet\nmut\nyaks_shaved =\n0\n;\nfor\nyak\nin\n1\n..=yaks\n{\nlet\nres =\nshave\n(\nyak\n)\n;\ndebug\n!\n(\nyak\n,\nshaved = res\n.\nis_ok\n(\n)\n)\n;\nif\nlet\nErr\n(\nref\nerror\n)\n= res\n{\n// Like spans, events can also use the field initialization shorthand.\n// In this instance, `yak` is the field being initialized.\nerror\n!\n(\nyak\n,\nerror = error\n.\nas_ref\n(\n)\n,\n\"failed to shave yak!\"\n)\n;\n}\nelse\n{\nyaks_shaved +=\n1\n;\n}\ndebug\n!\n(\nyaks_shaved\n)\n;\n}\nyaks_shaved\n}\n[\ndependencies\n]\ntracing\n=\n\"\n0.1\n\"\nNote: Libraries should\nNOT\ninstall a collector by using a method that calls\nset_global_default()\n, as this will cause conflicts when executables try to\nset the default later.",
+                "children": []
+              },
+              {
+                "heading": "In Asynchronous Code",
+                "text": "To trace\nasync fn\ns, the preferred method is using the\n#[instrument]\nattribute:\nuse\ntracing\n::\n{\ninfo\n,\ninstrument\n}\n;\nuse\ntokio\n::\n{\nio\n::\nAsyncWriteExt\n,\nnet\n::\nTcpStream\n}\n;\nuse\nstd\n::\nio\n;\n#\n[\ninstrument\n]\nasync\nfn\nwrite\n(\nstream\n:\n&\nmut\nTcpStream\n)\n-> io\n::\nResult\n<\nusize\n>\n{\nlet\nresult = stream\n.\nwrite\n(\nb\"hello world\n\\n\n\"\n)\n.\nawait\n;\ninfo\n!\n(\n\"wrote to stream; success={:?}\"\n,\nresult\n.\nis_ok\n(\n)\n)\n;\nresult\n}\nSpecial handling is needed for the general case of code using\nstd::future::Future\nor blocks with\nasync\n/\nawait\n, as the\nfollowing example\nwill not\nwork:\nasync\n{\nlet\n_s = span\n.\nenter\n(\n)\n;\n// ...\n}\nThe span guard\n_s\nwill not exit until the future generated by the\nasync\nblock is complete.\nSince futures and spans can be entered and exited\nmultiple\ntimes without them completing,\nthe span remains entered for as long as the future exists, rather than being entered only when\nit is polled, leading to very confusing and incorrect output.\nFor more details, see\nthe documentation on closing spans\n.\nThis problem can be solved using the\nFuture::instrument\ncombinator:\nuse\ntracing\n::\nInstrument\n;\nlet\nmy_future =\nasync\n{\n// ...\n}\n;\nmy_future\n.\ninstrument\n(\ntracing\n::\ninfo_span!\n(\n\"my_future\"\n)\n)\n.\nawait\nFuture::instrument\nattaches a span to the future, ensuring that the span's lifetime\nis as long as the future's.\nUnder the hood, the\n#[instrument]\nmacro performs same the explicit span\nattachment that\nFuture::instrument\ndoes.",
+                "children": []
+              }
+            ]
+          },
+          {
+            "heading": "Supported Rust Versions",
+            "text": "Tracing is built against the latest stable release. The minimum supported\nversion is 1.49. The current Tracing version is not guaranteed to build on Rust\nversions earlier than the minimum supported version.\nTracing follows the same compiler support policies as the rest of the Tokio\nproject. The current stable Rust compiler and the three most recent minor\nversions before it will always be supported. For example, if the current stable\ncompiler version is 1.45, the minimum supported version will not be increased\npast 1.42, three minor versions prior. Increasing the minimum supported compiler\nversion is not considered a semver breaking change as long as doing so complies\nwith this policy.",
+            "children": []
+          },
+          {
+            "heading": "Getting Help",
+            "text": "First, see if the answer to your question can be found in the API documentation.\nIf the answer is not there, there is an active community in\nthe\nTracing Discord channel\n. We would be happy to try to answer your\nquestion. Last, if that doesn't work, try opening an\nissue\nwith the question.",
+            "children": []
+          },
+          {
+            "heading": "Contributing",
+            "text": "🎈 Thanks for your help improving the project! We are so happy to have\nyou! We have a\ncontributing guide\nto help you get involved in the Tracing\nproject.",
+            "children": []
+          },
+          {
+            "heading": "Project layout",
+            "text": "The\ntracing\ncrate contains the primary\ninstrumentation\nAPI, used for\ninstrumenting libraries and applications to emit trace data. The\ntracing-core\ncrate contains the\ncore\nAPI primitives on which the rest of\ntracing\nis\ninstrumented. Authors of trace subscribers may depend on\ntracing-core\n, which\nguarantees a higher level of stability.\nAdditionally, this repository contains several compatibility and utility\nlibraries built on top of\ntracing\n. Some of these crates are in a pre-release\nstate, and are less stable than the\ntracing\nand\ntracing-core\ncrates.\nThe crates included as part of Tracing are:\ntracing-futures\n: Utilities for instrumenting\nfutures\n.\n(\ncrates.io\n|\ndocs\n)\ntracing-macros\n: Experimental macros for emitting trace events (unstable).\ntracing-attributes\n: Procedural macro attributes for automatically\ninstrumenting functions. (\ncrates.io\n|\ndocs\n)\ntracing-log\n: Compatibility with the\nlog\ncrate (unstable).\ntracing-opentelemetry\n: Provides a layer that connects spans from multiple\nsystems into a trace and emits them to\nOpenTelemetry\n-compatible distributed\ntracing systems for processing and visualization.\n(\ncrates.io\n|\ndocs\n)\ntracing-serde\n: A compatibility layer for serializing trace data with\nserde\n(unstable).\ntracing-subscriber\n: Collector implementations, and utilities for\nimplementing and composing\nCollector\ns.\n(\ncrates.io\n|\ndocs\n)\ntracing-tower\n: Compatibility with the\ntower\necosystem (unstable).\ntracing-appender\n: Utilities for outputting tracing data, including a file appender\nand non-blocking writer. (\ncrates.io\n|\ndocs\n)\ntracing-error\n: Provides\nSpanTrace\n, a type for instrumenting errors with\ntracing spans\ntracing-flame\n; Provides a layer for generating flame graphs based on\ntracing span entry / exit events.\ntracing-journald\n: Provides a layer for recording events to the\nLinux\njournald\nservice, preserving structured data.",
+            "children": []
+          },
+          {
+            "heading": "Related Crates",
+            "text": "In addition to this repository, here are also several third-party crates which\nare not maintained by the\ntokio\nproject. These include:\ntracing-timing\nimplements inter-event timing metrics on top of\ntracing\n.\nIt provides a subscriber that records the time elapsed between pairs of\ntracing\nevents and generates histograms.\ntracing-honeycomb\nProvides a layer that reports traces spanning multiple machines to\nhoneycomb.io\n. Backed by\ntracing-distributed\n.\ntracing-distributed\nProvides a generic implementation of a layer that reports traces spanning multiple machines to some backend.\ntracing-actix-web\nprovides\ntracing\nintegration for the\nactix-web\nweb framework.\ntracing-actix\nprovides\ntracing\nintegration for the\nactix\nactor\nframework.\ntracing-gelf\nimplements a subscriber for exporting traces in Greylog\nGELF format.\ntracing-coz\nprovides integration with the\ncoz\ncausal profiler\n(Linux-only).\ntracing-bunyan-formatter\nprovides a layer implementation that reports events and spans in\nbunyan\nformat, enriched with timing information.\ntide-tracing\nprovides a\ntide\nmiddleware to trace all incoming requests and responses.\ncolor-spantrace\nprovides a formatter for rendering span traces in the\nstyle of\ncolor-backtrace\ncolor-eyre\nprovides customized panic and eyre report handlers for\neyre::Report\nfor capturing span traces and backtraces with new errors and\npretty printing them.\nspandoc\nprovides a proc macro for constructing spans from doc comments\ninside\nof functions.\ntracing-wasm\nprovides a\nCollector\n/\nSubscriber\nimplementation that reports\nevents and spans via browser\nconsole.log\nand\nUser Timing API (\nwindow.performance\n)\n.\ntest-log\ntakes care of initializing\ntracing\nfor tests, based on\nenvironment variables with an\nenv_logger\ncompatible syntax.\ntracing-unwrap\nprovides convenience methods to report failed unwraps on\nResult\nor\nOption\ntypes to a\nCollector\n.\ndiesel-tracing\nprovides integration with\ndiesel\ndatabase connections.\ntracing-tracy\nprovides a way to collect\nTracy\nprofiles in instrumented\napplications.\ntracing-elastic-apm\nprovides a layer for reporting traces to\nElastic APM\n.\ntracing-etw\nprovides a layer for emitting Windows\nETW\nevents.\nsentry-tracing\nprovides a layer for reporting events and traces to\nSentry\n.\ntracing-forest\nprovides a subscriber that preserves contextual coherence by\ngrouping together logs from the same spans during writing.\ntracing-loki\nprovides a layer for shipping logs to\nGrafana Loki\n.\ntracing-logfmt\nprovides a layer that formats events and spans into the logfmt format.\n(if you're the maintainer of a\ntracing\necosystem crate not in this list,\nplease let us know!)\nNote:\nthat some of the ecosystem crates are currently unreleased and\nundergoing active development. They may be less stable than\ntracing\nand\ntracing-core\n.",
+            "children": []
+          },
+          {
+            "heading": "External Resources",
+            "text": "This is a list of links to blog posts, conference talks, and tutorials about\nTracing.",
+            "children": [
+              {
+                "heading": "Blog Posts",
+                "text": "Diagnostics with Tracing\non the Tokio blog, August 2019\nProduction-Grade Logging in Rust Applications\n, November 2020\nCustom Logging in Rust using\ntracing\nand\ntracing-subscriber\n, part 1\nand\npart 2\n, October 2021",
+                "children": []
+              },
+              {
+                "heading": "Talks",
+                "text": "Bay Area Rust Meetup talk and Q&A\n, March 2019\nRustConf 2019 talk\nand\nslides\n, August 2019\nAre we observable yet? @ RustyDays talk\nand\nslides\n, August 2020\nHelp us expand this list! If you've written or spoken about Tracing, or\nknow of resources that aren't listed, please open a pull request adding them.",
+                "children": []
+              }
+            ]
+          },
+          {
+            "heading": "License",
+            "text": "This project is licensed under the\nMIT license\n.",
+            "children": [
+              {
+                "heading": "Contribution",
+                "text": "Unless you explicitly state otherwise, any contribution intentionally submitted\nfor inclusion in Tracing by you, shall be licensed as MIT, without any additional\nterms or conditions.",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": "Application level tracing for Rust.",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-11-14T00:40:41.270471Z"
+  }
+}

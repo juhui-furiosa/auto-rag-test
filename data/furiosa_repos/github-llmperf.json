@@ -1,0 +1,141 @@
+{
+  "name": "llmperf",
+  "url": "https://github.com/furiosa-ai/llmperf",
+  "visibility": "public",
+  "readme": {
+    "title": "LLMPerf",
+    "sections": [
+      {
+        "heading": "LLMPerf",
+        "text": "A Tool for evaulation the performance of LLM APIs.",
+        "children": []
+      },
+      {
+        "heading": "Installation",
+        "text": "git clone https://github.com/ray-project/llmperf.git\ncd\nllmperf\npip install -e\n.",
+        "children": []
+      },
+      {
+        "heading": "Basic Usage",
+        "text": "We implement 2 tests for evaluating LLMs: a load test to check for performance and a correctness test to check for correctness.",
+        "children": [
+          {
+            "heading": "Load test",
+            "text": "The load test spawns a number of concurrent requests to the LLM API and measures the inter-token latency and generation throughput per request and across concurrent requests. The prompt that is sent with each request is of the format:\nRandomly stream lines from the following text. Don't generate eos tokens:\nLINE 1,\nLINE 2,\nLINE 3,\n...\nWhere the lines are randomly sampled from a collection of lines from Shakespeare sonnets. Tokens are counted using the\nLlamaTokenizer\nregardless of which LLM API is being tested. This is to ensure that the prompts are consistent across different LLM APIs.\nTo run the most basic load test you can the token_benchmark_ray script.",
+            "children": [
+              {
+                "heading": "Caveats and Disclaimers",
+                "text": "The endpoints provider backend might vary widely, so this is not a reflection on how the software runs on a particular hardware.\nThe results may vary with time of day.\nThe results may vary with the load.\nThe results may not correlate with users’ workloads.",
+                "children": []
+              },
+              {
+                "heading": "OpenAI Compatible APIs",
+                "text": "export\nOPENAI_API_KEY=secret_abcdefg\nexport\nOPENAI_API_BASE=\n\"\nhttps://api.endpoints.anyscale.com/v1\n\"\npython token_benchmark_ray.py \\\n--model\n\"\nmeta-llama/Llama-2-7b-chat-hf\n\"\n\\\n--mean-input-tokens 550 \\\n--stddev-input-tokens 150 \\\n--mean-output-tokens 150 \\\n--stddev-output-tokens 10 \\\n--max-num-completed-requests 2 \\\n--timeout 600 \\\n--num-concurrent-requests 1 \\\n--results-dir\n\"\nresult_outputs\n\"\n\\\n--llm-api openai \\\n--additional-sampling-params\n'\n{}\n'",
+                "children": []
+              },
+              {
+                "heading": "Anthropic",
+                "text": "export\nANTHROPIC_API_KEY=secret_abcdefg\n\npython token_benchmark_ray.py \\\n--model\n\"\nclaude-2\n\"\n\\\n--mean-input-tokens 550 \\\n--stddev-input-tokens 150 \\\n--mean-output-tokens 150 \\\n--stddev-output-tokens 10 \\\n--max-num-completed-requests 2 \\\n--timeout 600 \\\n--num-concurrent-requests 1 \\\n--results-dir\n\"\nresult_outputs\n\"\n\\\n--llm-api anthropic \\\n--additional-sampling-params\n'\n{}\n'",
+                "children": []
+              },
+              {
+                "heading": "TogetherAI",
+                "text": "export\nTOGETHERAI_API_KEY=\n\"\nYOUR_TOGETHER_KEY\n\"\npython token_benchmark_ray.py \\\n--model\n\"\ntogether_ai/togethercomputer/CodeLlama-7b-Instruct\n\"\n\\\n--mean-input-tokens 550 \\\n--stddev-input-tokens 150 \\\n--mean-output-tokens 150 \\\n--stddev-output-tokens 10 \\\n--max-num-completed-requests 2 \\\n--timeout 600 \\\n--num-concurrent-requests 1 \\\n--results-dir\n\"\nresult_outputs\n\"\n\\\n--llm-api\n\"\nlitellm\n\"\n\\\n--additional-sampling-params\n'\n{}\n'",
+                "children": []
+              },
+              {
+                "heading": "Hugging Face",
+                "text": "export\nHUGGINGFACE_API_KEY=\n\"\nYOUR_HUGGINGFACE_API_KEY\n\"\nexport\nHUGGINGFACE_API_BASE=\n\"\nYOUR_HUGGINGFACE_API_ENDPOINT\n\"\npython token_benchmark_ray.py \\\n--model\n\"\nhuggingface/meta-llama/Llama-2-7b-chat-hf\n\"\n\\\n--mean-input-tokens 550 \\\n--stddev-input-tokens 150 \\\n--mean-output-tokens 150 \\\n--stddev-output-tokens 10 \\\n--max-num-completed-requests 2 \\\n--timeout 600 \\\n--num-concurrent-requests 1 \\\n--results-dir\n\"\nresult_outputs\n\"\n\\\n--llm-api\n\"\nlitellm\n\"\n\\\n--additional-sampling-params\n'\n{}\n'",
+                "children": []
+              },
+              {
+                "heading": "LiteLLM",
+                "text": "LLMPerf can use LiteLLM to send prompts to LLM APIs. To see the environment variables to set for the provider and arguments that one should set for model and additional-sampling-params.\nsee the\nLiteLLM Provider Documentation\n.\npython token_benchmark_ray.py \\\n--model\n\"\nmeta-llama/Llama-2-7b-chat-hf\n\"\n\\\n--mean-input-tokens 550 \\\n--stddev-input-tokens 150 \\\n--mean-output-tokens 150 \\\n--stddev-output-tokens 10 \\\n--max-num-completed-requests 2 \\\n--timeout 600 \\\n--num-concurrent-requests 1 \\\n--results-dir\n\"\nresult_outputs\n\"\n\\\n--llm-api\n\"\nlitellm\n\"\n\\\n--additional-sampling-params\n'\n{}\n'",
+                "children": []
+              },
+              {
+                "heading": "Vertex AI",
+                "text": "Here, --model is used for logging, not for selecting the model. The model is specified in the Vertex AI Endpoint ID.\nThe GCLOUD_ACCESS_TOKEN needs to be somewhat regularly set, as the token generated by\ngcloud auth print-access-token\nexpires after 15 minutes or so.\nVertex AI doesn't return the total number of tokens that are generated by their endpoint, so tokens are counted using the LLama tokenizer.\ngcloud auth application-default login\ngcloud config\nset\nproject YOUR_PROJECT_ID\nexport\nGCLOUD_ACCESS_TOKEN=\n$(\ngcloud auth print-access-token\n)\nexport\nGCLOUD_PROJECT_ID=YOUR_PROJECT_ID\nexport\nGCLOUD_REGION=YOUR_REGION\nexport\nVERTEXAI_ENDPOINT_ID=YOUR_ENDPOINT_ID\n\npython token_benchmark_ray.py \\\n--model\n\"\nmeta-llama/Llama-2-7b-chat-hf\n\"\n\\\n--mean-input-tokens 550 \\\n--stddev-input-tokens 150 \\\n--mean-output-tokens 150 \\\n--stddev-output-tokens 10 \\\n--max-num-completed-requests 2 \\\n--timeout 600 \\\n--num-concurrent-requests 1 \\\n--results-dir\n\"\nresult_outputs\n\"\n\\\n--llm-api\n\"\nvertexai\n\"\n\\\n--additional-sampling-params\n'\n{}\n'",
+                "children": []
+              },
+              {
+                "heading": "SageMaker",
+                "text": "SageMaker doesn't return the total number of tokens that are generated by their endpoint, so tokens are counted using the LLama tokenizer.\nexport\nAWS_ACCESS_KEY_ID=\n\"\nYOUR_ACCESS_KEY_ID\n\"\nexport\nAWS_SECRET_ACCESS_KEY=\n\"\nYOUR_SECRET_ACCESS_KEY\n\"\ns\nexport\nAWS_SESSION_TOKEN=\n\"\nYOUR_SESSION_TOKEN\n\"\nexport\nAWS_REGION_NAME=\n\"\nYOUR_ENDPOINTS_REGION_NAME\n\"\npython llm_correctness.py \\\n--model\n\"\nllama-2-7b\n\"\n\\\n--llm-api\n\"\nsagemaker\n\"\n\\\n--max-num-completed-requests 2 \\\n--timeout 600 \\\n--num-concurrent-requests 1 \\\n--results-dir\n\"\nresult_outputs\n\"\n\\\nsee\npython token_benchmark_ray.py --help\nfor more details on the arguments.",
+                "children": []
+              }
+            ]
+          },
+          {
+            "heading": "Correctness Test",
+            "text": "The correctness test spawns a number of concurrent requests to the LLM API with the following format:\nConvert the following sequence of words into a number: {random_number_in_word_format}. Output just your final answer.\nwhere random_number_in_word_format could be for example \"one hundred and twenty three\". The test then checks that the response contains that number in digit format which in this case would be 123.\nThe test does this for a number of randomly generated numbers and reports the number of responses that contain a mismatch.\nTo run the most basic correctness test you can run the the llm_correctness.py script.",
+            "children": [
+              {
+                "heading": "OpenAI Compatible APIs",
+                "text": "export\nOPENAI_API_KEY=secret_abcdefg\nexport\nOPENAI_API_BASE=https://console.endpoints.anyscale.com/m/v1\n\npython llm_correctness.py \\\n--model\n\"\nmeta-llama/Llama-2-7b-chat-hf\n\"\n\\\n--max-num-completed-requests 150 \\\n--timeout 600 \\\n--num-concurrent-requests 10 \\\n--results-dir\n\"\nresult_outputs\n\"",
+                "children": []
+              },
+              {
+                "heading": "Anthropic",
+                "text": "export\nANTHROPIC_API_KEY=secret_abcdefg\n\npython llm_correctness.py \\\n--model\n\"\nclaude-2\n\"\n\\\n--llm-api\n\"\nanthropic\n\"\n\\\n--max-num-completed-requests 5 \\\n--timeout 600 \\\n--num-concurrent-requests 1 \\\n--results-dir\n\"\nresult_outputs\n\"",
+                "children": []
+              },
+              {
+                "heading": "TogetherAI",
+                "text": "export\nTOGETHERAI_API_KEY=\n\"\nYOUR_TOGETHER_KEY\n\"\npython llm_correctness.py \\\n--model\n\"\ntogether_ai/togethercomputer/CodeLlama-7b-Instruct\n\"\n\\\n--llm-api\n\"\nlitellm\n\"\n\\\n--max-num-completed-requests 2 \\\n--timeout 600 \\\n--num-concurrent-requests 1 \\\n--results-dir\n\"\nresult_outputs\n\"\n\\",
+                "children": []
+              },
+              {
+                "heading": "Hugging Face",
+                "text": "export\nHUGGINGFACE_API_KEY=\n\"\nYOUR_HUGGINGFACE_API_KEY\n\"\nexport\nHUGGINGFACE_API_BASE=\n\"\nYOUR_HUGGINGFACE_API_ENDPOINT\n\"\npython llm_correctness.py \\\n--model\n\"\nhuggingface/meta-llama/Llama-2-7b-chat-hf\n\"\n\\\n--llm-api\n\"\nlitellm\n\"\n\\\n--max-num-completed-requests 2 \\\n--timeout 600 \\\n--num-concurrent-requests 1 \\\n--results-dir\n\"\nresult_outputs\n\"\n\\",
+                "children": []
+              },
+              {
+                "heading": "LiteLLM",
+                "text": "LLMPerf can use LiteLLM to send prompts to LLM APIs. To see the environment variables to set for the provider and arguments that one should set for model and additional-sampling-params.\nsee the\nLiteLLM Provider Documentation\n.\npython llm_correctness.py \\\n--model\n\"\nmeta-llama/Llama-2-7b-chat-hf\n\"\n\\\n--llm-api\n\"\nlitellm\n\"\n\\\n--max-num-completed-requests 2 \\\n--timeout 600 \\\n--num-concurrent-requests 1 \\\n--results-dir\n\"\nresult_outputs\n\"\n\\\nsee\npython llm_correctness.py --help\nfor more details on the arguments.",
+                "children": []
+              },
+              {
+                "heading": "Vertex AI",
+                "text": "Here, --model is used for logging, not for selecting the model. The model is specified in the Vertex AI Endpoint ID.\nThe GCLOUD_ACCESS_TOKEN needs to be somewhat regularly set, as the token generated by\ngcloud auth print-access-token\nexpires after 15 minutes or so.\nVertex AI doesn't return the total number of tokens that are generated by their endpoint, so tokens are counted using the LLama tokenizer.\ngcloud auth application-default login\ngcloud config\nset\nproject YOUR_PROJECT_ID\nexport\nGCLOUD_ACCESS_TOKEN=\n$(\ngcloud auth print-access-token\n)\nexport\nGCLOUD_PROJECT_ID=YOUR_PROJECT_ID\nexport\nGCLOUD_REGION=YOUR_REGION\nexport\nVERTEXAI_ENDPOINT_ID=YOUR_ENDPOINT_ID\n\npython llm_correctness.py \\\n--model\n\"\nmeta-llama/Llama-2-7b-chat-hf\n\"\n\\\n--llm-api\n\"\nvertexai\n\"\n\\\n--max-num-completed-requests 2 \\\n--timeout 600 \\\n--num-concurrent-requests 1 \\\n--results-dir\n\"\nresult_outputs\n\"\n\\",
+                "children": []
+              },
+              {
+                "heading": "SageMaker",
+                "text": "SageMaker doesn't return the total number of tokens that are generated by their endpoint, so tokens are counted using the LLama tokenizer.\nexport\nAWS_ACCESS_KEY_ID=\n\"\nYOUR_ACCESS_KEY_ID\n\"\nexport\nAWS_SECRET_ACCESS_KEY=\n\"\nYOUR_SECRET_ACCESS_KEY\n\"\ns\nexport\nAWS_SESSION_TOKEN=\n\"\nYOUR_SESSION_TOKEN\n\"\nexport\nAWS_REGION_NAME=\n\"\nYOUR_ENDPOINTS_REGION_NAME\n\"\npython llm_correctness.py \\\n--model\n\"\nllama-2-7b\n\"\n\\\n--llm-api\n\"\nsagemaker\n\"\n\\\n--max-num-completed-requests 2 \\\n--timeout 600 \\\n--num-concurrent-requests 1 \\\n--results-dir\n\"\nresult_outputs\n\"\n\\",
+                "children": []
+              }
+            ]
+          },
+          {
+            "heading": "Saving Results",
+            "text": "The results of the load test and correctness test are saved in the results directory specified by the\n--results-dir\nargument. The results are saved in 2 files, one with the summary metrics of the test, and one with metrics from each individual request that is returned.",
+            "children": []
+          }
+        ]
+      },
+      {
+        "heading": "Advanced Usage",
+        "text": "The correctness tests were implemented with the following workflow in mind:\nimport\nray\nfrom\ntransformers\nimport\nLlamaTokenizerFast\nfrom\nllmperf\n.\nray_clients\n.\nopenai_chat_completions_client\nimport\n(\nOpenAIChatCompletionsClient\n,\n)\nfrom\nllmperf\n.\nmodels\nimport\nRequestConfig\nfrom\nllmperf\n.\nrequests_launcher\nimport\nRequestsLauncher\n# Copying the environment variables and passing them to ray.init() is necessary\n# For making any clients work.\nray\n.\ninit\n(\nruntime_env\n=\n{\n\"env_vars\"\n: {\n\"OPENAI_API_BASE\"\n:\n\"https://api.endpoints.anyscale.com/v1\"\n,\n\"OPENAI_API_KEY\"\n:\n\"YOUR_API_KEY\"\n}})\nbase_prompt\n=\n\"hello_world\"\ntokenizer\n=\nLlamaTokenizerFast\n.\nfrom_pretrained\n(\n\"hf-internal-testing/llama-tokenizer\"\n)\nbase_prompt_len\n=\nlen\n(\ntokenizer\n.\nencode\n(\nbase_prompt\n))\nprompt\n=\n(\nbase_prompt\n,\nbase_prompt_len\n)\n# Create a client for spawning requests\nclients\n=\n[\nOpenAIChatCompletionsClient\n.\nremote\n()]\nreq_launcher\n=\nRequestsLauncher\n(\nclients\n)\nreq_config\n=\nRequestConfig\n(\nmodel\n=\n\"meta-llama/Llama-2-7b-chat-hf\"\n,\nprompt\n=\nprompt\n)\nreq_launcher\n.\nlaunch_requests\n(\nreq_config\n)\nresult\n=\nreq_launcher\n.\nget_next_ready\n(\nblock\n=\nTrue\n)\nprint\n(\nresult\n)",
+        "children": []
+      },
+      {
+        "heading": "Implementing New LLM Clients",
+        "text": "To implement a new LLM client, you need to implement the base class\nllmperf.ray_llm_client.LLMClient\nand decorate it as a ray actor.\nfrom\nllmperf\n.\nray_llm_client\nimport\nLLMClient\nimport\nray\n@\nray\n.\nremote\nclass\nCustomLLMClient\n(\nLLMClient\n):\ndef\nllm_request\n(\nself\n,\nrequest_config\n:\nRequestConfig\n)\n->\nTuple\n[\nMetrics\n,\nstr\n,\nRequestConfig\n]:\n\"\"\"Make a single completion request to a LLM API\nReturns:\nMetrics about the performance charateristics of the request.\nThe text generated by the request to the LLM API.\nThe request_config used to make the request. This is mainly for logging purposes.\n\"\"\"\n...",
+        "children": []
+      },
+      {
+        "heading": "Legacy Codebase",
+        "text": "The old LLMPerf code base can be found in the\nllmperf-legacy\nrepo.",
+        "children": []
+      }
+    ]
+  },
+  "metadata": {
+    "description": "LLMPerf is a library for validating and benchmarking LLMs",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-11-14T00:39:39.331197Z"
+  }
+}

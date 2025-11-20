@@ -1,0 +1,55 @@
+{
+  "name": "synstructure",
+  "url": "https://github.com/furiosa-ai/synstructure",
+  "visibility": "public",
+  "readme": {
+    "title": "synstructure",
+    "sections": [
+      {
+        "heading": "synstructure",
+        "text": "NOTE: What follows is an exerpt from the module level documentation. For full\ndetails read the docs on\ndocs.rs\nThis crate provides helper types for matching against enum variants, and\nextracting bindings to each of the fields in the deriving Struct or Enum in\na generic way.\nIf you are writing a\n#[derive]\nwhich needs to perform some operation on\nevery field, then you have come to the right place!",
+        "children": []
+      },
+      {
+        "heading": "Example: WalkFields",
+        "text": "",
+        "children": [
+          {
+            "heading": "Trait Implementation",
+            "text": "pub\ntrait\nWalkFields\n:\nstd\n::\nany\n::\nAny\n{\nfn\nwalk_fields\n(\n&\nself\n,\nwalk\n:\n&\nmut\nFnMut\n(\n&\nWalkFields\n)\n)\n;\n}\nimpl\nWalkFields\nfor\ni32\n{\nfn\nwalk_fields\n(\n&\nself\n,\n_walk\n:\n&\nmut\nFnMut\n(\n&\nWalkFields\n)\n)\n{\n}\n}",
+            "children": []
+          },
+          {
+            "heading": "Custom Derive",
+            "text": "#\n[\nmacro_use\n]\nextern\ncrate\nsynstructure\n;\n#\n[\nmacro_use\n]\nextern\ncrate\nquote\n;\nextern\ncrate\nproc_macro2\n;\nfn\nwalkfields_derive\n(\ns\n:\nsynstructure\n::\nStructure\n)\n-> proc_macro2\n::\nTokenStream\n{\nlet\nbody = s\n.\neach\n(\n|bi|\nquote\n!\n{\nwalk\n(\n#bi\n)\n}\n)\n;\ns\n.\nbound_impl\n(\nquote\n!\n(\nexample_traits\n::\nWalkFields\n)\n,\nquote\n!\n{\nfn\nwalk_fields\n(\n&\nself\n,\nwalk\n:\n&\nmut\nFnMut\n(\n&\nexample_traits\n::\nWalkFields\n)\n)\n{\nmatch\n*\nself\n{\n#body\n}\n}\n}\n)\n}\ndecl_derive\n!\n(\n[\nWalkFields\n]\n=> walkfields_derive\n)\n;\n/*\n* Test Case\n*/\nfn\nmain\n(\n)\n{\ntest_derive\n!\n{\nwalkfields_derive\n{\nenum\nA\n<\nT\n>\n{\nB\n(\ni32\n,\nT\n)\n,\nC\n(\ni32\n)\n,\n}\n}\nexpands to\n{\nconst\n_\n:\n(\n)\n=\n{\nextern\ncrate\nexample_traits\n;\nimpl\n<\nT\n> example_traits\n::\nWalkFields\nfor\nA\n<\nT\n>\nwhere\nT\n:\nexample_traits\n::\nWalkFields\n{\nfn\nwalk_fields\n(\n&\nself\n,\nwalk\n:\n&\nmut\nFnMut\n(\n&\nexample_traits\n::\nWalkFields\n)\n)\n{\nmatch\n*\nself\n{\nA\n::\nB\n(\nref __binding_0\n,\nref __binding_1\n,\n)\n=>\n{\n{\nwalk\n(\n__binding_0\n)\n}\n{\nwalk\n(\n__binding_1\n)\n}\n}\nA\n::\nC\n(\nref __binding_0\n,\n)\n=>\n{\n{\nwalk\n(\n__binding_0\n)\n}\n}\n}\n}\n}\n}\n;\n}\n}\n}",
+            "children": []
+          }
+        ]
+      },
+      {
+        "heading": "Example: Interest",
+        "text": "",
+        "children": [
+          {
+            "heading": "Trait Implementation",
+            "text": "pub\ntrait\nInterest\n{\nfn\ninteresting\n(\n&\nself\n)\n->\nbool\n;\n}\nimpl\nInterest\nfor\ni32\n{\nfn\ninteresting\n(\n&\nself\n)\n->\nbool\n{\n*\nself\n>\n0\n}\n}",
+            "children": []
+          },
+          {
+            "heading": "Custom Derive",
+            "text": "#\n[\nmacro_use\n]\nextern\ncrate\nsynstructure\n;\n#\n[\nmacro_use\n]\nextern\ncrate\nquote\n;\nextern\ncrate\nproc_macro2\n;\nfn\ninterest_derive\n(\nmut\ns\n:\nsynstructure\n::\nStructure\n)\n-> proc_macro2\n::\nTokenStream\n{\nlet\nbody = s\n.\nfold\n(\nfalse\n,\n|acc\n,\nbi|\nquote\n!\n{\n#acc || example_traits\n::\nInterest\n::\ninteresting\n(\n#bi\n)\n}\n)\n;\ns\n.\nbound_impl\n(\nquote\n!\n(\nexample_traits\n::\nInterest\n)\n,\nquote\n!\n{\nfn\ninteresting\n(\n&\nself\n)\n->\nbool\n{\nmatch\n*\nself\n{\n#body\n}\n}\n}\n)\n}\ndecl_derive\n!\n(\n[\nInterest\n]\n=> interest_derive\n)\n;\n/*\n* Test Case\n*/\nfn\nmain\n(\n)\n{\ntest_derive\n!\n{\ninterest_derive\n{\nenum\nA\n<\nT\n>\n{\nB\n(\ni32\n,\nT\n)\n,\nC\n(\ni32\n)\n,\n}\n}\nexpands to\n{\nconst\n_\n:\n(\n)\n=\n{\nextern\ncrate\nexample_traits\n;\nimpl\n<\nT\n> example_traits\n::\nInterest\nfor\nA\n<\nT\n>\nwhere\nT\n:\nexample_traits\n::\nInterest\n{\nfn\ninteresting\n(\n&\nself\n)\n->\nbool\n{\nmatch\n*\nself\n{\nA\n::\nB\n(\nref __binding_0\n,\nref __binding_1\n,\n)\n=>\n{\nfalse\n||\n                                    example_traits\n::\nInterest\n::\ninteresting\n(\n__binding_0\n)\n||\n                                    example_traits\n::\nInterest\n::\ninteresting\n(\n__binding_1\n)\n}\nA\n::\nC\n(\nref __binding_0\n,\n)\n=>\n{\nfalse\n||\n                                    example_traits\n::\nInterest\n::\ninteresting\n(\n__binding_0\n)\n}\n}\n}\n}\n}\n;\n}\n}\n}\nFor more example usage, consider investigating the\nabomonation_derive\ncrate,\nwhich makes use of this crate, and is fairly simple.",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": "Utilities for dealing with substructures within syn macros",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-11-14T00:39:07.651528Z"
+  }
+}

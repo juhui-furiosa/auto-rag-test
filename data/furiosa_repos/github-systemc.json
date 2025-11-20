@@ -1,0 +1,65 @@
+{
+  "name": "systemc",
+  "url": "https://github.com/furiosa-ai/systemc",
+  "visibility": "public",
+  "readme": {
+    "title": "SystemC Class Library",
+    "sections": [
+      {
+        "heading": "SystemC Class Library",
+        "text": "",
+        "children": [
+          {
+            "heading": "About SystemC",
+            "text": "SystemC addresses the need for a system design and verification language that\nspans hardware and software.  It is a language built as an ANSI C++ class\nlibrary created for design and verification.  Users worldwide are applying\nSystemC to system-level modeling, abstract analog/mixed-signal modeling,\narchitectural exploration, performance modeling, software development,\nfunctional verification, and high-level synthesis.  The SystemC API and\nits semantics are developed by the\nAccellera Systems Initiative\nand\nformally standardized and governed by the IEEE in the\nIEEE Std. 1666-2023\nstandard.\nThis version of SystemC is the\nreference implementation\nprovided by\nthe\nAccellera Systems Initiative\nand is mainly developed by the following\nAccellera Working Groups\nSystemC Language Working Group\n(LWG)\nSystemC Datatypes Working Group\n(SDTWG)\nIn the event of discrepancies between the behavior of this implementation and\nstatements made in the\nIEEE Std. 1666-2023\nstandard, the IEEE standard\nshall be taken to be definitive.\nIf you would like to contribute to this repository,\nplease check the\nCONTRIBUTING.md\nfile.",
+            "children": [
+              {
+                "heading": "Licensing and Copyright",
+                "text": "See the separate\nLICENSE\nand\nNOTICE\nfiles to determine\nyour rights and responsiblities for using SystemC.",
+                "children": []
+              },
+              {
+                "heading": "User Documentation",
+                "text": "The main documentation of SystemC is the\nIEEE Std. 1666-2023\nStandard SystemC Language Reference Manual\n.\nYou can find additional documentation for this release in the\ndocs\ndirectory, some of which refers to older versions.",
+                "children": []
+              },
+              {
+                "heading": "Installation",
+                "text": "See the separate\nINSTALL.md\nfile that provides system\ninformation and installation instructions.",
+                "children": []
+              },
+              {
+                "heading": "Release Notes",
+                "text": "See the separate\nRELEASENOTES.md\nfile that provides\nup-to-date information about this release of SystemC.",
+                "children": []
+              },
+              {
+                "heading": "SystemC Community",
+                "text": "SystemC community website\nCommunity discussion forum",
+                "children": []
+              }
+            ]
+          },
+          {
+            "heading": "About Accellera SystemC Working Groups",
+            "text": "Accellera's SystemC\nLanguage Working Group\n(SystemC LWG) is one of the\nAccellera Working Groups that produce effective and efficient Electronic\nDesign Automation (EDA) and Intellectual Property (IP) standards for today's\nadvanced IC designs and embedded systems.  The SystemC LWG is responsible for\nthe definition and development of the SystemC and TLM core languages, the\nfoundation on which all other SystemC libraries and functionality are built.\nParticipants of both working groups include member companies and industry\ncontributors.  Technical contributors typically have many years of practical\nexperience with IC and system design as well as developing and using EDA\ntools.",
+            "children": []
+          },
+          {
+            "heading": "About Accellera Systems Initiative",
+            "text": "Accellera Systems Initiative is an independent, not-for profit organization\ndedicated to create, support, promote and advance system-level design,\nmodeling and verification standards for use by the worldwide electronics\nindustry.  The organization accelerates standards development and, as part of\nits ongoing partnership with the IEEE, its standards are contributed to the\nIEEE Standards Association for formal standardization and ongoing change\ncontrol.  For more information, please visit\nwww.accellera.org\n.  Find out\nmore about\nmembership\n.  Follow\n@accellera\non Twitter or to comment,\nplease use\n#accellera\n.\nAccellera, Accellera Systems Initiative and SystemC are trademarks of\nAccellera Systems Initiative Inc.  All other trademarks and trade names\nare the property of their respective owners.",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": "SystemC Reference Implementation",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-11-14T00:40:03.234546Z"
+  }
+}

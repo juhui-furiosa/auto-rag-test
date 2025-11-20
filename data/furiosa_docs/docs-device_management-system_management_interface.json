@@ -1,0 +1,7 @@
+{
+  "title": "Furiosa SMI",
+  "url": "https://developer.furiosa.ai/latest/en/device_management/system_management_interface.html",
+  "version": "2025.3.1",
+  "content": "# Furiosa SMI[#](#furiosa-smi \"Link to this heading\")\n\nFuriosa System Management Interface (furiosa-smi) provides the capability to manage and monitor FuriosaAI NPU products.\n\nThe `furiosa-smi` is command line interface (CLI) version of the interface based on the top of the Furiosa SMI Library.\nThe CLI tool allows users and/or administrators to access npu information, system topology, utilization, and performance data.\nVisit [Furiosa SMI CLI](system_management_interface/furiosa_smi_cli.html#furiosasmicli) page for more information.\n\nThe Furiosa System Management Interface Library provides C-based programmatic interface with Go, Rust, Python bindings.\nIt is designed for developers to integrate the Furiosa NPU into their applications, platforms and infrastructure.\nVisit [Furiosa SMI Library](system_management_interface/furiosa_smi_lib.html#furiosasmilib) page for more information.\n\n* [Furiosa SMI CLI](system_management_interface/furiosa_smi_cli.html)\n* [Furiosa SMI Library](system_management_interface/furiosa_smi_lib.html)",
+  "external_links": []
+}

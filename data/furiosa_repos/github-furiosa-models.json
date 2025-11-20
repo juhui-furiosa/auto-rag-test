@@ -1,0 +1,44 @@
+{
+  "name": "furiosa-models",
+  "url": "https://github.com/furiosa-ai/furiosa-models",
+  "visibility": "public",
+  "readme": {
+    "title": "Furiosa Models",
+    "sections": [
+      {
+        "heading": "Furiosa Models",
+        "text": "furiosa-models\nis an open model zoo project for FuriosaAI NPU.\nIt provides a set of public pre-trained, pre-quantized models for learning and demo purposes or\nfor developing your applications.\nfuriosa-models\nalso includes pre-packaged post/processing utilities, and compiler configurations optimized\nfor FuriosaAI NPU. However, all models are standard ONNX or tflite models,\nand they can run even on CPU and GPU as well.",
+        "children": [
+          {
+            "heading": "Releases",
+            "text": "v0.10.2\n- 2024-05-29\nv0.10.1\n- 2023-11-25\nv0.10.0\n- 2023-08-28\nv0.9.1\n- 2023-05-26\nv0.9.0\n- 2023-05-12\nv0.8.0\n- 2022-11-10",
+            "children": []
+          },
+          {
+            "heading": "Online Documentation",
+            "text": "If you are new, you can start from\nGetting Started\n.\nYou can also find the latest online documents,\nincluding programming guides, API references, and examples from the following:\nFuriosa Models - Latest Documentation\nModel Object\nModel List\nCommand Line Tool\nFuriosa SDK - Tutorial and Code Examples",
+            "children": []
+          },
+          {
+            "heading": "Model List",
+            "text": "The table summarizes all models available in\nfuriosa-models\n. If you visit each model link,\nyou can find details about loading a model, their input and output tensors, pre/post-processing, and usage examples.\nModel\nTask\nSize\nAccuracy\nResNet50\nImage Classification\n25M\n75.618% (ImageNet1K-val)\nEfficientNetB0\nImage Classification\n6.4M\n72.44% (ImageNet1K-val)\nEfficientNetV2-S\nImage Classification\n26M\n83.532% (ImageNet1K-val)\nSSDMobileNet\nObject Detection\n7.2M\nmAP 0.232 (COCO 2017-val)\nSSDResNet34\nObject Detection\n20M\nmAP 0.220 (COCO 2017-val)\nYOLOv5M\nObject Detection\n21M\nmAP 0.272 (Bdd100k-val)\n[1]\nYOLOv5L\nObject Detection\n46M\nmAP 0.284 (Bdd100k-val)\n[1]\nYOLOv7w6Pose\nPose Estimation\n80M\nN/A\n[1]\n: The accuracy of the yolov5 f32 model trained with bdd100k-val dataset, is mAP 0.295 (for yolov5m) and mAP 0.316 (for yolov5l).",
+            "children": []
+          },
+          {
+            "heading": "See Also",
+            "text": "Furiosa Models - Latest Documentation\nFuriosa Models - Github\nFuriosa SDK Documentation",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": "FuriosaAI Model Zoo Project",
+    "license": null,
+    "stars": 12,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2024-05-29T10:17:51Z"
+  }
+}

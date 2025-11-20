@@ -1,0 +1,53 @@
+{
+  "name": "detectron2",
+  "url": "https://github.com/furiosa-ai/detectron2",
+  "visibility": "public",
+  "readme": {
+    "title": "(no title)",
+    "sections": [
+      {
+        "heading": "Learn More about Detectron2",
+        "text": "Explain Like I’m 5: Detectron2\nUsing Machine Learning with Detectron2",
+        "children": []
+      },
+      {
+        "heading": "What's New",
+        "text": "Includes new capabilities such as panoptic segmentation, Densepose, Cascade R-CNN, rotated bounding boxes, PointRend,\nDeepLab, ViTDet, MViTv2 etc.\nUsed as a library to support building\nresearch projects\non top of it.\nModels can be exported to TorchScript format or Caffe2 format for deployment.\nIt\ntrains much faster\n.\nSee our\nblog post\nto see more demos and learn about detectron2.",
+        "children": []
+      },
+      {
+        "heading": "Installation",
+        "text": "See\ninstallation instructions\n.",
+        "children": []
+      },
+      {
+        "heading": "Getting Started",
+        "text": "See\nGetting Started with Detectron2\n,\nand the\nColab Notebook\nto learn about basic usage.\nLearn more at our\ndocumentation\n.\nAnd see\nprojects/\nfor some projects that are built on top of detectron2.",
+        "children": []
+      },
+      {
+        "heading": "Model Zoo and Baselines",
+        "text": "We provide a large set of baseline results and trained models available for download in the\nDetectron2 Model Zoo\n.",
+        "children": []
+      },
+      {
+        "heading": "License",
+        "text": "Detectron2 is released under the\nApache 2.0 license\n.",
+        "children": []
+      },
+      {
+        "heading": "Citing Detectron2",
+        "text": "If you use Detectron2 in your research or wish to refer to the baseline results published in the\nModel Zoo\n, please use the following BibTeX entry.\n@misc\n{\nwu2019detectron2\n,\nauthor\n=\n{\nYuxin Wu and Alexander Kirillov and Francisco Massa and\nWan-Yen Lo and Ross Girshick\n}\n,\ntitle\n=\n{\nDetectron2\n}\n,\nhowpublished\n=\n{\n\\url{https://github.com/facebookresearch/detectron2}\n}\n,\nyear\n=\n{\n2019\n}\n}",
+        "children": []
+      }
+    ]
+  },
+  "metadata": {
+    "description": "Detectron2 is a platform for object detection, segmentation and other visual recognition tasks.",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2022-06-16T03:34:41.000Z"
+  }
+}

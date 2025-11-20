@@ -1,0 +1,44 @@
+{
+  "name": "furiosa-sdk",
+  "url": "https://github.com/furiosa-ai/furiosa-sdk",
+  "visibility": "public",
+  "readme": {
+    "title": "Furiosa SDK",
+    "sections": [
+      {
+        "heading": "Furiosa SDK",
+        "text": "Furiosa™ SDK is a software development kit (SDK) for running deep-neural network inference using FuriosaAI NPU chips. It is a collection of libraries and command line tools including compiler and profiler. It also provides Python bindings that allow users to develop their application easily with abundant Python ecosystem, such as NumPy, Jupyter notebooks and scientific Python packages.",
+        "children": [
+          {
+            "heading": "Documentation",
+            "text": "Furiosa SDK Document (English)\nFuriosa SDK Document (Korean)",
+            "children": []
+          },
+          {
+            "heading": "Installation",
+            "text": "You can install Furiosa SDK with pip.\npip install furiosa-sdk\nYou can install also furiosa-sdk with extra packages (e.g., litmus, quantizer):\npip install\n'\nfuriosa-sdk[litmus,quantizer]\n'\nThe following are the extra packages:\nlitmus: Command line tool to check if a model is compatible with furiosa-sdk\nmodels: Library which provides pretained models for Furiosa NPU\nquantizer: Library which quantizes and optimizes DNN models\nserver: Serving framework enabling a DNN model to provide HTTP/GRPC endpoints\nserving: FastAPI-based Serving Library",
+            "children": []
+          },
+          {
+            "heading": "Releases",
+            "text": "Furiosa SDK 0.9.0\n(Latest)\nFuriosa SDK 0.8.2\nFuriosa SDK 0.7.0\nFuriosa SDK 0.6.3\nFuriosa SDK 0.6.0\nFuriosa SDK 0.5.2\nFuriosa SDK 0.5.1\nFuriosa SDK 0.5.0\nFuriosa SDK 0.4.0\nFuriosa SDK 0.2.1",
+            "children": []
+          },
+          {
+            "heading": "License",
+            "text": "Copyright 2023 FuriosaAI, Inc.\n\nLicensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": "FuriosaAI SDK",
+    "license": null,
+    "stars": 50,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2023-06-26T05:50:27Z"
+  }
+}

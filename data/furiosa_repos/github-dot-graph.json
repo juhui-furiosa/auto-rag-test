@@ -1,0 +1,45 @@
+{
+  "name": "dot-graph",
+  "url": "https://github.com/furiosa-ai/dot-graph",
+  "visibility": "public",
+  "readme": {
+    "title": "dot-graph",
+    "sections": [
+      {
+        "heading": "dot-graph",
+        "text": "dot parser in Rust implemented with FFI to Graphviz cgraph library.",
+        "children": [
+          {
+            "heading": "Prerequisites",
+            "text": "dot-graph\nparses a dot format file using C bindings to\nGraphviz (v7.0.6)\n.\nThe system environment should be able to find and include the following header files.\n#include\n<gvc.h>\n#include\n<cgraph.h>",
+            "children": [
+              {
+                "heading": "Option 1. Installing Graphviz from Package Manager",
+                "text": "Coming from Linux,\n$\nsudo apt install graphviz-dev\nAnd coming from vanilla Ubuntu, you may want to install these too.\n$\nsudo apt install build-essentials cmake\n$\nsudo apt install clang\nComing from Mac,\n$\nbrew install graphviz\nAnd coming from Apple Silicon Mac, and\nadd an environment variable\n,\nexport\nCPATH=/opt/homebrew/include",
+                "children": []
+              },
+              {
+                "heading": "Option 2. Building Graphviz from Source",
+                "text": "Or, try building from the source code yourself following the\nguide\n.",
+                "children": []
+              }
+            ]
+          },
+          {
+            "heading": "Usage",
+            "text": "use\ndot_graph\n::\nprelude\n::\n*\n;\nfn\nmain\n(\n)\n->\nResult\n<\n(\n)\n,\nDotGraphError\n>\n{\n/* parse from file */\nlet\ngraph = parser\n::\nparse_from_file\n(\n/* path */\n)\n?\n;\nlet\nmut\nstdout = std\n::\nio\n::\nstdout\n(\n)\n;\ngraph\n.\nto_dot\n(\n&\nmut\nstdout\n)\n?\n;\n/* parse from memory */\nlet\ngraph = parser\n::\nparse_from_memory\n(\n/* dot file contents in memory */\n)\n?\n;\nlet\nmut\nstdout = std\n::\nio\n::\nstdout\n(\n)\n;\ngraph\n.\nto_dot\n(\n&\nmut\nstdout\n)\n?\n;\nOk\n(\n(\n)\n)\n}",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": null,
+    "license": null,
+    "stars": 1,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-11-14T00:40:44.518382Z"
+  }
+}

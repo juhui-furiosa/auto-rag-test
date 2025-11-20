@@ -1,0 +1,6 @@
+node_line_name,node_type,best_module_filename,best_module_name,best_module_params,best_execution_time
+retrieve_node_line,lexical_retrieval,1.parquet,BM25,"{'top_k': 5, 'bm25_tokenizer': 'porter_stemmer'}",0.0022120873133341
+retrieve_node_line,semantic_retrieval,0.parquet,VectorDB,"{'top_k': 5, 'vectordb': 'furiosa_store'}",0.025105775197347
+retrieve_node_line,hybrid_retrieval,0.parquet,HybridRRF,"{'top_k': 5, 'weight_range': (4, 80), 'weight': 4.0}",0.1632641426722208
+post_retrieve_node_line,prompt_maker,0.parquet,Fstring,{'prompt': 'Read the passages and answer the given question.\\nQuestion: {query}\\nPassage: {retrieved_contents}\\nAnswer:'},9.374618530273438e-06
+post_retrieve_node_line,generator,0.parquet,LlamaIndexLLM,"{'llm': 'openai', 'model': 'gpt-4o', 'batch': 8}",0.4423244404792785

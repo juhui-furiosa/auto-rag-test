@@ -1,0 +1,23 @@
+{
+  "name": "makefile-modifier",
+  "url": "https://github.com/furiosa-ai/makefile-modifier",
+  "visibility": "public",
+  "readme": {
+    "title": "makefile-modifier",
+    "sections": [
+      {
+        "heading": "makefile-modifier",
+        "text": "",
+        "children": []
+      }
+    ]
+  },
+  "metadata": {
+    "description": null,
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-11-14T00:40:06.590008Z"
+  }
+}

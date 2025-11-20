@@ -1,0 +1,44 @@
+{
+  "name": "tekton-dashboard",
+  "url": "https://github.com/furiosa-ai/tekton-dashboard",
+  "visibility": "public",
+  "readme": {
+    "title": "Tekton Dashboard",
+    "sections": [
+      {
+        "heading": "Tekton Dashboard",
+        "text": "Tekton Dashboard is a general purpose, web-based UI for\nTekton Pipelines\nand\nTekton triggers\nresources.\nIt allows users to manage and view Tekton resource creation, execution, and completion.\nAmong other things, the Tekton Dashboard supports:\nFiltering resources by label\nRealtime view of PipelineRun and TaskRun logs\nView resource details and YAML\nShow resources for the whole cluster or limit visibility to a particular namespace\nImport resources directly from a git repository\nAdding functionality through extensions",
+        "children": [
+          {
+            "heading": "Start using Tekton Dashboard",
+            "text": "Tekton Dashboard\ninstall\nTekton Dashboard\nextensions overview\nTry out the\nkatacoda tutorial\nTake a look at our\nroadmap\nTry our\nwalk-throughs\nFeature requests and bug reports welcome, please\nopen an issue",
+            "children": []
+          },
+          {
+            "heading": "Which version should I use?",
+            "text": "Version\nDocs\nPipelines\nTriggers\nHEAD\nDocs @ HEAD\nv0.25.x - v0.34.x\nv0.15.x - 0.19.x\nv0.24.1\nDocs @ v0.24.1\nv0.25.x - v0.32.x\nv0.15.x - 0.18.x\nv0.23.0\nDocs @ v0.23.0\nv0.25.x - v0.30.x\nv0.15.x - 0.17.x\nv0.22.0\nDocs @ v0.22.0\nv0.25.x - v0.29.x\nv0.15.x - 0.17.x\nv0.21.0\nDocs @ v0.21.0\nv0.20.x - v0.28.x\nv0.10.x - 0.16.x\nv0.20.0\nDocs @ v0.20.0\nv0.20.x - v0.27.x\nv0.10.x - 0.16.x\nv0.19.0\nDocs @ v0.19.0\nv0.20.x - v0.26.x\nv0.10.x - 0.15.x\nv0.18.1\nDocs @ v0.18.1\nv0.20.x - v0.25.x\nv0.10.x - 0.14.x\nv0.17.0\nDocs @ v0.17.0\nv0.20.x - v0.24.x\nv0.10.x - 0.14.x\nv0.16.1\nDocs @ v0.16.1\nv0.20.x - v0.23.x\nv0.10.x - 0.13.x\nv0.15.0\nDocs @ v0.15.0\nv0.20.x - v0.22.x\nv0.10.x - 0.12.x\nv0.14.0\nDocs @ v0.14.0\nv0.11.x - v0.20.x\nv0.5.x - 0.11.x\nv0.13.0\nDocs @ v0.13.0\nv0.11.x - v0.20.x\nv0.5.x - 0.10.x\nv0.12.0\nDocs @ v0.12.0\nv0.11.x - v0.19.x\nv0.5.x - 0.10.x\nv0.11.1\nDocs @ v0.11.1\nv0.11.x - v0.18.x\nv0.5.x - 0.9.x\nv0.10.2\nDocs @ v0.10.2\nv0.11.x - v0.17.x\nv0.5.x - 0.9.x\nv0.9.0\nDocs @ v0.9.0\nv0.11.x - v0.15.x\nv0.5.x - 0.7.x\nv0.8.2\nDocs @ v0.8.2\nv0.11.x - v0.14.x\nv0.5.x - 0.6.x\nv0.7.1\nDocs @ v0.7.1\nv0.11.x - v0.13.x\nv0.5.x - 0.6.x\nv0.6.1.5\nDocs @ v0.6.1.5\nv0.11.x - v0.12.x\nv0.4.x",
+            "children": []
+          },
+          {
+            "heading": "Browser support",
+            "text": "The Tekton Dashboard has been tested on modern evergreen browsers.\nIt generally supports the current and previous stable versions of:\nGoogle Chrome (Windows, macOS, Linux)\nMozilla Firefox (Windows, macOS, Linux)\nApple Safari (macOS)\nMicrosoft Edge (Windows)\nOlder versions or other browsers may work, but some features may be missing or not function as expected.",
+            "children": []
+          },
+          {
+            "heading": "Want to contribute",
+            "text": "We are so excited to have you !\nSee\nCONTRIBUTING.md\nfor an overview of our processes\nSee\nDEVELOPMENT.md\nfor how to get started\nLook at our\ngood first issues\nand our\nhelp wanted issues\nExcept as otherwise noted, the content of this page is licensed under the\nCreative Commons Attribution 4.0 License\n.\nCode samples are licensed under the\nApache 2.0 License\n.",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": "A dashboard for Tekton!",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2022-03-28T10:55:22.000Z"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "name": "cudarc",
+  "url": "https://github.com/furiosa-ai/cudarc",
+  "visibility": "public",
+  "readme": {
+    "title": "cudarc: minimal and safe api over the cuda toolkit",
+    "sections": [
+      {
+        "heading": "cudarc: minimal and safe api over the cuda toolkit",
+        "text": "Checkout cudarc on\ncrates.io\nand\ndocs.rs\n.\nSafe abstractions over:\nCUDA driver API\nNVRTC API\ncuRAND API\ncuBLAS API\ncuBLASLt API\nPre-alpha state\n, expect breaking changes and not all cuda functions\ncontain a safe wrapper.\nContributions welcome for any that aren't included!",
+        "children": []
+      },
+      {
+        "heading": "Design",
+        "text": "Goals are:\nAs safe as possible (there will still be a lot of unsafe due to ffi & async)\nAs ergonomic as possible\nAllow mixing of high level\nsafe\napis, with low level\nsys\napis\nTo that end there are three levels to each wrapper (by default the safe api is exported):\nuse\ncudarc\n::\ndriver\n::\n{\nsafe\n,\nresult\n,\nsys\n}\n;\nuse\ncudarc\n::\nnvrtc\n::\n{\nsafe\n,\nresult\n,\nsys\n}\n;\nuse\ncudarc\n::\ncublas\n::\n{\nsafe\n,\nresult\n,\nsys\n}\n;\nuse\ncudarc\n::\ncublaslt\n::\n{\nsafe\n,\nresult\n,\nsys\n}\n;\nuse\ncudarc\n::\ncurand\n::\n{\nsafe\n,\nresult\n,\nsys\n}\n;\nwhere:\nsys\nis the raw ffi apis generated with bindgen\nresult\nis a very small wrapper around sys to return\nResult\nfrom each function\nsafe\nis a wrapper around result/sys to provide safe abstractions\nHeavily recommend sticking with safe APIs",
+        "children": []
+      },
+      {
+        "heading": "API Preview",
+        "text": "It's easy to create a new device and transfer data to the gpu:\nlet\ndev = cudarc\n::\ndriver\n::\nCudaDevice\n::\nnew\n(\n0\n)\n?\n;\n// allocate buffers\nlet\ninp = dev\n.\nhtod_copy\n(\nvec\n!\n[\n1.0f32\n;\n100\n]\n)\n?\n;\nlet\nmut\nout = dev\n.\nalloc_zeros\n::\n<\nf32\n>\n(\n100\n)\n?\n;\nYou can also use the nvrtc api to compile kernels at runtime:\nlet\nptx = cudarc\n::\nnvrtc\n::\ncompile_ptx\n(\n\"\nextern\n\\\"\nC\n\\\"\n__global__ void sin_kernel(float *out, const float *inp, const size_t numel) {\nunsigned int i = blockIdx.x * blockDim.x + threadIdx.x;\nif (i < numel) {\nout[i] = sin(inp[i]);\n}\n}\"\n)\n?\n;\n// and dynamically load it into the device\ndev\n.\nload_ptx\n(\nptx\n,\n\"my_module\"\n,\n&\n[\n\"sin_kernel\"\n]\n)\n?\n;\ncudarc\nprovides a very simple interface to launch kernels, tuples\nare the arguments!\nlet\nsin_kernel = dev\n.\nget_func\n(\n\"my_module\"\n,\n\"sin_kernel\"\n)\n.\nunwrap\n(\n)\n;\nlet\ncfg =\nLaunchConfig\n::\nfor_num_elems\n(\n100\n)\n;\nunsafe\n{\nsin_kernel\n.\nlaunch\n(\ncfg\n,\n(\n&\nmut\nout\n,\n&\ninp\n,\n100usize\n)\n)\n}\n?\n;\nAnd of course it's easy to copy things back to host after you're done:\nlet\nout_host\n:\nVec\n<\nf32\n>\n= dev\n.\ndtoh_sync_copy\n(\n&\nout\n)\n?\n;\nassert_eq\n!\n(\nout_host\n,\n[\n1.0\n;\n100\n]\n.\nmap\n(\nf32\n::\nsin\n)\n)\n;",
+        "children": []
+      },
+      {
+        "heading": "License",
+        "text": "Dual-licensed to be compatible with the Rust project.\nLicensed under the Apache License, Version 2.0\nhttp://www.apache.org/licenses/LICENSE-2.0\nor the MIT license\nhttp://opensource.org/licenses/MIT\n, at your option. This file may not be copied, modified, or distributed except according to those terms.",
+        "children": []
+      }
+    ]
+  },
+  "metadata": {
+    "description": "Safe rust wrapper around CUDA toolkit",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-11-14T00:40:38.955337Z"
+  }
+}

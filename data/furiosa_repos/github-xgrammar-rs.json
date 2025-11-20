@@ -1,0 +1,39 @@
+{
+  "name": "xgrammar-rs",
+  "url": "https://github.com/furiosa-ai/xgrammar-rs",
+  "visibility": "public",
+  "readme": {
+    "title": "xgrammar-rs",
+    "sections": [
+      {
+        "heading": "xgrammar-rs",
+        "text": "This project provides safe and idiomatic Rust bindings for the\nxgrammar\nC++ library.\nBy wrapping the C++ implementation, this crate leverages Rust's memory safety\nandguarantees while providing access to\nxgrammar\n's high-performance and features\nfor constraint decoding.",
+        "children": [
+          {
+            "heading": "Prerequisites",
+            "text": "Before building the project, ensure you have the following dependencies installed:\nRust toolchain\n: Install via\nrustup\n.\nCMake\n: Required to build the underlying C++\nxgrammar\nlibrary.\nC++ compiler\n: A modern C++ compiler that supports C++17 (Clang is hightly recommended.)",
+            "children": []
+          },
+          {
+            "heading": "Build",
+            "text": "The C++\nxgrammar\nlibrary is included as a submodule and will be compiled automatically as part of the build process.\nTo build the project, run the following command:\ncargo build --release\nThis will create a release build in the\ntarget/release\ndirectory.",
+            "children": []
+          },
+          {
+            "heading": "Test",
+            "text": "This project uses\ncargo-nextest\nfor running tests. To execute all tests, run:\nmake\ntest\nYou can also pass arguments to\ncargo nextest\nvia the\nTEST_ARGS\nvariable. For example, to run a specific test suite:\nmake\ntest\nTEST_ARGS=\n\"\n--test test_grammar\n\"",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": "A Rust binding for XGrammar",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-10-23T00:34:47Z"
+  }
+}

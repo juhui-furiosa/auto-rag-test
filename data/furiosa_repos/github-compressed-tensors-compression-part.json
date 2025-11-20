@@ -1,0 +1,66 @@
+{
+  "name": "compressed-tensors-compression-part",
+  "url": "https://github.com/furiosa-ai/compressed-tensors-compression-part",
+  "visibility": "public",
+  "readme": {
+    "title": "compressed-tensors",
+    "sections": [
+      {
+        "heading": "compressed-tensors",
+        "text": "The\ncompressed-tensors\nlibrary extends the\nsafetensors\nformat, providing a versatile and efficient way to store and manage compressed tensor data. This library supports various quantization and sparsity schemes, making it a unified format for handling different model optimizations like GPTQ, AWQ, SmoothQuant, INT8, FP8, SparseGPT, and more.",
+        "children": [
+          {
+            "heading": "Why compressed-tensors ?",
+            "text": "As model compression becomes increasingly important for efficient deployment of LLMs, the landscape of quantization and compression techniques has become increasingly fragmented.\nEach method often comes with its own storage format and loading procedures, making it challenging to work with multiple techniques or switch between them.\ncompressed-tensors\naddresses this by providing a single, extensible format that can represent a wide variety of compression schemes.\nUnified Checkpoint Format\n: Supports various compression schemes in a single, consistent format.\nWide Compatibility\n: Works with popular quantization methods like GPTQ, SmoothQuant, and FP8. See\nllm-compressor\nFlexible Quantization Support\n:\nWeight-only quantization (e.g., W4A16, W8A16, WnA16)\nActivation quantization (e.g., W8A8)\nKV cache quantization\nNon-uniform schemes (different layers can be quantized in different ways!)\nSparsity Support\n: Handles both unstructured and semi-structured (e.g., 2:4) sparsity patterns.\nOpen-Source Integration\n: Designed to work seamlessly with Hugging Face models and PyTorch.\nThis allows developers and researchers to easily experiment with composing different quantization methods, simplify model deployment pipelines, and reduce the overhead of supporting multiple compression formats in inference engines.",
+            "children": []
+          },
+          {
+            "heading": "Installation",
+            "text": "",
+            "children": [
+              {
+                "heading": "From PyPI",
+                "text": "Stable release:\npip install compressed-tensors\nNightly release:\npip install --pre compressed-tensors",
+                "children": []
+              },
+              {
+                "heading": "From Source",
+                "text": "git clone https://github.com/neuralmagic/compressed-tensors\ncd\ncompressed-tensors\npip install -e\n.",
+                "children": []
+              }
+            ]
+          },
+          {
+            "heading": "Getting started",
+            "text": "",
+            "children": [
+              {
+                "heading": "Saving/Loading Compressed Tensors (Bitmask Compression)",
+                "text": "The function\nsave_compressed\nuses the\ncompression_format\nargument to apply compression to tensors.\nThe function\nload_compressed\nreverses the process: converts the compressed weights on disk to decompressed weights in device memory.\nfrom\ncompressed_tensors\nimport\nsave_compressed\n,\nload_compressed\n,\nBitmaskConfig\nfrom\ntorch\nimport\nTensor\nfrom\ntyping\nimport\nDict\n# the example BitmaskConfig method efficiently compresses\n# tensors with large number of zero entries\ncompression_config\n=\nBitmaskConfig\n()\ntensors\n:\nDict\n[\nstr\n,\nTensor\n]\n=\n{\n\"tensor_1\"\n:\nTensor\n(\n    [[\n0.0\n,\n0.0\n,\n0.0\n], \n     [\n1.0\n,\n1.0\n,\n1.0\n]]\n)}\n# compress tensors using BitmaskConfig compression format (save them efficiently on disk)\nsave_compressed\n(\ntensors\n,\n\"model.safetensors\"\n,\ncompression_format\n=\ncompression_config\n.\nformat\n)\n# decompress tensors (load_compressed returns a generator for memory efficiency)\ndecompressed_tensors\n=\n{}\nfor\ntensor_name\n,\ntensor\nin\nload_compressed\n(\n\"model.safetensors\"\n,\ncompression_config\n=\ncompression_config\n):\ndecompressed_tensors\n[\ntensor_name\n]\n=\ntensor",
+                "children": []
+              }
+            ]
+          },
+          {
+            "heading": "Saving/Loading Compressed Models (Bitmask Compression)",
+            "text": "We can apply bitmask compression to a whole model. For more detailed example see\nexample\ndirectory.\nfrom\ncompressed_tensors\nimport\nsave_compressed_model\n,\nload_compressed\n,\nBitmaskConfig\nfrom\ntransformers\nimport\nAutoModelForCausalLM\nmodel_name\n=\n\"neuralmagic/llama2.c-stories110M-pruned50\"\nmodel\n=\nAutoModelForCausalLM\n.\nfrom_pretrained\n(\nmodel_name\n,\ntorch_dtype\n=\n\"auto\"\n)\noriginal_state_dict\n=\nmodel\n.\nstate_dict\n()\ncompression_config\n=\nBitmaskConfig\n()\n# save compressed model weights\nsave_compressed_model\n(\nmodel\n,\n\"compressed_model.safetensors\"\n,\ncompression_format\n=\ncompression_config\n.\nformat\n)\n# load compressed model weights (`dict` turns generator into a dictionary)\nstate_dict\n=\ndict\n(\nload_compressed\n(\n\"compressed_model.safetensors\"\n,\ncompression_config\n))\nFor more in-depth tutorial on bitmask compression, refer to the\nnotebook\n.",
+            "children": []
+          },
+          {
+            "heading": "Saving a Compressed Model with PTQ",
+            "text": "We can use compressed-tensors to run basic post training quantization (PTQ) and save the quantized model compressed on disk\nmodel_name\n=\n\"TinyLlama/TinyLlama-1.1B-intermediate-step-1431k-3T\"\nmodel\n=\nAutoModelForCausalLM\n.\nfrom_pretrained\n(\nmodel_name\n,\ndevice_map\n=\n\"cuda:0\"\n,\ntorch_dtype\n=\n\"auto\"\n)\nconfig\n=\nQuantizationConfig\n.\nparse_file\n(\n\"./examples/bit_packing/int4_config.json\"\n)\nconfig\n.\nquantization_status\n=\nQuantizationStatus\n.\nCALIBRATION\napply_quantization_config\n(\nmodel\n,\nconfig\n)\ndataset\n=\nload_dataset\n(\n\"ptb_text_only\"\n)[\n\"train\"\n]\ntokenizer\n=\nAutoTokenizer\n.\nfrom_pretrained\n(\nmodel_name\n)\ndef\ntokenize_function\n(\nexamples\n):\nreturn\ntokenizer\n(\nexamples\n[\n\"sentence\"\n],\npadding\n=\nFalse\n,\ntruncation\n=\nTrue\n,\nmax_length\n=\n1024\n)\ntokenized_dataset\n=\ndataset\n.\nmap\n(\ntokenize_function\n,\nbatched\n=\nTrue\n)\ndata_loader\n=\nDataLoader\n(\ntokenized_dataset\n,\nbatch_size\n=\n1\n,\ncollate_fn\n=\nDefaultDataCollator\n())\nwith\ntorch\n.\nno_grad\n():\nfor\nidx\n,\nsample\nin\ntqdm\n(\nenumerate\n(\ndata_loader\n),\ndesc\n=\n\"Running calibration\"\n):\nsample\n=\n{\nkey\n:\nvalue\n.\nto\n(\ndevice\n)\nfor\nkey\n,\nvalue\nin\nsample\n.\nitems\n()}\n_\n=\nmodel\n(\n**\nsample\n)\nif\nidx\n>=\n512\n:\nbreak\nmodel\n.\napply\n(\nfreeze_module_quantization\n)\nmodel\n.\napply\n(\ncompress_quantized_weights\n)\noutput_dir\n=\n\"./ex_llama1.1b_w4a16_packed_quantize\"\ncompressor\n=\nModelCompressor\n(\nquantization_config\n=\nconfig\n)\ncompressed_state_dict\n=\ncompressor\n.\ncompress\n(\nmodel\n)\nmodel\n.\nsave_pretrained\n(\noutput_dir\n,\nstate_dict\n=\ncompressed_state_dict\n)\nFor more in-depth tutorial on quantization compression, refer to the\nnotebook\n.",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": "A safetensors extension to efficiently store sparse quantized tensors on disk",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-11-14T00:38:46.125184Z"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "name": "mlperf-postprocess",
+  "url": "https://github.com/furiosa-ai/mlperf-postprocess",
+  "visibility": "public",
+  "readme": {
+    "title": "(no title)",
+    "sections": [
+      {
+        "heading": "Build & publish",
+        "text": "To build wheels, please run the following\nmaturin build --release\nWe provide a dedicated Dockerfile and build script to automate building manylinux-compatible wheels.\nmake wheel\nThe output packages(source distribution + wheels) will be saved to the\n./wheels\ndirectory.",
+        "children": []
+      }
+    ]
+  },
+  "metadata": {
+    "description": "FuriosaAI postprocess implementation used in MLPerf submission",
+    "license": null,
+    "stars": 3,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2024-05-29T04:12:16Z"
+  }
+}

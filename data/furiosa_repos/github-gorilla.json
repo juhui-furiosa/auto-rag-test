@@ -1,0 +1,80 @@
+{
+  "name": "gorilla",
+  "url": "https://github.com/furiosa-ai/gorilla",
+  "visibility": "public",
+  "readme": {
+    "title": "Gorilla: Large Language Model Connected with Massive APIs",
+    "sections": [
+      {
+        "heading": "Gorilla: Large Language Model Connected with Massive APIs",
+        "text": "",
+        "children": [
+          {
+            "heading": "Latest Updates",
+            "text": "📢 Check out our detailed\nBerkeley Function Calling Leaderboard changelog\n(Last updated:\n) for the latest dataset / model updates to the Berkeley Function Calling Leaderboard!\n🎯 [10/04/2024] Introducing the Agent Arena by Gorilla X LMSYS Chatbot Arena! Compare different agents in tasks like search, finance, RAG, and beyond. Explore which models and tools work best for specific tasks through our novel ranking system and community-driven prompt hub. [\nBlog\n] [\nArena\n] [\nLeaderboard\n] [\nDataset\n] [\nTweet\n]\n📣 [09/21/2024] Announcing BFCL V3 - Evaluating multi-turn and multi-step function calling capabilities! New state-based evaluation system tests models on handling complex workflows, sequential functions, and service states. [\nBlog\n] [\nLeaderboard\n] [\nCode\n] [\nTweet\n]\n🚀 [08/20/2024] Released BFCL V2 • Live! The Berkeley Function-Calling Leaderboard now features enterprise-contributed data and real-world scenarios. [\nBlog\n] [\nLive Leaderboard\n] [\nV2 Categories Leaderboard\n] [\nTweet\n]\n⚡️ [04/12/2024] Excited to release GoEx - a runtime for LLM-generated actions like code, API calls, and more. Featuring \"post-facto validation\" for assessing LLM actions after execution, \"undo\" and \"damage confinement\" abstractions to manage unintended actions & risks. This paves the way for fully autonomous LLM agents, enhancing interaction between apps & services with human-out-of-loop. [\nBlog\n] [\nCode\n] [\nPaper\n] [\nTweet\n]\n⏰ [04/01/2024] Introducing cost and latency metrics into\nBerkeley function calling leaderboard\n!\n🚀 [03/15/2024] RAFT: Adapting Language Model to Domain Specific RAG is live! [\nMSFT-Meta blog\n] [\nBerkeley Blog\n]\n🏆 [02/26/2024]\nBerkeley Function Calling Leaderboard\nis live!\n🎯 [02/25/2024]\nOpenFunctions v2\nsets new SoTA for open-source LLMs!\n🔥 [11/16/2023] Excited to release\nGorilla OpenFunctions\n💻 [06/29/2023] Released\ngorilla-cli\n, LLMs for your CLI!\n🟢 [06/06/2023] Released Commercially usable, Apache 2.0 licensed Gorilla models\n🚀 [05/30/2023] Provided the\nCLI interface\nto chat with Gorilla!\n🚀 [05/28/2023] Released Torch Hub and TensorFlow Hub Models!\n🚀 [05/27/2023] Released the first Gorilla model!\nor\n🤗\n!\n🔥 [05/27/2023] We released the APIZoo contribution guide for community API contributions!\n🔥 [05/25/2023] We release the APIBench dataset and the evaluation code of Gorilla!",
+            "children": []
+          },
+          {
+            "heading": "About",
+            "text": "Gorilla enables LLMs to use tools by invoking APIs. Given a natural language query, Gorilla comes up with the semantically- and syntactically- correct API to invoke.\nWith Gorilla, we are the first to demonstrate how to use LLMs to invoke 1,600+ (and growing) API calls accurately while reducing hallucination. This repository contains\ninference code\nfor running Gorilla finetuned models,\nevaluation code\nfor reproducing results from our paper, and\nAPIBench\n- the largest collection of APIs, curated and easy to be trained on!\nSince our initial release, we've served ~500k requests and witnessed incredible adoption by developers worldwide. The project has expanded to include tools, evaluations, leaderboard, end-to-end finetuning recipes, infrastructure components, and the Gorilla API Store:\nProject\nType\nDescription (click to expand)\nGorilla Paper\n🤖 Model\n📝 Fine-tuning\n📚 Dataset\n📊 Evaluation\n🔧 Infra\nGorilla OpenFunctions-V2\n🤖 Model\nBerkeley Function Calling Leaderboard (BFCL)\n📊 Evaluation\n🏆 Leaderboard\n🔧 Function Calling Infra\n📚 Dataset\nAgent Arena\n📊 Evaluation\n🏆 Leaderboard\nGorilla Execution Engine (GoEx)\n🔧 Infra\nRetrieval-Augmented Fine-tuning (RAFT)\n📝 Fine-tuning\n🤖 Model\nGorilla CLI\n🤖 Model\n🔧 Local CLI Infra\nGorilla API Zoo\n📚 Dataset",
+            "children": []
+          },
+          {
+            "heading": "Getting Started",
+            "text": "",
+            "children": [
+              {
+                "heading": "Quick Start",
+                "text": "Try Gorilla in your browser:\n🚀\nGorilla Colab Demo\n: Try the base Gorilla model\n🌐\nGorilla Gradio Demo\n: Interactive web interface\n🔥\nOpenFunctions Colab Demo\n: Try the latest OpenFunctions model\n🎯\nOpenFunctions Website Demo\n: Experiment with function calling\n📊\nBerkeley Function Calling Leaderboard\n: Compare function calling capabilities",
+                "children": []
+              },
+              {
+                "heading": "Installation Options",
+                "text": "Gorilla CLI\n- Fastest way to get started\npip install gorilla-cli\ngorilla generate 100 random characters into a file called test.txt\nLearn more about Gorilla CLI →\nRun Gorilla Locally\ngit clone https://github.com/ShishirPatil/gorilla.git\ncd\ngorilla/inference\nDetailed local setup instructions →\nUse OpenFunctions\nimport\nopenai\nopenai\n.\napi_key\n=\n\"EMPTY\"\nopenai\n.\napi_base\n=\n\"http://luigi.millennium.berkeley.edu:8000/v1\"\n# Define your functions\nfunctions\n=\n[{\n\"name\"\n:\n\"get_current_weather\"\n,\n\"description\"\n:\n\"Get weather in a location\"\n,\n\"parameters\"\n: {\n\"type\"\n:\n\"object\"\n,\n\"properties\"\n: {\n\"location\"\n: {\n\"type\"\n:\n\"string\"\n},\n\"unit\"\n: {\n\"type\"\n:\n\"string\"\n,\n\"enum\"\n: [\n\"celsius\"\n,\n\"fahrenheit\"\n]}\n        },\n\"required\"\n: [\n\"location\"\n]\n    }\n}]\n# Make API call\ncompletion\n=\nopenai\n.\nChatCompletion\n.\ncreate\n(\nmodel\n=\n\"gorilla-openfunctions-v2\"\n,\nmessages\n=\n[{\n\"role\"\n:\n\"user\"\n,\n\"content\"\n:\n\"What's the weather in San Francisco?\"\n}],\nfunctions\n=\nfunctions\n)\nOpenFunctions documentation →",
+                "children": []
+              },
+              {
+                "heading": "🔧 Other Quick Starts",
+                "text": "📊\nEvaluation & Benchmarking\nBerkeley Function Calling Leaderboard\n: Compare function calling capabilities\nAgent Arena\n: Evaluate agent workflows\nGorilla Paper Evaluation Scripts\n: Run your own evaluations\n🛠️\nDevelopment Tools\nGoEx\n: Safe execution of LLM-generated actions\nRAFT\n: Fine-tune models for domain-specific tasks\nAPI Store\n: Contribute and use APIs",
+                "children": []
+              }
+            ]
+          },
+          {
+            "heading": "Frequently Asked Questions",
+            "text": "I would like to use Gorilla commercially. Is there going to be an Apache 2.0 licensed version?\nYes! We now have models that you can use commercially without any obligations.\nCan we use Gorilla with other tools like Langchain etc?\nAbsolutely! You've highlighted a great aspect of our tools. Gorilla is  an  end-to-end model, specifically tailored to serve correct API calls (tools) without requiring any additional coding. It's designed to work as part of a wider ecosystem and can be flexibly integrated within agentic frameworks and other tools.\nLangchain, is a versatile developer tool. Its \"agents\" can efficiently swap in any LLM, Gorilla included, making it a highly adaptable solution for various needs.\nThe beauty of these tools truly shines when they collaborate, complementing each other's strengths and capabilities to create an even more powerful and comprehensive solution. This is where your contribution can make a difference. We enthusiastically welcome any inputs to further refine and enhance these tools.\nCheck out our blog on\nHow to Use Gorilla: A Step-by-Step Walkthrough\nto see all the different ways you can integrate Gorilla in your projects.",
+            "children": []
+          },
+          {
+            "heading": "Project Roadmap",
+            "text": "In the immediate future, we plan to release the following:\nMultimodal function-calling leaderboard\nAgentic function-calling leaderboard\nNew batch of user contributed live function calling evals.\nBFCL metrics to evaluate contamination\nOpenfunctions-v3 model to support more languages and multi-turn capability\nAgent Arena to compare LLM agents across models, tools, and frameworks [10/04/2024]\nMulti-turn and multi-step function calling evaluation [09/21/2024]\nUser contributed Live Function Calling Leaderboard [08/20/2024]\nBFCL systems metrics including cost and latency [04/01/2024]\nGorilla Execution Engine (GoEx) - Runtime for executing LLM-generated actions with safety guarantees [04/12/2024]\nBerkeley Function Calling leaderboard (BFCL) for evaluating tool-calling/function-calling models [02/26/2024]\nOpenfunctions-v2 with more languages (Java, JS, Python), relevance detection [02/26/2024]\nAPI Zoo Index for easy access to all APIs [02/16/2024]\nOpenfunctions-v1, Apache 2.0, with parallel and multiple function calling [11/16/2023]\nOpenfunctions-v0, Apache 2.0 function calling model [11/16/2023]\nRelease a commercially usable, Apache 2.0 licensed Gorilla model [06/05/2023]\nRelease weights for all APIs from APIBench [05/28/2023]\nRun Gorilla LLM locally [05/28/2023]\nRelease weights for HF model APIs [05/27/2023]\nHosted Gorilla LLM chat for HF model APIs [05/27/2023]\nOpening up the APIZoo for contributions from community\nDataset and Eval Code",
+            "children": []
+          },
+          {
+            "heading": "License",
+            "text": "Gorilla is Apache 2.0 licensed, making it suitable for both academic and commercial use.",
+            "children": []
+          },
+          {
+            "heading": "Contact",
+            "text": "💬 Join our\nDiscord Community\n🐦 Follow us on\nX",
+            "children": []
+          },
+          {
+            "heading": "Citation",
+            "text": "@article{patil2023gorilla,\n  title={Gorilla: Large Language Model Connected with Massive APIs},\n  author={Shishir G. Patil and Tianjun Zhang and Xin Wang and Joseph E. Gonzalez},\n  year={2023},\n  journal={arXiv preprint arXiv:2305.15334},\n}",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": "Gorilla: Training and Evaluating LLMs for Function Calls (Tool Calls)",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-04-26T10:49:12.000Z"
+  }
+}

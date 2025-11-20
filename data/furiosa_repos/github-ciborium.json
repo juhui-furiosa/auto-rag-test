@@ -1,0 +1,65 @@
+{
+  "name": "ciborium",
+  "url": "https://github.com/furiosa-ai/ciborium",
+  "visibility": "public",
+  "readme": {
+    "title": "ciborium",
+    "sections": [
+      {
+        "heading": "ciborium",
+        "text": "Welcome to Ciborium!\nCiborium contains CBOR serialization and deserialization implementations for serde.",
+        "children": [
+          {
+            "heading": "Quick Start",
+            "text": "You're probably looking for\nfrom_reader()\nand\ninto_writer()\n, which are\nthe main functions. Note that byte slices are also readers and writers and can be\npassed to these functions just as streams can.\nFor dynamic CBOR value creation/inspection, see\nValue\n.",
+            "children": []
+          },
+          {
+            "heading": "Design Decisions",
+            "text": "",
+            "children": [
+              {
+                "heading": "Always Serialize Numeric Values to the Smallest Size",
+                "text": "Although the CBOR specification has differing numeric widths, this is only\na form of compression on the wire and is not intended to directly\nrepresent an \"integer width\" or \"float width.\" Therefore, ciborium always\nserializes numbers to the smallest possible lossless encoding. For example,\nwe serialize\n1u128\nas a single byte (\n01\n). Likewise, we will also freely\ndecode that single byte into a\nu128\n.\nWhile there is some minor performance cost for this, there are several\nreasons for this choice. First, the specification seems to imply it by\nusing a separate bit for the sign. Second, the specification requires\nthat implementations handle leading zeroes; a liberal reading of which\nimplies a requirement for lossless coercion. Third, dynamic languages like\nPython have no notion of \"integer width,\" making this is a practical\nchoice for maximizing wire compatibility with those languages.\nThis coercion is\nalways\nlossless. For floats, this implies that we\nonly coerce to a smaller size if coercion back to the original size has\nthe same raw bits as the original.",
+                "children": []
+              },
+              {
+                "heading": "Compatibility with Other Implementations",
+                "text": "The ciborium project follows the\nRobustness Principle\n.\nTherefore, we aim to be liberal in what we accept. This implies that we\naim to be wire-compatible with other implementations in decoding, but\nnot necessarily encoding.\nOne notable example of this is that\nserde_cbor\nuses fixed-width encoding\nof numbers and doesn't losslessly coerce. This implies that\nciborium\nwill\nsuccessfully decode\nserde_cbor\nencodings, but the opposite may not be the\ncase.",
+                "children": []
+              },
+              {
+                "heading": "Representing Map as a Sequence of Values",
+                "text": "Other serde parsers have generally taken the route of using\nBTreeMap\nor\nHashMap\nto implement their encoding's underlying\nMap\ntype. This crate\nchooses to represent the\nMap\ntype using\nVec<(Value, Value)>\ninstead.\nThis decision was made because this type preserves the order of the pairs\non the wire. Further, for those that need the properties of\nBTreeMap\nor\nHashMap\n, you can simply\ncollect()\nthe values into the respective type.\nThis provides maximum flexibility.",
+                "children": []
+              },
+              {
+                "heading": "Low-level Library",
+                "text": "The ciborium crate has the beginnings of a low-level library in the\n(private)\nbasic\nmodule. We may extend this to be more robust and expose\nit for application consumption once we have it in a good state. If you'd\nlike to collaborate with us on that, please contact us. Alternatively,\nwe might fork this code into a separate crate with no serde dependency.",
+                "children": []
+              },
+              {
+                "heading": "Internal Types",
+                "text": "The ciborium crate contains a number of internal types that implement\nuseful serde traits. While these are not currently exposed, we might\nchoose to expose them in the future if there is demand. Generally, this\ncrate takes a conservative approach to exposing APIs to avoid breakage.",
+                "children": []
+              },
+              {
+                "heading": "Packed Encoding?",
+                "text": "Packed encoding uses numerical offsets to represent structure field names\nand enum variant names. This can save significant space on the wire.\nWhile the authors of this crate like packed encoding, it should generally\nbe avoided because it can be fragile as it exposes invariants of your Rust\ncode to remote actors. We might consider adding this in the future. If you\nare interested in this, please contact us.\nLicense: Apache-2.0",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": "CBOR utilities",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-11-14T00:39:01.256664Z"
+  }
+}

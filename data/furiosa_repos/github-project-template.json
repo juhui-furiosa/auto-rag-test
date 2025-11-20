@@ -1,0 +1,91 @@
+{
+  "name": "project-template",
+  "url": "https://github.com/furiosa-ai/project-template",
+  "visibility": "public",
+  "readme": {
+    "title": "RISC-V Project Template",
+    "sections": [
+      {
+        "heading": "RISC-V Project Template",
+        "text": "This is a starter template for your custom RISC-V project. It will allow you\nto leverage the Chisel HDL and RocketChip SoC generator to produce a\nRISC-V SoC with MMIO-mapped peripherals, DMA, and custom accelerators.",
+        "children": [
+          {
+            "heading": "Getting started",
+            "text": "",
+            "children": [
+              {
+                "heading": "Checking out the sources",
+                "text": "After cloning this repo, you will need to initialize all of the submodules\ngit clone https://github.com/ucb-bar/project-template.git\ncd project-template\ngit submodule update --init --recursive",
+                "children": []
+              },
+              {
+                "heading": "Building the tools",
+                "text": "The tools repo contains the cross-compiler toolchain, frontend server, and\nproxy kernel, which you will need in order to compile code to RISC-V\ninstructions and run them on your design. There are detailed instructions at\nhttps://github.com/riscv/riscv-tools\n. But to get a basic installation, just\nthe following steps are necessary.\n# You may want to add the following two lines to your shell profile\nexport RISCV=/path/to/install/dir\nexport PATH=$RISCV/bin:$PATH\n\ncd rocket-chip/riscv-tools\n./build.sh",
+                "children": []
+              },
+              {
+                "heading": "Compiling and running the Verilator simulation",
+                "text": "To compile the example design, run make in the \"verisim\" directory.\nThis will elaborate the DefaultExampleConfig in the example project.\nAn executable called simulator-example-DefaultExampleConfig will be produced.\nYou can then use this executable to run any compatible RV64 code. For instance,\nto run one of the riscv-tools assembly tests.\n./simulator-example-DefaultExampleConfig $RISCV/riscv64-unknown-elf/share/riscv-tests/isa/rv64ui-p-simple\nIf you later create your own project, you can use environment variables to\nbuild an alternate configuration.\nmake PROJECT=yourproject CONFIG=YourConfig\n./simulator-yourproject-YourConfig ...",
+                "children": []
+              }
+            ]
+          },
+          {
+            "heading": "Submodules and Subdirectories",
+            "text": "The submodules and subdirectories for the project template are organized as\nfollows.\nrocket-chip - contains code for the RocketChip generator and Chisel HDL\ntestchipip - contains the serial adapter, block device, and associated verilog and C++ code\nverisim - directory in which Verilator simulations are compiled and run\nvsim - directory in which Synopsys VCS simulations are compiled and run\nbootrom - sources for the first-stage bootloader included in the Boot ROM\nsrc/main/scala - scala source files for your project go here",
+            "children": []
+          },
+          {
+            "heading": "Using the block device",
+            "text": "The default example project just provides the Rocket coreplex, memory, and\nserial line. But testchipip also provides a simulated block device that can\nbe used for non-volatile storage. You can build a simulator including the\nblock device using the blkdev package.\nmake CONFIG=SimBlockDeviceConfig\n./simulator-example-SimBlockDeviceConfig +blkdev=block-device.img ...\nBy passing the +blkdev argument on the simulator command line, you can allow\nthe RTL simulation to read and write from a file. Take a look at tests/blkdev.c\nfor an example of how Rocket can program the block device controller.",
+            "children": []
+          },
+          {
+            "heading": "Adding an MMIO peripheral",
+            "text": "You can RocketChip to create your own memory-mapped IO device and add it into\nthe SoC design. The easiest way to create a TileLink peripheral is to use the\nTLRegisterRouter, which abstracts away the details of handling the TileLink\nprotocol and provides a convenient interface for specifying memory-mapped\nregisters. To create a RegisterRouter-based peripheral, you will need to\nspecify a parameter case class for the configuration settings, a bundle trait\nwith the extra top-level ports, and a module implementation containing the\nactual RTL.\ncase\nclass\nPWMParams\n(\naddress\n:\nBigInt\n,\nbeatBytes\n:\nInt\n)\ntrait\nPWMTLBundle\nextends\nBundle\n{\nval\npwmout\n=\nOutput\n(\nBool\n())\n    }\ntrait\nPWMTLModule\n{\nval\nio\n:\nPWMTLBundle\nimplicit\nval\np\n:\nParameters\ndef\nparams\n:\nPWMParams\nval\nw\n=\nparams.beatBytes\n*\n8\nval\nperiod\n=\nReg\n(\nUInt\n(w.\nW\n))\nval\nduty\n=\nReg\n(\nUInt\n(w.\nW\n))\nval\nenable\n=\nRegInit\n(\nfalse\n.\nB\n)\n//\n... Use the registers to drive io.pwmout ...\nregmap(\n0x00\n->\nSeq\n(\nRegField\n(w, period)),\n0x04\n->\nSeq\n(\nRegField\n(w, duty)),\n0x08\n->\nSeq\n(\nRegField\n(\n1\n, enable)))\n    }\nOnce you have these classes, you can construct the final peripheral by\nextending the TLRegisterRouter and passing the proper arguments. The first\nset of arguments determines where the register router will be placed in the\nglobal address map and what information will be put in its device tree entry.\nThe second set of arguments is the IO bundle constructor, which we create\nby extending TLRegBundle with our bundle trait. The final set of arguments\nis the module constructor, which we create by extends TLRegModule with our\nmodule trait.\nclass\nPWMTL\n(\nc\n:\nPWMParams\n)(\nimplicit\np\n:\nParameters\n)\nextends\nTLRegisterRouter\n(\n        c.address,\n\"\npwm\n\"\n,\nSeq\n(\n\"\nucbbar,pwm\n\"\n),\n        beatBytes\n=\nc.beatBytes)(\nnew\nTLRegBundle\n(c, _)\nwith\nPWMTLBundle\n)(\nnew\nTLRegModule\n(c, _, _)\nwith\nPWMTLModule\n)\nThe full module code with comments can be found in src/main/scala/example/PWM.scala.\nAfter creating the module, we need to hook it up to our SoC. Rocketchip\naccomplishes this using the\ncake pattern\n.\nThis basically involves placing code inside traits. In the RocketChip cake,\nthere are two kinds of traits: a LazyModule trait and a module implementation\ntrait.\nThe LazyModule trait runs setup code that must execute before all the hardware\ngets elaborated. For a simple memory-mapped peripheral, this just involves\nconnecting the peripheral's TileLink node to the MMIO crossbar.\ntrait\nHasPeripheryPWM\nextends\nHasSystemNetworks\n{\nimplicit\nval\np\n:\nParameters\nprivate\nval\naddress\n=\n0x2000\nval\npwm\n=\nLazyModule\n(\nnew\nPWMTL\n(\nPWMParams\n(address, peripheryBusConfig.beatBytes))(p))\n\n      pwm.node\n:=\nTLFragmenter\n(\n        peripheryBusConfig.beatBytes, cacheBlockBytes)(peripheryBus.node)\n    }\nNote that the PWMTL class we created from the register router is itself a\nLazyModule. Register routers have a TileLike node simply named \"node\", which\nwe can hook up to the RocketChip peripheryBus. This will automatically add\naddress map and device tree entries for the peripheral.\nThe module implementation trait is where we instantiate our PWM module and\nconnect it to the rest of the SoC. Since this module has an extra\npwmout\noutput, we declare that in this trait, using Chisel's multi-IO\nfunctionality. We then connect the PWMTL's pwmout to the pwmout we declared.\ntrait\nHasPeripheryPWMModuleImp\nextends\nLazyMultiIOModuleImp\n{\nimplicit\nval\np\n:\nParameters\nval\nouter\n:\nHasPeripheryPWM\nval\npwmout\n=\nIO\n(\nOutput\n(\nBool\n()))\n\n      pwmout\n:=\nouter.pwm.module.io.pwmout\n    }\nNow we want to mix our traits into the system as a whole. This code is from\nsrc/main/scala/example/Top.scala.\nclass\nExampleTopWithPWM\n(\nq\n:\nParameters\n)\nextends\nExampleTop\n(q)\nwith\nPeripheryPWM\n{\noverride\nlazy\nval\nmodule\n=\nModule\n(\nnew\nExampleTopWithPWMModule\n(p,\nthis\n))\n    }\nclass\nExampleTopWithPWMModule\n(\nl\n:\nExampleTopWithPWM\n)\nextends\nExampleTopModule\n(l)\nwith\nHasPeripheryPWMModuleImp\nJust as we need separate traits for LazyModule and module implementation, we\nneed two classes to build the system. The ExampleTop classes already have the\nbasic peripherals included for us, so we will just extend those.\nThe ExampleTop class includes the pre-elaboration code and also a lazy val to\nproduce the module implementation (hence LazyModule). The ExampleTopModule\nclass is the actual RTL that gets synthesized.\nFinally, we need to add a configuration class in\nsrc/main/scala/example/Configs.scala that tells the TestHarness to instantiate\nExampleTopWithPWM instead of the default ExampleTop.\nclass\nWithPWM\nextends\nConfig\n((site, here, up)\n=>\n{\ncase\nBuildTop\n=>\n(\np\n:\nParameters\n)\n=>\nModule\n(\nLazyModule\n(\nnew\nExampleTopWithPWM\n()(p)).module)\n    })\nclass\nPWMConfig\nextends\nConfig\n(\nnew\nWithPWM\n++\nnew\nBaseExampleConfig\n)\nNow we can test that the PWM is working. The test program is in tests/pwm.c\n#define\nPWM_PERIOD\n0x2000\n#define\nPWM_DUTY\n0x2008\n#define\nPWM_ENABLE\n0x2010\nstatic\ninline\nvoid\nwrite_reg\n(\nunsigned long\naddr\n,\nunsigned long\ndata\n)\n    {\nvolatile\nunsigned long\n*\nptr\n=\n(\nvolatile\nunsigned long\n*\n)\naddr\n;\n*\nptr\n=\ndata\n;\n    }\nstatic\ninline\nunsigned long\nread_reg\n(\nunsigned long\naddr\n)\n    {\nvolatile\nunsigned long\n*\nptr\n=\n(\nvolatile\nunsigned long\n*\n)\naddr\n;\nreturn\n*\nptr\n;\n    }\nint\nmain\n(\nvoid\n)\n    {\nwrite_reg\n(\nPWM_PERIOD\n,\n20\n);\nwrite_reg\n(\nPWM_DUTY\n,\n5\n);\nwrite_reg\n(\nPWM_ENABLE\n,\n1\n);\n    }\nThis just writes out to the registers we defined earlier. The base of the\nmodule's MMIO region is at 0x2000. This will be printed out in the address\nmap portion when you generated the verilog code.\nCompiling this program with make produces a\npwm.riscv\nexecutable.\nNow with all of that done, we can go ahead and run our simulation.\ncd verisim\nmake CONFIG=PWMConfig\n./simulator-example-PWMConfig ../tests/pwm.riscv",
+            "children": []
+          },
+          {
+            "heading": "Adding a DMA port",
+            "text": "In the example above, we gave allowed the processor to communicate with the\nperipheral through MMIO. However, for IO devices (like a disk or network\ndriver), we may want to have the device write directly to the coherent\nmemory system instead. To add a device like that, you would do the following.\nclass\nDMADevice\n(\nimplicit\np\n:\nParameters\n)\nextends\nLazyModule\n{\nval\nnode\n=\nTLClientNode\n(\nTLClientParameters\n(\n        name\n=\n\"\ndma-device\n\"\n, sourceId\n=\nIdRange\n(\n0\n,\n1\n)))\nlazy\nval\nmodule\n=\nnew\nDMADeviceModule\n(\nthis\n)\n    }\nclass\nDMADeviceModule\n(\nouter\n:\nDMADevice\n)\nextends\nLazyModuleImp\n(outer) {\nval\nio\n=\nIO\n(\nnew\nBundle\n{\nval\nmem\n=\nouter.node.bundleOut\nval\next\n=\nnew\nExtBundle\n})\n//\n... rest of the code ...\n}\ntrait\nHasPeripheryDMA\nextends\nHasSystemNetworks\n{\nimplicit\nval\np\n:\nParameters\nval\ndma\n=\nLazyModule\n(\nnew\nDMADevice\n)\n\n      fsb.node\n:=\ndma.node\n    }\ntrait\nHasPeripheryDMAModuleImp\nextends\nLazyMultiIOModuleImp\n{\nval\next\n=\nIO\n(\nnew\nExtBundle\n)\n      ext\n<>\nouter.dma.module.io.ext\n    }\nThe\nExtBundle\ncontains the signals we connect off-chip that we get data from.\nThe DMADevice also has a Tilelink client port that we connect into the L1-L2\ncrossbar through the front-side buffer (fsb). The sourceId variable given in\nthe TLClientNode instantiation determines the range of ids that can be used\nin acquire messages from this device. Since we specified [0, 1) as our range,\nonly the ID 0 can be used.",
+            "children": []
+          },
+          {
+            "heading": "Adding a RoCC accelerator",
+            "text": "Besides peripheral devices, a RocketChip-based SoC can also be customized with\ncoprocessor accelerators. Each core can have up to four accelerators that\nare controlled by custom instructions and share resources with the CPU.",
+            "children": [
+              {
+                "heading": "A RoCC instruction",
+                "text": "Coprocessor instructions have the following form.\ncustomX rd, rs1, rs2, funct\nThe X will be a number 0-3, and determines the opcode of the instruction,\nwhich controls which accelerator an instruction will be routed to.\nThe\nrd\n,\nrs1\n, and\nrs2\nfields are the register numbers of the destination\nregister and two source registers. The\nfunct\nfield is a 7-bit integer that\nthe accelerator can use to distinguish different instructions from each other.",
+                "children": []
+              },
+              {
+                "heading": "Creating an accelerator",
+                "text": "RoCC accelerators are lazy modules that extend the LazyRoCC class.\nTheir implementation should extends the LazyRoCCModule class.\nclass\nCustomAccelerator\n(\nimplicit\np\n:\nParameters\n)\nextends\nLazyRoCC\n{\noverride\nlazy\nval\nmodule\n=\nnew\nCustomAcceleratorModule\n(\nthis\n)\n    }\nclass\nCustomAcceleratorModule\n(\nouter\n:\nCustomAccelerator\n)\nextends\nLazyRoCCModule\n(outer) {\nval\ncmd\n=\nQueue\n(io.cmd)\n//\nThe parts of the command are as follows\n//\ninst - the parts of the instruction itself\n//\nopcode\n//\nrd - destination register number\n//\nrs1 - first source register number\n//\nrs2 - second source register number\n//\nfunct\n//\nxd - is the destination register being used?\n//\nxs1 - is the first source register being used?\n//\nxs2 - is the second source register being used?\n//\nrs1 - the value of source register 1\n//\nrs2 - the value of source register 2\n...\n    }\nThe LazyRoCC class contains two TLOutputNode instances,\natlNode\nand\ntlNode\n.\nThe former connects into a tile-local arbiter along with the backside of the\nL1 instruction cache. The latter connects directly to the L1-L2 crossbar.\nThe corresponding Tilelink ports in the module implementation's IO bundle\nare\natl\nand\ntl\n, respectively.\nThe other interfaces available to the accelerator are\nmem\n, which provides\naccess to the L1 cache;\nptw\nwhich provides access to the page-table walker;\nthe\nbusy\nsignal, which indicates when the accelerator is still handling an\ninstruction; and the\ninterrupt\nsignal, which can be used to interrupt the CPU.\nLook at the examples in rocket-chip/src/main/scala/tile/LazyRocc.scala for\ndetailed information on the different IOs.",
+                "children": []
+              },
+              {
+                "heading": "Adding RoCC accelerator to Config",
+                "text": "RoCC accelerators can be added to a core by overriding the BuildRoCC parameter\nin the configuration. This takes a sequence of RoccParameters objects, one\nfor each accelerator you wish to add. The two required fields for this\nobject are\nopcodes\nwhich determines which custom opcodes get routed to the\naccelerator, and\ngenerator\nwhich specifies how to build the accelerator itself.\nFor instance, if we wanted to add the previously defined accelerator and\nroute custom0 and custom1 instructions to it, we could do the following.\nclass\nWithCustomAccelerator\nextends\nConfig\n((site, here, up)\n=>\n{\ncase\nRocketTilesKey\n=>\nup(\nRocketTilesKey\n, site).map { r\n=>\nr.copy(rocc\n=\nSeq\n(\nRoCCParams\n(\n            opcodes\n=\nOpcodeSet\n.custom0\n|\nOpcodeSet\n.custom1,\n            generator\n=\n(\np\n:\nParameters\n)\n=>\nLazyModule\n(\nnew\nCustomAccelerator\n()(p)))))\n      }\n    })\nclass\nCustomAcceleratorConfig\nextends\nConfig\n(\nnew\nWithCustomAccelerator\n++\nnew\nBaseConfig\n)",
+                "children": []
+              }
+            ]
+          },
+          {
+            "heading": "Adding a submodule",
+            "text": "While developing, you want to include Chisel code in a submodule so that it\ncan be shared by different projects. To add a submodule to the project\ntemplate, make sure that your project is organized as follows.\nyourproject/\n    build.sbt\n    src/main/scala/\n        YourFile.scala\nPut this in a git repository and make it accessible. Then add it as a submodule\nto the project template.\ngit submodule add https://git-repository.com/yourproject.git\nThen add\nyourproject\nto the\nEXTRA_PACKAGES\nvariable in the Makefrag.\nNow your project will be bundled into a jar file alongside the rocket-chip\nand testchipip libraries. You can then import the classes defined in the\nsubmodule in a new project.",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": null,
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-11-14T00:43:00.553720Z"
+  }
+}

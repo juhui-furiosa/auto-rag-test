@@ -1,0 +1,65 @@
+{
+  "name": "warboy-vision-models",
+  "url": "https://github.com/furiosa-ai/warboy-vision-models",
+  "visibility": "public",
+  "readme": {
+    "title": "Warboy-Vision-Models",
+    "sections": [
+      {
+        "heading": "Warboy-Vision-Models",
+        "text": "The\nwarboy-vision-models\nproject is designed to assist users in running various deep learning vision models on\nFuriosaAI\n’s first generation NPU (Neural Processing Unit), Warboy.\nUsers can follow the outlined steps in the project to execute various vision applications, such as Object Detection, Pose Estimation, Instance Segmentation, etc., using Warboy.\nWe hope that the resources here will help you utilize the FuriosaAI Warboy in your applications.",
+        "children": []
+      },
+      {
+        "heading": "Model List",
+        "text": "Currently, the project supports all vision applications provided by YOLO series (\nYOLOv9\n,\nYOLOv8\n,\nYOLOv7\nand\nYOLOv5\n). If you want to explore all available models in the\nwarboy-vision-models\nrepository and detailed performance on Warboy, please refer to the following:",
+        "children": [
+          {
+            "heading": "Object Detection",
+            "text": "Object detection is a computer vision technique used to identify the presence of specific objects in images or videos and determine their locations. It entails classifying objects in videos or photos (classification) and precisely locating them using bounding boxes, thereby detecting objects through this process.",
+            "children": []
+          },
+          {
+            "heading": "Pose Estimation",
+            "text": "Pose estimation is a technology that identifies and estimates the posture of a person or object by detecting body parts (typically joints) and using them to estimate the pose of the respective object.",
+            "children": []
+          },
+          {
+            "heading": "Instance Segmentation",
+            "text": "Instance segmentation is a technology that identifies multiple objects in an image or video and delineates the boundaries of each object. In essence, it combines Object Detection and Semantic Segmentation techniques to individually identify multiple objects belonging to the same class and estimate their boundaries.",
+            "children": []
+          }
+        ]
+      },
+      {
+        "heading": "Documentation",
+        "text": "Please refer to the following for installation and usage examples.",
+        "children": [
+          {
+            "heading": "Installation",
+            "text": "To use this project, it's essential to install various software components provided by FuriosaAI. For detailed instructions on installing packages, drivers, and the Furiosa SDK, please see the following:\nDriver, Firmware and Runtime Installation\n(\nEnglish\n|\n한국어\n)\nThis project requires Python 3.9 or above. You can install the required Python packages using pip as follows,\npip install -r requirements.txt\nand install required packages for post processing utilities using apt. Then, build C++ post processing utilities.\nsudo apt-get update\nsudo apt-get install cmake libeigen3-dev\n./build.sh\nBefore installing the project, please make sure to check\nCHECK\nflags and set them to your own paths if you are using your own dataset. If you downloaded the coco2017 dataset with\ncoco2017.sh\n, you can skip this step. So for convenience, please use the\ncoco2017.sh\nscript to download the dataset.\nAfter verifying the settings, install the project using pip.\npip install\n.\nAfter installation, you can use the\nwarboy-vision\ncommand-line interface (CLI).\nYou can view all available CLI commands by running:\nwarboy-vision --help\nFor detailed usage information about a specific command, use:\nwarboy-vision\n<\ncommand\n>\n--help",
+            "children": []
+          },
+          {
+            "heading": "Testing",
+            "text": "",
+            "children": []
+          },
+          {
+            "heading": "Usage Example",
+            "text": "",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": "Furiosa Warboy Vision Models",
+    "license": null,
+    "stars": 12,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-08-27T06:45:12.000Z"
+  }
+}

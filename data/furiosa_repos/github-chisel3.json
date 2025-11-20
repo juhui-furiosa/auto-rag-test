@@ -1,0 +1,124 @@
+{
+  "name": "chisel3",
+  "url": "https://github.com/furiosa-ai/chisel3",
+  "visibility": "public",
+  "readme": {
+    "title": "",
+    "sections": [
+      {
+        "heading": "Overview",
+        "text": "The standard Chisel3 compilation pipeline looks like:\nChisel3 (Scala) to Firrtl (this is your \"Chisel RTL\").\nFirrtl\nto Verilog (which can then be passed into FPGA or ASIC tools).\nVerilog to C++ for simulation and testing using\nVerilator\n.",
+        "children": []
+      },
+      {
+        "heading": "Installation",
+        "text": "This will walk you through installing Chisel and its dependencies:\nsbt\n, which is the preferred Scala build system and what Chisel uses.\nFirrtl\n, which compiles Chisel's IR down to Verilog.\nIf you're building from a release branch of Chisel3, separate installation of Firrtl is no longer required: the required jar will be automatically downloaded by sbt.\nIf you're building chisel3 from the master branch, you'll need to follow the directions on the\nFirrtl repository\nto publish a local copy of the required jar.\nVerilator\n, which compiles Verilog down to C++ for simulation.\nThe included unit testing infrastructure uses this.",
+        "children": [
+          {
+            "heading": "(Ubuntu-like) Linux",
+            "text": "Install Java\nsudo apt-get install default-jdk\nInstall sbt\n,\nwhich isn't available by default in the system package manager:\necho \"deb https://dl.bintray.com/sbt/debian /\" | sudo tee -a /etc/apt/sources.list.d/sbt.list\nsudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 642AC823\nsudo apt-get update\nsudo apt-get install sbt\nInstall Verilator.\nWe currently recommend Verilator version 4.006.\nFollow these instructions to compile it from source.\nInstall prerequisites (if not installed already):\nsudo apt-get install git make autoconf g++ flex bison\nClone the Verilator repository:\ngit clone http://git.veripool.org/git/verilator\nIn the Verilator repository directory, check out a known good version:\ngit pull\ngit checkout verilator_4_006\nIn the Verilator repository directory, build and install:\nunset VERILATOR_ROOT # For bash, unsetenv for csh\nautoconf # Create ./configure script\n./configure\nmake\nsudo make install",
+            "children": []
+          },
+          {
+            "heading": "Arch Linux",
+            "text": "yaourt -S firrtl-git verilator sbt",
+            "children": []
+          },
+          {
+            "heading": "Windows",
+            "text": "Download and install sbt for Windows\n.",
+            "children": [
+              {
+                "heading": "Simulation on Windows",
+                "text": "The chisel3 regression tests use Verilator as the simulator, but Verilator does not work well on Windows natively.\nHowever, Verilator works in\nWSL\nor in other Linux-compatible environments like Cygwin.\nAlternatively, if you're using\nPeekPokeTester\nor the\nTesters2 alpha\n, you can use\ntreadle\nas the simulation engine.\nTreadle is a FIRRTL simulator written in Scala, and works on any platform that can run Scala code.\nIt can simulate any pure Chisel design, but cannot simulate Verilog code and hence will not work on BlackBoxes / ExtModules which do not have corresponding greybox definitions.\nThere are no issues with generating Verilog from Chisel, which can be pushed to FPGA or ASIC tools.",
+                "children": []
+              }
+            ]
+          },
+          {
+            "heading": "Mac OS X",
+            "text": "brew install sbt verilator",
+            "children": []
+          }
+        ]
+      },
+      {
+        "heading": "Getting Started",
+        "text": "If you are migrating to Chisel3 from Chisel2, please visit\nChisel3 vs Chisel2",
+        "children": [
+          {
+            "heading": "Resources for Learning Chisel",
+            "text": "Chisel Bootcamp\n, a collection of interactive Jupyter notebooks that teach Chisel\nChisel Tutorial\n, a collection of exercises utlizing\nsbt",
+            "children": []
+          },
+          {
+            "heading": "Data Types Overview",
+            "text": "These are the base data types for defining circuit wires (abstract types which\nmay not be instantiated are greyed out):",
+            "children": []
+          }
+        ]
+      },
+      {
+        "heading": "For Hardware Engineers",
+        "text": "This section describes how to get started using Chisel to create a new RTL\ndesign from scratch.",
+        "children": [
+          {
+            "heading": "Project Setup",
+            "text": "",
+            "children": []
+          },
+          {
+            "heading": "RTL",
+            "text": "TODO: toy example",
+            "children": []
+          },
+          {
+            "heading": "Verification",
+            "text": "The simulation unit testing infrastructure is still a work in progress.\nSee\nsrc/test/scala/chiselTests\nfor example unit tests. Assert.scala is a\npretty bare-bones unittest which also somewhat verifies the testing system\nitself.\nUnit tests are written with the ScalaTest unit testing framework, optionally\nwith ScalaCheck generators to sweep the parameter space where desired.\nBasicTester\n-based tests run a single circuit in simulation until either the\ntest finishes or times out after a set amount of cycles. After compilation,\nthere is no communication between the testdriver and simulation (unlike\nChisel2's Tester, which allowed dynamic peeks and pokes), so all testvectors\nmust be determined at compile time.\nThe circuits run must subclass\nBasicTester\n, which is a Module with the\naddition of a\nstop\nfunction which finishes the testbench and reports success.\nAny\nassert\ns that trigger (in either the\nBasicTester\nor a submodule) will\ncause the test to fail.\nprintf\ns will forward to the console.\nTo write a test using the\nBasicTester\nthat integrates with sbt test, create\na class that extends either\nChiselFlatSpec\n(BDD-style testing) or\nChiselPropSpec\n(ScalaCheck generators). In the test content, use\nassert(execute{ new MyTestModule })\nwhere\nMyTestModule\nis your top-level test circuit that extends\nBasicTester\n.\nA more Chisel2-like tester may come in the future.",
+            "children": []
+          },
+          {
+            "heading": "Compiling to Simulation",
+            "text": "TODO: commands to compile project to simulation\nTODO: running testbenches",
+            "children": []
+          }
+        ]
+      },
+      {
+        "heading": "For Chisel Developers",
+        "text": "This section describes how to get started developing Chisel itself, including\nhow to test your version locally against other projects that pull in Chisel\nusing\nsbt's managed dependencies\n.",
+        "children": [
+          {
+            "heading": "Compiling and Testing Chisel",
+            "text": "In the Chisel repository directory, run:\nsbt compile\nto compile the Chisel library. If the compilation succeeded, you can then run\nthe included unit tests by invoking:\nsbt test",
+            "children": []
+          },
+          {
+            "heading": "Running Projects Against Local Chisel",
+            "text": "To use the development version of Chisel (\nmaster\nbranch), you will need to build from source and\npublishLocal\n.\nThe repo version can be found in the build.sbt file.\nAs of the time of writing it was:\nversion := \"3.2-SNAPSHOT\",\nTo publish your version of Chisel to the local Ivy (sbt's dependency manager)\nrepository, run:\nsbt publishLocal\nPROTIP\n: sbt can automatically run commands on a source change if you prefix\nthe command with\n~\n. For example, the above command to publish Chisel locally\nbecomes\nsbt ~publishLocal\n.\nsbt's manual\nrecommends that you use a\nSNAPSHOT\nversion suffix to ensure that the local\nrepository is checked for updates. Since the current default is a\nSNAPSHOT\n,\nand the version number is already incremented compared to the currently\npublished snapshot, you dont need to change version.\nThe compiled version gets placed in\n~/.ivy2/local/\n. You can nuke the relevant\nsubfolder to un-publish your local copy of Chisel.\nIn order to have your projects use this version of Chisel, you should update\nthe libraryDependencies setting in your project's build.sbt file to:\nlibraryDependencies += \"edu.berkeley.cs\" %% \"chisel3\" % \"3.2-SNAPSHOT\"\nThe version specifier in libraryDependencies in the project's build.sbt should\nmatch the version string in your local copy of Chisel's build.sbt.",
+            "children": []
+          }
+        ]
+      },
+      {
+        "heading": "Technical Documentation",
+        "text": "",
+        "children": [
+          {
+            "heading": "Chisel3 Architecture Overview",
+            "text": "The Chisel3 compiler consists of these main parts:\nThe frontend\n,\nchisel3.*\n, which is the publicly visible \"API\" of Chisel\nand what is used in Chisel RTL. These just add data to the...\nThe Builder\n,\nchisel3.internal.Builder\n, which maintains global state\n(like the currently open Module) and contains commands, generating...\nThe intermediate data structures\n,\nchisel3.firrtl.*\n, which are\nsyntactically very similar to Firrtl. Once the entire circuit has been\nelaborated, the top-level object (a\nCircuit\n) is then passed to...\nThe Firrtl emitter\n,\nchisel3.firrtl.Emitter\n, which turns the\nintermediate data structures into a string that can be written out into a\nFirrtl file for further processing.\nAlso included is:\nThe standard library\nof circuit generators,\nchisel3.util.*\n. These\ncontain commonly used interfaces and constructors (like\nDecoupled\n, which\nwraps a signal with a ready-valid pair) as well as fully parameterizable\ncircuit generators (like arbiters and muxes).\nDriver utilities\n,\nchisel3.Driver\n, which contains compilation and test\nfunctions that are invoked in the standard Verilog generation and simulation\ntesting infrastructure. These can also be used as part of custom flows.",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": "Chisel 3",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2019-05-22T02:52:13.000Z"
+  }
+}

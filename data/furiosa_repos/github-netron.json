@@ -1,0 +1,28 @@
+{
+  "name": "netron",
+  "url": "https://github.com/furiosa-ai/netron",
+  "visibility": "public",
+  "readme": {
+    "title": "(no title)",
+    "sections": [
+      {
+        "heading": "Install",
+        "text": "macOS\n:\nDownload\nthe\n.dmg\nfile or run\nbrew cask install netron\nLinux\n:\nDownload\nthe\n.AppImage\nor\n.deb\nfile.\nWindows\n:\nDownload\nthe\n.exe\ninstaller.\nBrowser\n:\nStart\nthe browser version.\nPython Server\n: Run\npip install netron\nand\nnetron [FILE]\nor\nimport netron; netron.start('[FILE]')\n.",
+        "children": []
+      },
+      {
+        "heading": "Download Models",
+        "text": "Sample model files to download and open:\nONNX\n:\nresnet-18\nKeras\n:\ntiny-yolo-voc\nCoreML\n:\nfaces_model\nTensorFlow Lite\n:\nsmartreply\nMXNet\n:\ninception_v1\nCaffe\n:\nmobilenet_v2\nTensorFlow\n:\ninception_v3",
+        "children": []
+      }
+    ]
+  },
+  "metadata": {
+    "description": "Visualizer for deep learning and machine learning models",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2019-04-03T03:09:37.000Z"
+  }
+}

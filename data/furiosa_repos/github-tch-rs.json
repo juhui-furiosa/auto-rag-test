@@ -1,0 +1,138 @@
+{
+  "name": "tch-rs",
+  "url": "https://github.com/furiosa-ai/tch-rs",
+  "visibility": "public",
+  "readme": {
+    "title": "tch-rs",
+    "sections": [
+      {
+        "heading": "tch-rs",
+        "text": "Rust bindings for the C++ api of PyTorch. The goal of the\ntch\ncrate is to\nprovide some thin wrappers around the C++ PyTorch api (a.k.a. libtorch). It\naims at staying as close as possible to the original C++ api. More idiomatic\nrust bindings could then be developed on top of this. The\ndocumentation\ncan be found on docs.rs.\nchangelog\nThe code generation part for the C api on top of libtorch comes from\nocaml-torch\n.",
+        "children": [
+          {
+            "heading": "Getting Started",
+            "text": "This crate requires the C++ PyTorch library (libtorch) in version\nv2.7.0\nto be available on\nyour system. You can either:\nUse the system-wide libtorch installation (default).\nInstall libtorch manually and let the build script know about it via the\nLIBTORCH\nenvironment variable.\nUse a Python PyTorch install, to do this set\nLIBTORCH_USE_PYTORCH=1\n.\nWhen a system-wide libtorch can't be found and\nLIBTORCH\nis not set, the\nbuild script can download a pre-built binary version of libtorch by using\nthe\ndownload-libtorch\nfeature. By default a CPU version is used. The\nTORCH_CUDA_VERSION\nenvironment variable can be set to\ncu117\nin order to\nget a pre-built binary using CUDA 11.7.",
+            "children": [
+              {
+                "heading": "System-wide Libtorch",
+                "text": "On linux platforms, the build script will look for a system-wide libtorch\nlibrary in\n/usr/lib/libtorch.so\n.",
+                "children": []
+              },
+              {
+                "heading": "Python PyTorch Install",
+                "text": "If the\nLIBTORCH_USE_PYTORCH\nenvironment variable is set, the active python\ninterpreter is called to retrieve information about the torch python package.\nThis version is then linked against.",
+                "children": []
+              },
+              {
+                "heading": "Libtorch Manual Install",
+                "text": "Get\nlibtorch\nfrom the\nPyTorch website download section\nand extract\nthe content of the zip file.\nFor Linux and macOS users, add the following to your\n.bashrc\nor equivalent, where\n/path/to/libtorch\nis the path to the directory that was created when unzipping the file.\nexport\nLIBTORCH=/path/to/libtorch\nThe header files location can also be specified separately from the shared library via\nthe following:\n#\nLIBTORCH_INCLUDE must contain `include` directory.\nexport\nLIBTORCH_INCLUDE=/path/to/libtorch/\n#\nLIBTORCH_LIB must contain `lib` directory.\nexport\nLIBTORCH_LIB=/path/to/libtorch/\nFor Windows users, assuming that\nX:\\path\\to\\libtorch\nis the unzipped libtorch directory.\nNavigate to Control Panel -> View advanced system settings -> Environment variables.\nCreate the\nLIBTORCH\nvariable and set it to\nX:\\path\\to\\libtorch\n.\nAppend\nX:\\path\\to\\libtorch\\lib\nto the\nPath\nvariable.\nIf you prefer to temporarily set environment variables, in PowerShell you can run\n$\nEnv:\nLIBTORCH\n=\n\"\nX:\\path\\to\\libtorch\n\"\n$\nEnv:\nPath\n+=\n\"\n;X:\\path\\to\\libtorch\\lib\n\"\nYou should now be able to run some examples, e.g.\ncargo run --example basics\n.",
+                "children": []
+              },
+              {
+                "heading": "Windows Specific Notes",
+                "text": "As per\nthe pytorch docs\nthe Windows debug and release builds are not ABI-compatible. This could lead to some segfaults if the incorrect version of libtorch is used.\nIt is recommended to use the MSVC Rust toolchain (e.g. by installing\nstable-x86_64-pc-windows-msvc\nvia rustup) rather than a MinGW based one as PyTorch has compatibilities issues with MinGW.",
+                "children": []
+              },
+              {
+                "heading": "Static Linking",
+                "text": "When setting environment variable\nLIBTORCH_STATIC=1\n,\nlibtorch\nis statically\nlinked rather than using the dynamic libraries. The pre-compiled artifacts don't\nseem to include\nlibtorch.a\nby default so this would have to be compiled\nmanually, e.g. via the following:\ngit clone -b v2.7.0 --recurse-submodule https://github.com/pytorch/pytorch.git pytorch-static --depth 1\ncd\npytorch-static\nUSE_CUDA=OFF BUILD_SHARED_LIBS=OFF python setup.py build\n#\nexport LIBTORCH to point at the build directory in pytorch-static.",
+                "children": []
+              }
+            ]
+          },
+          {
+            "heading": "Examples",
+            "text": "",
+            "children": [
+              {
+                "heading": "Basic Tensor Operations",
+                "text": "This crate provides a tensor type which wraps PyTorch tensors. Here is a minimal\nexample of how to perform some tensor operations.\nuse\ntch\n::\nTensor\n;\nfn\nmain\n(\n)\n{\nlet\nt =\nTensor\n::\nfrom_slice\n(\n&\n[\n3\n,\n1\n,\n4\n,\n1\n,\n5\n]\n)\n;\nlet\nt = t\n*\n2\n;\nt\n.\nprint\n(\n)\n;\n}",
+                "children": []
+              },
+              {
+                "heading": "Training a Model via Gradient Descent",
+                "text": "PyTorch provides automatic differentiation for most tensor operations\nit supports. This is commonly used to train models using gradient\ndescent. The optimization is performed over variables which are created\nvia a\nnn::VarStore\nby defining their shapes and initializations.\nIn the example below\nmy_module\nuses two variables\nx1\nand\nx2\nwhich initial values are 0. The forward pass applied to tensor\nxs\nreturns\nxs * x1 + exp(xs) * x2\n.\nOnce the model has been generated, a\nnn::Sgd\noptimizer is created.\nThen on each step of the training loop:\nThe forward pass is applied to a mini-batch of data.\nA loss is computed as the mean square error between the model output and the mini-batch ground truth.\nFinally an optimization step is performed: gradients are computed and variables from the\nVarStore\nare modified accordingly.\nuse\ntch\n::\nnn\n::\n{\nModule\n,\nOptimizerConfig\n}\n;\nuse\ntch\n::\n{\nkind\n,\nnn\n,\nDevice\n,\nTensor\n}\n;\nfn\nmy_module\n(\np\n:\nnn\n::\nPath\n,\ndim\n:\ni64\n)\n->\nimpl\nnn\n::\nModule\n{\nlet\nx1 = p\n.\nzeros\n(\n\"x1\"\n,\n&\n[\ndim\n]\n)\n;\nlet\nx2 = p\n.\nzeros\n(\n\"x2\"\n,\n&\n[\ndim\n]\n)\n;\nnn\n::\nfunc\n(\nmove\n|xs| xs\n*\n&\nx1 + xs\n.\nexp\n(\n)\n*\n&\nx2\n)\n}\nfn\ngradient_descent\n(\n)\n{\nlet\nvs = nn\n::\nVarStore\n::\nnew\n(\nDevice\n::\nCpu\n)\n;\nlet\nmy_module =\nmy_module\n(\nvs\n.\nroot\n(\n)\n,\n7\n)\n;\nlet\nmut\nopt = nn\n::\nSgd\n::\ndefault\n(\n)\n.\nbuild\n(\n&\nvs\n,\n1e-2\n)\n.\nunwrap\n(\n)\n;\nfor\n_idx\nin\n1\n..\n50\n{\n// Dummy mini-batches made of zeros.\nlet\nxs =\nTensor\n::\nzeros\n(\n&\n[\n7\n]\n,\nkind\n::\nFLOAT_CPU\n)\n;\nlet\nys =\nTensor\n::\nzeros\n(\n&\n[\n7\n]\n,\nkind\n::\nFLOAT_CPU\n)\n;\nlet\nloss =\n(\nmy_module\n.\nforward\n(\n&\nxs\n)\n- ys\n)\n.\npow_tensor_scalar\n(\n2\n)\n.\nsum\n(\nkind\n::\nKind\n::\nFloat\n)\n;\nopt\n.\nbackward_step\n(\n&\nloss\n)\n;\n}\n}",
+                "children": []
+              },
+              {
+                "heading": "Writing a Simple Neural Network",
+                "text": "The\nnn\napi can be used to create neural network architectures, e.g. the following code defines\na simple model with one hidden layer and trains it on the MNIST dataset using the Adam optimizer.\nuse\nanyhow\n::\nResult\n;\nuse\ntch\n::\n{\nnn\n,\nnn\n::\nModule\n,\nnn\n::\nOptimizerConfig\n,\nDevice\n}\n;\nconst\nIMAGE_DIM\n:\ni64\n=\n784\n;\nconst\nHIDDEN_NODES\n:\ni64\n=\n128\n;\nconst\nLABELS\n:\ni64\n=\n10\n;\nfn\nnet\n(\nvs\n:\n&\nnn\n::\nPath\n)\n->\nimpl\nModule\n{\nnn\n::\nseq\n(\n)\n.\nadd\n(\nnn\n::\nlinear\n(\nvs /\n\"layer1\"\n,\nIMAGE_DIM\n,\nHIDDEN_NODES\n,\nDefault\n::\ndefault\n(\n)\n,\n)\n)\n.\nadd_fn\n(\n|xs| xs\n.\nrelu\n(\n)\n)\n.\nadd\n(\nnn\n::\nlinear\n(\nvs\n,\nHIDDEN_NODES\n,\nLABELS\n,\nDefault\n::\ndefault\n(\n)\n)\n)\n}\npub\nfn\nrun\n(\n)\n->\nResult\n<\n(\n)\n>\n{\nlet\nm = tch\n::\nvision\n::\nmnist\n::\nload_dir\n(\n\"data\"\n)\n?\n;\nlet\nvs = nn\n::\nVarStore\n::\nnew\n(\nDevice\n::\nCpu\n)\n;\nlet\nnet =\nnet\n(\n&\nvs\n.\nroot\n(\n)\n)\n;\nlet\nmut\nopt = nn\n::\nAdam\n::\ndefault\n(\n)\n.\nbuild\n(\n&\nvs\n,\n1e-3\n)\n?\n;\nfor\nepoch\nin\n1\n..\n200\n{\nlet\nloss = net\n.\nforward\n(\n&\nm\n.\ntrain_images\n)\n.\ncross_entropy_for_logits\n(\n&\nm\n.\ntrain_labels\n)\n;\nopt\n.\nbackward_step\n(\n&\nloss\n)\n;\nlet\ntest_accuracy = net\n.\nforward\n(\n&\nm\n.\ntest_images\n)\n.\naccuracy_for_logits\n(\n&\nm\n.\ntest_labels\n)\n;\nprintln\n!\n(\n\"epoch: {:4} train loss: {:8.5} test acc: {:5.2}%\"\n,\nepoch\n,\nf64\n::\nfrom\n(\n&\nloss\n)\n,\n100.\n*\nf64\n::\nfrom\n(\n&\ntest_accuracy\n)\n,\n)\n;\n}\nOk\n(\n(\n)\n)\n}\nMore details on the training loop can be found in the\ndetailed tutorial\n.",
+                "children": []
+              },
+              {
+                "heading": "Using some Pre-Trained Model",
+                "text": "The\npretrained-models  example\nillustrates how to use some pre-trained computer vision model on an image.\nThe weights - which have been extracted from the PyTorch implementation - can be\ndownloaded here\nresnet18.ot\nand here\nresnet34.ot\n.\nThe example can then be run via the following command:\ncargo run --example pretrained-models -- resnet18.ot tiger.jpg\nThis should print the top 5 imagenet categories for the image. The code for this example is pretty simple.\n// First the image is loaded and resized to 224x224.\nlet\nimage = imagenet\n::\nload_image_and_resize\n(\nimage_file\n)\n?\n;\n// A variable store is created to hold the model parameters.\nlet\nvs = tch\n::\nnn\n::\nVarStore\n::\nnew\n(\ntch\n::\nDevice\n::\nCpu\n)\n;\n// Then the model is built on this variable store, and the weights are loaded.\nlet\nresnet18 = tch\n::\nvision\n::\nresnet\n::\nresnet18\n(\nvs\n.\nroot\n(\n)\n,\nimagenet\n::\nCLASS_COUNT\n)\n;\nvs\n.\nload\n(\nweight_file\n)\n?\n;\n// Apply the forward pass of the model to get the logits and convert them\n// to probabilities via a softmax.\nlet\noutput = resnet18\n.\nforward_t\n(\n&\nimage\n.\nunsqueeze\n(\n0\n)\n,\n/*train=*/\nfalse\n)\n.\nsoftmax\n(\n-\n1\n)\n;\n// Finally print the top 5 categories and their associated probabilities.\nfor\n(\nprobability\n,\nclass\n)\nin\nimagenet\n::\ntop\n(\n&\noutput\n,\n5\n)\n.\niter\n(\n)\n{\nprintln\n!\n(\n\"{:50} {:5.2}%\"\n,\nclass\n,\n100.0\n*\nprobability\n)\n}",
+                "children": []
+              },
+              {
+                "heading": "Importing Pre-Trained Weights from PyTorch Using SafeTensors",
+                "text": "safetensors\nis a new simple format by HuggingFace for storing tensors. It does not rely on Python's\npickle\nmodule, and therefore the tensors are not bound to the specific classes and the exact directory structure used when the model is saved. It is also zero-copy, which means that reading the file will require no more memory than the original file.\nFor more information on\nsafetensors\n, please check out\nhttps://github.com/huggingface/safetensors",
+                "children": [
+                  {
+                    "heading": "Installing safetensors",
+                    "text": "You can install\nsafetensors\nvia the pip manager:\npip install safetensors",
+                    "children": []
+                  },
+                  {
+                    "heading": "Exporting weights in PyTorch",
+                    "text": "import\ntorchvision\nfrom\nsafetensors\nimport\ntorch\nas\nstt\nmodel\n=\ntorchvision\n.\nmodels\n.\nresnet18\n(\npretrained\n=\nTrue\n)\nstt\n.\nsave_file\n(\nmodel\n.\nstate_dict\n(),\n'resnet18.safetensors'\n)\nNote: the filename of the export must be named with  a\n.safetensors\nsuffix for it to be properly decoded by\ntch\n.",
+                    "children": []
+                  },
+                  {
+                    "heading": "Importing weights in tch",
+                    "text": "use\nanyhow\n::\nResult\n;\nuse\ntch\n::\n{\nDevice\n,\nKind\n,\nnn\n::\nVarStore\n,\nvision\n::\n{\nimagenet\n,\nresnet\n::\nresnet18\n,\n}\n}\n;\nfn\nmain\n(\n)\n->\nResult\n<\n(\n)\n>\n{\n// Create the model and load the pre-trained weights\nlet\nmut\nvs =\nVarStore\n::\nnew\n(\nDevice\n::\ncuda_if_available\n(\n)\n)\n;\nlet\nmodel =\nresnet18\n(\n&\nvs\n.\nroot\n(\n)\n,\n1000\n)\n;\nvs\n.\nload\n(\n\"resnet18.safetensors\"\n)\n?\n;\n// Load the image file and resize it to the usual imagenet dimension of 224x224.\nlet\nimage = imagenet\n::\nload_image_and_resize224\n(\n\"dog.jpg\"\n)\n?\n.\nto_device\n(\nvs\n.\ndevice\n(\n)\n)\n;\n// Apply the forward pass of the model to get the logits\nlet\noutput = image\n.\nunsqueeze\n(\n0\n)\n.\napply_t\n(\n&\nmodel\n,\nfalse\n)\n.\nsoftmax\n(\n-\n1\n,\nKind\n::\nFloat\n)\n;\n// Print the top 5 categories for this image.\nfor\n(\nprobability\n,\nclass\n)\nin\nimagenet\n::\ntop\n(\n&\noutput\n,\n5\n)\n.\niter\n(\n)\n{\nprintln\n!\n(\n\"{:50} {:5.2}%\"\n,\nclass\n,\n100.0\n*\nprobability\n)\n}\nOk\n(\n(\n)\n)\n}\nFurther examples include:\nA simplified version of\nchar-rnn\nillustrating character level language modeling using Recurrent Neural Networks.\nNeural style transfer\nuses a pre-trained VGG-16 model to compose an image in the style of another image (pre-trained weights:\nvgg16.ot\n).\nSome\nResNet examples on CIFAR-10\n.\nA\ntutorial\nshowing how to deploy/run some Python trained models using\nTorchScript JIT\n.\nSome\nReinforcement Learning\nexamples using the\nOpenAI Gym\nenvironment. This includes a policy gradient\nexample as well as an A2C implementation that can run on Atari games.\nA\nTransfer Learning Tutorial\nshows how to finetune a pre-trained ResNet model on a very small dataset.\nA\nsimplified version of GPT\nsimilar to minGPT.\nA\nStable Diffusion\nimplementation following the lines of hugginface's diffusers library.\nExternal material:\nA\ntutorial\nshowing how to use Torch to compute option prices and greeks.\ntchrs-opencv-webcam-inference\nuses\ntch-rs\nand\nopencv\nto run inference\non a webcam feed for some Python trained model based on mobilenet v3.",
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "heading": "FAQ",
+            "text": "",
+            "children": [
+              {
+                "heading": "What are the best practices for Python to Rust model translations?",
+                "text": "See some details in\nthis thread\n.",
+                "children": []
+              },
+              {
+                "heading": "How to get this to work on a M1/M2 mac?",
+                "text": "Check this\nissue\n.",
+                "children": []
+              },
+              {
+                "heading": "Compilation is slow, torch-sys seems to be rebuilt every time cargo gets run.",
+                "text": "See this\nissue\n, this could\nbe caused by rust-analyzer not knowing about the proper environment variables\nlike\nLIBTORCH\nand\nLD_LIBRARY_PATH\n.",
+                "children": []
+              },
+              {
+                "heading": "Using Rust/tch code from Python.",
+                "text": "It is possible to call Rust/tch code from Python via PyO3,\ntch-ext\nprovides an example of such\na Python extension.",
+                "children": []
+              },
+              {
+                "heading": "Error loading shared libraries.",
+                "text": "If you get an error about not finding some shared libraries when running the generated binaries\n(e.g.\nerror while loading shared libraries: libtorch_cpu.so: cannot open shared object file: No such file or directory\n).\nYou can try adding the following to your\n.bashrc\nwhere\n/path/to/libtorch\nis the path to your\nlibtorch install.\n# For Linux\nexport LD_LIBRARY_PATH=/path/to/libtorch/lib:$LD_LIBRARY_PATH\n# For macOS\nexport DYLD_LIBRARY_PATH=/path/to/libtorch/lib:$DYLD_LIBRARY_PATH",
+                "children": []
+              }
+            ]
+          },
+          {
+            "heading": "License",
+            "text": "tch-rs\nis distributed under the terms of both the MIT license\nand the Apache license (version 2.0), at your option.\nSee\nLICENSE-APACHE\n,\nLICENSE-MIT\nfor more\ndetails.",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": "Rust bindings for the C++ api of PyTorch.",
+    "license": null,
+    "stars": 1,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-11-14T00:38:56.761703Z"
+  }
+}

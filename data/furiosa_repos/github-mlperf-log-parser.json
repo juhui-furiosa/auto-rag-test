@@ -1,0 +1,55 @@
+{
+  "name": "mlperf-log-parser",
+  "url": "https://github.com/furiosa-ai/mlperf-log-parser",
+  "visibility": "public",
+  "readme": {
+    "title": "(no title)",
+    "sections": [
+      {
+        "heading": "Usage",
+        "text": "",
+        "children": [
+          {
+            "heading": "Command Line Interface (CLI)",
+            "text": "#\nConvert summary log file to JSON\nmlperf-log-parser log-summary -f json mlperf_log_summary.txt mlperf_log_summary.json\n#\nConvert detail log file to YAML\nmlperf-log-parser log-detail -f yaml mlperf_log_detail.txt mlperf_log_detail.yaml",
+            "children": []
+          }
+        ]
+      },
+      {
+        "heading": "Output Format",
+        "text": "",
+        "children": [
+          {
+            "heading": "Example JSON Output",
+            "text": "{\n\"test_parameters_used\"\n: {\n\"batch_size\"\n:\n32\n,\n\"data_type\"\n:\n\"\nINT8\n\"\n,\n\"dataset\"\n:\n\"\nImageNet\n\"\n,\n\"model\"\n:\n\"\nResNet50 v1.5\n\"\n,\n\"quality_target\"\n:\n\"\n99%\n\"\n,\n\"target_latency_ns\"\n:\n10000000\n}\n}",
+            "children": []
+          },
+          {
+            "heading": "Example YAML Output",
+            "text": "test_parameters_used\n:\nbatch_size\n:\n32\ndata_type\n:\nINT8\ndataset\n:\nImageNet\nmodel\n:\nResNet50 v1.5\nquality_target\n:\n99%\ntarget_latency_ns\n:\n10000000",
+            "children": []
+          }
+        ]
+      },
+      {
+        "heading": "License",
+        "text": "MIT License",
+        "children": []
+      },
+      {
+        "heading": "Contributing",
+        "text": "Bug reports, feature suggestions, and pull requests are always welcome.\nPlease create an issue or submit a pull request.",
+        "children": []
+      }
+    ]
+  },
+  "metadata": {
+    "description": null,
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2024-12-09T04:03:07Z"
+  }
+}

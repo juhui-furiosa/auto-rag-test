@@ -1,0 +1,40 @@
+{
+  "name": "highs",
+  "url": "https://github.com/furiosa-ai/highs",
+  "visibility": "public",
+  "readme": {
+    "title": "highs",
+    "sections": [
+      {
+        "heading": "highs",
+        "text": "Safe rust bindings to the Highs MILP Solver. Best used from the\ngood_lp\nlinear\nprogramming modeler.",
+        "children": [
+          {
+            "heading": "Usage examples",
+            "text": "",
+            "children": [
+              {
+                "heading": "Building a problem variable by variable",
+                "text": "use\nhighs\n::\n{\nColProblem\n,\nSense\n}\n;\nfn\nmain\n(\n)\n{\nlet\nmut\npb =\nColProblem\n::\nnew\n(\n)\n;\n// We cannot use more then 5 units of sugar in total.\nlet\nsugar = pb\n.\nadd_row\n(\n..=\n5\n)\n;\n// We cannot use more then 3 units of milk in total.\nlet\nmilk = pb\n.\nadd_row\n(\n..=\n3\n)\n;\n// We have a first cake that we can sell for 2€. Baking it requires 1 unit of milk and 2 of sugar.\npb\n.\nadd_integer_column\n(\n2.\n,\n0\n..\n,\n&\n[\n(\nsugar\n,\n2.\n)\n,\n(\nmilk\n,\n1.\n)\n]\n)\n;\n// We have a second cake that we can sell for 8€. Baking it requires 2 units of milk and 3 of sugar.\npb\n.\nadd_integer_column\n(\n8.\n,\n0\n..\n,\n&\n[\n(\nsugar\n,\n3.\n)\n,\n(\nmilk\n,\n2.\n)\n]\n)\n;\n// Find the maximal possible profit\nlet\nsolution = pb\n.\noptimise\n(\nSense\n::\nMaximise\n)\n.\nsolve\n(\n)\n.\nget_solution\n(\n)\n;\n// The solution is to bake one cake of each sort\nassert_eq\n!\n(\nsolution\n.\ncolumns\n(\n)\n,\nvec!\n[\n1.\n,\n1.\n]\n)\n;\n}",
+                "children": []
+              },
+              {
+                "heading": "Building a problem constraint by constraint",
+                "text": "use\nhighs\n::\n*\n;\nfn\nmain\n(\n)\n{\nlet\nmut\npb =\nRowProblem\n::\nnew\n(\n)\n;\n// Optimize 3x - 2y with x<=6 and y>=5\nlet\nx = pb\n.\nadd_column\n(\n3.\n,\n..\n6\n)\n;\nlet\ny = pb\n.\nadd_column\n(\n-\n2.\n,\n5\n..\n)\n;\npb\n.\nadd_row\n(\n2\n..\n,\n&\n[\n(\nx\n,\n3.\n)\n,\n(\ny\n,\n8.\n)\n]\n)\n;\n// 2 <= x*3 + y*8\n}",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": "Safe rust bindings to the Highs MILP Solver.",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-11-14T00:41:19.197309Z"
+  }
+}

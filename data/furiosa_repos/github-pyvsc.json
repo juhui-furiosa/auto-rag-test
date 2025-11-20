@@ -1,0 +1,23 @@
+{
+  "name": "pyvsc",
+  "url": "https://github.com/furiosa-ai/pyvsc",
+  "visibility": "public",
+  "readme": {
+    "title": "PyVSC",
+    "sections": [
+      {
+        "heading": "PyVSC",
+        "text": "Python package providing a library for Verification Stimulus and Coverage\nHave a look at docs here:\npyvsc.readthedocs.io\nJoin the chat on Gitter",
+        "children": []
+      }
+    ]
+  },
+  "metadata": {
+    "description": "Python packages providing a library for Verification Stimulus and Coverage",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-11-14T00:41:55.658411Z"
+  }
+}

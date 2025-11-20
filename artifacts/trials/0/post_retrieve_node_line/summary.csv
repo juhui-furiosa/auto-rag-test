@@ -1,0 +1,3 @@
+node_type,best_module_filename,best_module_name,best_module_params,best_execution_time
+prompt_maker,0.parquet,Fstring,{'prompt': 'Read the passages and answer the given question.\\nQuestion: {query}\\nPassage: {retrieved_contents}\\nAnswer:'},1.3689200083414711e-05
+generator,0.parquet,LlamaIndexLLM,"{'llm': 'openai', 'model': 'gpt-4o-mini', 'batch': 8}",0.6290971287091573

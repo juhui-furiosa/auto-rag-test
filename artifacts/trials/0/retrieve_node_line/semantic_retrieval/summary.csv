@@ -1,0 +1,2 @@
+filename,module_name,module_params,execution_time,retrieval_f1,retrieval_recall,retrieval_precision,is_best
+0.parquet,VectorDB,"{'top_k': 5, 'vectordb': 'furiosa_store'}",0.029690083662668863,0.3100000000000001,0.93,0.18599999999999997,True

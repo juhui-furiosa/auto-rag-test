@@ -1,0 +1,59 @@
+{
+  "name": "sdk-cookbook",
+  "url": "https://github.com/furiosa-ai/sdk-cookbook",
+  "visibility": "public",
+  "readme": {
+    "title": "Furiosa SDK CookBook",
+    "sections": [
+      {
+        "heading": "Furiosa SDK CookBook",
+        "text": "A collection of open-source resources and tutorials to help developers seamlessly integrate AI-driven solutions using Furiosa SDK and development tools. Let's explore how AI engineers and researchers can build their own applications using the Furiosa SDK and RNGDs.",
+        "children": [
+          {
+            "heading": "Target audience",
+            "text": "This cookbook is for:\nAI engineers: Engineers seeking a quickstart to build production-grade AI applications using Furiosa SDKs.\nAI researchers: Researchers aiming to rapidly prototype AI workflows using Furiosa SDKs.\nAI solution architects: Solution architects looking to efficiently design and implement AI use cases using Furiosa SDKs.",
+            "children": []
+          },
+          {
+            "heading": "Prerequisites",
+            "text": "If you have access to the FurisoaAI LLM API endpoint or a dedicated RNGD server, the only step you need to take before beginning the SDK cookbook is installing the necessary prerequisites for the Furiosa SDK stack. Please refer to the provided page to choose and set up your preferred version of the FuriosaAI SDK. Currently, this SDK cookbook is based on Furiosa SDK version 2025.3.0\nInstall Prerequisites for Furiosa SDK\nNavigate Furiosa SDK Documents",
+            "children": []
+          },
+          {
+            "heading": "Beginner's guide",
+            "text": "This guide provides an introduction to using the Furiosa SDK for large language model (LLM) applications. The guide is intended for users new to the Furiosa SDK and covers the basic setup and usage required to get started. It includes:\nInstruction for Generating LLM Inference Using Furiosa SDK\nSteps for Implementing Tool Calling with Furiosa SDK to Build AI Agent",
+            "children": []
+          },
+          {
+            "heading": "Usecase",
+            "text": "Name\nDescription\nFramework / Integration\nUse-case\nUnit Test Generator\nLLM-based Code Explanation & Unit Test Generator\n-\nText Generation\nWeekly News Reporter\nLLM-based Weekly News Retriever & Summarizer\nLangGraph\nMulti Agent\nSimple RAG\nEnd-to-end Retrieval-Augmented Generation with custom documents\nLangChain\nRAG\nFinancial AI Chatbot\nFinance AI Chatbot with Query Routing\nLangChain\nQuestion Answering\nCoding Assistant\nOpen-Source Copilot for Code Completion & Assistance\nIntegration\nCode Generation",
+            "children": []
+          },
+          {
+            "heading": "How-to-Start",
+            "text": "We recommend installing dependencies individually for each recipe in the cookbook. Every recipe has its own\nREADME.md\nand\nrequirements.txt\n.\nTo get started with a recipe for building basic applications:\nClone the\nsdk-cookbook\nrepository.\nChoose a recipe and navigate to its folder.\nSet up a virtual environment.\nInstall the necessary packages with\nrequirements.txt\n.\nFollow the instructions in the\nREADME.md\nfile.",
+            "children": []
+          },
+          {
+            "heading": "Support",
+            "text": "Please note that the use-case examples in the Furiosa SDK CookBook are provided for guide purposes only and are not intended for production use. If you have questions or would like to discuss how to develop your own AI application using the Furiosa SDK, feel free to open a pull request or submit an issue. For broader discussions or support of Furiosa SDK, we encourage you to participate in the open forum linked below.\nFuriosaAI Forum",
+            "children": []
+          },
+          {
+            "heading": "License",
+            "text": "This project is licensed under the Apache License 2.0 - see the\nLICENSE\nfile for further details.",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": "A collection of open-source projects and tutorials to help developers seamlessly build AI-driven solutions with FuriosaAI SDK.",
+    "license": null,
+    "stars": 3,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-09-21T11:47:19.000Z"
+  }
+}

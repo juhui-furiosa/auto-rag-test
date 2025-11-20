@@ -1,0 +1,109 @@
+{
+  "name": "ParallelBench",
+  "url": "https://github.com/furiosa-ai/ParallelBench",
+  "visibility": "public",
+  "readme": {
+    "title": "ParallelBench: Understanding the Tradeoffs of Parallel Decoding in Diffusion LLMs",
+    "sections": [
+      {
+        "heading": "ParallelBench: Understanding the Tradeoffs of Parallel Decoding in Diffusion LLMs",
+        "text": "Wonjun Kang\n*1,5\n,\nKevin Galim\n*1\n,\nSeunghyuk Oh\n*1\n,\nMinjae Lee\n1\n,\nYuchen Zeng\n2,3\n,\nShuibai Zhang\n2\n,\nColeman Hooper\n4\n,\nYuezhou Hu\n4\n,\nHyung Il Koo\n1\n,\nNam Ik Cho\n5\n,\nKangwook Lee\n2,6\n1\nFuriosaAI,\n2\nUW-Madison,\n3\nMicrosoft Research,\n4\nUC Berkeley,\n5\nSeoul National University,\n6\nKRAFTON AI",
+        "children": [
+          {
+            "heading": "🚀 Overview",
+            "text": "Diffusion LLMs (dLLMs) promise faster generation via parallel decoding. However, this speed often comes at the cost of quality, as they ignore token dependencies, an issue that existing benchmarks do not sufficiently capture. To address this issue, we introduce\nParallelBench\n, the first benchmark designed to rigorously test this trade-off through realistic tasks that humans and autoregressive (AR) LLMs can easily solve, but which cause dLLMs to collapse as parallelism grows. We release\nParallelBench\nto drive research towards truly efficient dLLMs that can overcome this challenge.",
+            "children": []
+          },
+          {
+            "heading": "🌟 Features",
+            "text": "Information-Theoretic Analysis:\nProves that parallel decoding has fundamental error bounds when tokens depend on each other, showing even perfect models struggle as we increase parallelism on tasks requiring strong token coordination.\nQuantitative Case Studies:\nAnalytically tractable synthetic list operations (Copy, Replace, Shuffle) with closed-form accuracy formulas demonstrate fundamental limitations: specific tasks show inevitable quality degradation under parallel decoding.\nRealistic Benchmark Tasks:\n17 tasks across Waiting Line, Text Writing, and Puzzles—all trivial for humans and AR LLMs—reveal severe quality degradation in dLLMs under parallel decoding in real-world scenarios.",
+            "children": []
+          },
+          {
+            "heading": "⚙️ Setup",
+            "text": "These steps will guide you through setting up the necessary environment and dependencies.",
+            "children": [
+              {
+                "heading": "1. Prerequisites",
+                "text": "Conda\n: For managing the environment.\nNVIDIA GPU\n: CUDA >= 11.8.\nJava Development Kit (JDK)\n: Required only for grammar-based evaluation metrics.",
+                "children": []
+              },
+              {
+                "heading": "2. Create Conda Environment",
+                "text": "First, create and activate the conda environment. We use\nPython 3.10\n.\nconda create -n parallelbench python=3.10 -y\nconda activate parallelbench",
+                "children": []
+              },
+              {
+                "heading": "3. Install Python Dependencies",
+                "text": "We use\nuv\nfor faster package installation. The following commands will install PyTorch,\nvLLM\nfor the LLM baselines, and all other required packages from\nrequirements.txt\n.\n#\nInstall uv, a fast package installer\npip install uv\n#\nInstall core dependencies\nuv pip install torch==2.6.0 --index-url https://download.pytorch.org/whl/cu118\nuv pip install -r requirements.txt\nuv pip install vllm\n#\noptional for LLM evaluation",
+                "children": []
+              },
+              {
+                "heading": "4. Install Java (Optional)",
+                "text": "If you need to run the grammar-based evaluations, install the JDK via conda:\nconda install -c conda-forge openjdk=17",
+                "children": []
+              }
+            ]
+          },
+          {
+            "heading": "⚡ Quickstart",
+            "text": "Here's a simple example of how to load a model and run it on a\nParallelBench\ntask. For a more in-depth example, see the\ndemo.py\nscript.\nimport\ntorch\nfrom\ntransformers\nimport\nAutoModel\n,\nAutoTokenizer\nfrom\ndataset\n.\nparallel_bench\nimport\nParallelBench\n# 1. Load the model and tokenizer\nmodel\n=\nAutoModel\n.\nfrom_pretrained\n(\n\"Dream-org/Dream-v0-Instruct-7B\"\n,\ntrust_remote_code\n=\nTrue\n,\ntorch_dtype\n=\ntorch\n.\nbfloat16\n).\ncuda\n()\ntokenizer\n=\nAutoTokenizer\n.\nfrom_pretrained\n(\n\"Dream-org/Dream-v0-Instruct-7B\"\n,\ntrust_remote_code\n=\nTrue\n)\n# 2. Load a benchmark task and get a sample\ntask_name\n=\n\"waiting_line/copy\"\ndataset\n=\nParallelBench\n(\ntask_name\n)\nsample\n=\ndataset\n[\n0\n]\n# Get the first sample from the task\n# 3. Prepare input from the benchmark sample\nmessages\n=\nsample\n[\n\"input\"\n][\n\"messages\"\n]\ninput_ids\n=\ntokenizer\n.\napply_chat_template\n(\nmessages\n,\nadd_generation_prompt\n=\nTrue\n,\nreturn_tensors\n=\n\"pt\"\n).\nto\n(\nmodel\n.\ndevice\n)\n# 4. Generate the model's output\ngenerated_ids\n=\nmodel\n.\ndiffusion_generate\n(\ninput_ids\n,\nmax_tokens\n=\n32\n)\nresponse\n=\ntokenizer\n.\ndecode\n(\ngenerated_ids\n[\n0\n][\nlen\n(\ninput_ids\n[\n0\n]):],\nskip_special_tokens\n=\nTrue\n)\n# 5. Compare the model's output with the reference label\nprint\n(\nf\"Task:\n{\ntask_name\n}\n\"\n)\nprint\n(\nf\"Prompt:\n{\nmessages\n[\n-\n1\n][\n'content'\n]\n}\n\"\n)\nprint\n(\nf\"Reference Label:\n{\nsample\n[\n'label'\n]\n}\n\"\n)\nprint\n(\nf\"Model Output:\n{\nresponse\n}\n\"\n)\n# To get the final score, run compute_metrics\nmetrics\n=\ndataset\n.\ncompute_metrics\n([\nresponse\n], [\nsample\n[\n\"label\"\n]])\nprint\n(\nf\"Metrics:\n{\nmetrics\n}\n\"\n)",
+            "children": []
+          },
+          {
+            "heading": "🛠️ Create Your Own Tasks",
+            "text": "You can easily generate custom tasks from YAML configuration files. For example, to create new\ncopy\nand\nreverse\ntasks:\nPYTHONPATH=. python dataset/parallel_bench/data/task.py --task test/copy_reverse/all\nThis command uses the configurations specified in\ndataset/parallel_bench/data/task_configs/\n.",
+            "children": []
+          },
+          {
+            "heading": "🚀 Running Evaluations",
+            "text": "",
+            "children": [
+              {
+                "heading": "🔑 Configuration",
+                "text": "Before running the evaluations, you must export the necessary API keys as environment variables.\n#\nFor logging results\nexport\nWANDB_API_KEY=\n\"\nyour_weights_and_biases_key\n\"\n#\nFor commercial model APIs\nexport\nANTHROPIC_API_KEY=\n\"\nyour_anthropic_key\n\"\n#\nFor Haiku\nexport\nINCEPTION_API_KEY=\n\"\nyour_mercury_model_key\n\"\n#\nFor Mercury\nAll experiments are launched using the\nrun_all.py\nscript. The general command structure is:\npython run_all.py eval.py --device\n<\ngpu_ids\n>\n--cfg\n<\npath_to_config_file\n>",
+                "children": []
+              },
+              {
+                "heading": "Main Benchmark Reproduction",
+                "text": "This section covers the commands to reproduce the main benchmark results from our paper. The following commands run evaluation on\ntwo GPUs\n.\nLLaDA 1.5\n:\npython run_all.py eval.py --device 0 1 --cfg cfg/paper/benchmark/llada_1_5_all_tasks_list.yaml\nDream\n:\npython run_all.py eval.py --device 0 1 --cfg cfg/paper/benchmark/dream_all_tasks_list.yaml\nDiffucoder\n:\npython run_all.py eval.py --device 0 1 --cfg cfg/paper/benchmark/diffucoder_all_tasks_list.yaml\nLLaDA 1.0\n:\npython run_all.py eval.py --device 0 1 --cfg cfg/paper/benchmark/llada_1_0_all_tasks_list.yaml",
+                "children": []
+              },
+              {
+                "heading": "dLLM vs. Autoregressive LLM Comparison",
+                "text": "This section includes the commands for the comparative analysis between our models and other strong LLM baselines.\nLLaDA 1.5\n:\npython run_all.py eval.py --device 0 1 --cfg cfg/paper/dllm_vs_llm/llada_1_5_all_tasks_list.yaml\nDream\n:\npython run_all.py eval.py --device 0 1 --cfg cfg/paper/dllm_vs_llm/dream_all_tasks_list.yaml\nDiffucoder\n:\npython run_all.py eval.py --device 0 1 --cfg cfg/paper/dllm_vs_llm/diffucoder_all_tasks_list.yaml\nLLaDA 1.0\n:\npython run_all.py eval.py --device 0 1 --cfg cfg/paper/dllm_vs_llm/llada_1_0_all_tasks_list.yaml\nMercury\n(requires single GPU):\npython run_all.py eval.py --device 0 --cfg cfg/paper/dllm_vs_llm/mercury_all_tasks_list.yaml\nHaiku\n(requires single GPU):\npython run_all.py eval.py --device 0 --cfg cfg/paper/dllm_vs_llm/haiku_all_tasks_list.yaml\nLLM Baselines\n(via vLLM):\npython run_all.py eval.py --device 0 1 --cfg cfg/paper/dllm_vs_llm/llm_all_tasks_list.yaml",
+                "children": []
+              },
+              {
+                "heading": "📊 Results",
+                "text": "All evaluation metrics and generated outputs are logged to\nWeights & Biases (wandb)\n. Please ensure you have configured your API key and project settings.",
+                "children": []
+              }
+            ]
+          },
+          {
+            "heading": "🙏 Acknowledgements",
+            "text": "This project builds upon the work of several fantastic open-source repositories. We extend our sincere thanks to the original authors for their contributions to the community.\nLLaDA\nDream\nFast-dLLM\nReMDM\nRCR\nScore-Entropy-Discrete-Diffusion",
+            "children": []
+          },
+          {
+            "heading": "📖 Citation",
+            "text": "@article\n{\nkang2025parallelbench\n,\ntitle\n=\n{\nParallelBench: Understanding the Trade-offs of Parallel Decoding in Diffusion LLMs\n}\n,\nauthor\n=\n{\nKang, Wonjun and Galim, Kevin and Oh, Seunghyuk and Lee, Minjae and Zeng, Yuchen and Zhang, Shuibai and Hooper, Coleman and Hu, Yuezhou and Koo, Hyung Il and Cho, Nam Ik and others\n}\n,\njournal\n=\n{\narXiv preprint arXiv:2510.04767\n}\n,\nyear\n=\n{\n2025\n}\n}",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": "ParallelBench: Understanding the Tradeoffs of Parallel Decoding in Diffusion LLMs",
+    "license": null,
+    "stars": 18,
+    "forks": 0,
+    "topics": [
+      "parallel-decoding",
+      "diffusion-llm"
+    ],
+    "last_updated": "2025-10-16T02:36:01.000Z"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "name": "dvcon2024-functional-coverage-closure-with-python",
+  "url": "https://github.com/furiosa-ai/dvcon2024-functional-coverage-closure-with-python",
+  "visibility": "public",
+  "readme": {
+    "title": "cocotbext-fcov examples for DVCon",
+    "sections": [
+      {
+        "heading": "cocotbext-fcov examples for DVCon",
+        "text": "This repository provides examples of using the cocotbext-fcov package and aims to aid in understanding the paper titled \"Functional Coverage Closure with Python\" presented at DVCon US 2024.\nFor more detailed information, please refer to the paper.",
+        "children": [
+          {
+            "heading": "Installation",
+            "text": "git clone https://github.com/furiosa-ai/dvcon2024-functional-coverage-closure-with-python.git\ncd\ndvcon2024-functional-coverage-closure-with-python\ngit submodule update --init --recursive \npip install ./cocotbext-fcov",
+            "children": []
+          },
+          {
+            "heading": "Quick Start",
+            "text": "To generate SystemVerilog coverage\ncd examples\nmake coverage.sv\nTo measure functional coverage\ncd examples\nmake sim.coverage",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": null,
+    "license": null,
+    "stars": 2,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-11-14T00:40:25.218907Z"
+  }
+}

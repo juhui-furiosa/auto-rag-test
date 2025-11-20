@@ -1,0 +1,12 @@
+{
+  "title": "Supported Models",
+  "url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html",
+  "version": "2025.3.1",
+  "content": "# Supported Models[#](#supported-models \"Link to this heading\")\n\nFuriosaAI’s software stack supports a wide range of Transformer-based models available on the Hugging Face Hub.\nBelow is a list of model architectures currently supported by the Furiosa SDK.\nIf your model is based on any of these architectures, you can use the\nFuriosa SDK to compile, quantize, and run the model efficiently on\nFuriosa’s NPUs.\n\nTip\n\nPre-compiled models are available in [Hugging Face Hub 🤗 - FuriosaAI organization](https://huggingface.co/furiosa-ai).\nYou can download and run them quickly with Furiosa-LLM.\n\n## Decoder-only Models[#](#decoder-only-models \"Link to this heading\")\n\n| Model Name | Architecture | Example Hugging Face Models |\n| --- | --- | --- |\n| CodeLlama | `LlamaForCausalLM` | `meta-llama/CodeLlama-7b-Instruct-hf` |\n| DeepSeek R1 | `LlamaForCausalLM` | `deepseek-ai/DeepSeek-R1-Distill-Llama-8B`, `deepseek-ai/DeepSeek-R1-Distill-Llama-70B` |\n| EXAONE 3.0, EXAONE 3.5 | `ExaoneForCausalLM` | `LGAI-EXAONE/EXAONE-3.0-7.8B-Instruct`, `LGAI-EXAONE/EXAONE-3.5-7.8B-Instruct` |\n| Llama 2, Llama 3.1, Llama 3.3 | `LlamaForCausalLM` | `meta-llama/Llama-3.1-8B-Instruct`, `meta-llama/Llama-3.1-70B-Instruct`, `meta-llama/Llama-3.3-70B-Instruct`, .. |\n| Solar | `LlamaForCausalLM` | `upstage/SOLAR-10.7B-v1.0`, `upstage/SOLAR-10.7B-Instruct-v1.0` |\n| Qwen 2, Qwen 2.5 | `Qwen2ForCausalLM` | `Qwen/Qwen2.5-Coder-32B-Instruct`, `Qwen/QwQ-32B` |\n\n## Planned Models for Future Releases[#](#planned-models-for-future-releases \"Link to this heading\")\n\n(The order of the models listed below indicate the priority of support.)\n\n* gemma-3\n* Llama 4\n* Mistral-7B-v0.1, Mistral-7B-Instruct-v0.1\n* Mixtral-8x7B-v0.1, Mixtral-8x7B-Instruct-v0.1\n* Phi-3, Phi-3.5,\n* Phi-3.5-MoE\n* DeepSeek-Coder-V2-Instruct\n* Stable Diffusion XL",
+  "external_links": [
+    {
+      "text": "Hugging Face Hub 🤗 - FuriosaAI organization",
+      "url": "https://huggingface.co/furiosa-ai"
+    }
+  ]
+}

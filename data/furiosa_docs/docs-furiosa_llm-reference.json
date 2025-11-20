@@ -1,0 +1,7 @@
+{
+  "title": "API Reference",
+  "url": "https://developer.furiosa.ai/latest/en/furiosa_llm/reference.html",
+  "version": "2025.3.1",
+  "content": "# API Reference[#](#api-reference \"Link to this heading\")\n\nAPI Reference\n\n* [LLM class](reference/llm.html)\n* [SamplingParams class](reference/sampling_params.html)\n* [ArtifactBuilder](reference/artifact_builder.html)\n* [Artifact](reference/artifact_builder.html#artifact)\n* [ArtifactMetadata](reference/artifact_builder.html#artifactmetadata)\n* [LLMEngine class](reference/llm_engine.html)\n* [AsyncLLMEngine class](reference/async_llm_engine.html)",
+  "external_links": []
+}

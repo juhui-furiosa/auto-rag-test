@@ -1,0 +1,65 @@
+{
+  "name": "eyre",
+  "url": "https://github.com/furiosa-ai/eyre",
+  "visibility": "public",
+  "readme": {
+    "title": "eyre",
+    "sections": [
+      {
+        "heading": "eyre",
+        "text": "This library provides\neyre::Report\n, a trait object based\nerror handling type for easy idiomatic error handling and reporting in Rust\napplications.\nThis crate is a fork of\nanyhow\nwith a support for customized\nerror reports. For more details on customization checkout the docs on\neyre::EyreHandler\n.",
+        "children": [
+          {
+            "heading": "Custom Report Handlers",
+            "text": "The heart of this crate is its ability to swap out the Handler type to change\nwhat information is carried alongside errors and how the end report is\nformatted. This crate is meant to be used alongside companion crates that\ncustomize its behavior. Below is a list of known crates that export report\nhandlers for eyre and short summaries of what features they provide.\nstable-eyre\n: Switches the backtrace type from\nstd\n's to\nbacktrace-rs\n's\nso that it can be captured on stable. The report format is identical to\nDefaultHandler\n's report format.\ncolor-eyre\n: Captures a\nbacktrace::Backtrace\nand a\ntracing_error::SpanTrace\n. Provides a\nHelp\ntrait for attaching warnings\nand suggestions to error reports. The end report is then pretty printed with\nthe help of\ncolor-backtrace\n,\ncolor-spantrace\n, and\nansi_term\n. Check\nout the README on\ncolor-eyre\nfor details on the report format.\nsimple-eyre\n: A minimal\nEyreHandler\nthat captures no additional\ninformation, for when you do not wish to capture\nBacktrace\ns with errors.\njane-eyre\n: A report handler crate that exists purely for the pun of it.\nCurrently just re-exports\ncolor-eyre\n.",
+            "children": []
+          },
+          {
+            "heading": "Details",
+            "text": "Use\nResult<T, eyre::Report>\n, or equivalently\neyre::Result<T>\n, as the\nreturn type of any fallible function.\nWithin the function, use\n?\nto easily propagate any error that implements the\nstd::error::Error\ntrait.\nuse\neyre\n::\nResult\n;\nfn\nget_cluster_info\n(\n)\n->\nResult\n<\nClusterMap\n>\n{\nlet\nconfig = std\n::\nfs\n::\nread_to_string\n(\n\"cluster.json\"\n)\n?\n;\nlet\nmap\n:\nClusterMap\n= serde_json\n::\nfrom_str\n(\n&\nconfig\n)\n?\n;\nOk\n(\nmap\n)\n}\nWrap a lower level error with a new error created from a message to help the\nperson troubleshooting understand the chain of failures that occurred. A\nlow-level error like \"No such file or directory\" can be annoying to debug\nwithout more information about what higher level step the application was in\nthe middle of.\nuse\neyre\n::\n{\nWrapErr\n,\nResult\n}\n;\nfn\nmain\n(\n)\n->\nResult\n<\n(\n)\n>\n{\n..\n.\nit\n.\ndetach\n(\n)\n.\nwrap_err\n(\n\"Failed to detach the important thing\"\n)\n?\n;\nlet\ncontent = std\n::\nfs\n::\nread\n(\npath\n)\n.\nwrap_err_with\n(\n||\nformat\n!\n(\n\"Failed to read instrs from {}\"\n,\npath\n)\n)\n?\n;\n..\n.\n}\nError: Failed to read instrs from ./path/to/instrs.json\nCaused by:\nNo such file or directory (os error 2)\nDowncasting is supported and can be by value, by shared reference, or by\nmutable reference as needed.\n// If the error was caused by redaction, then return a\n// tombstone instead of the content.\nmatch\nroot_cause\n.\ndowncast_ref\n::\n<\nDataStoreError\n>\n(\n)\n{\nSome\n(\nDataStoreError\n::\nCensored\n(\n_\n)\n)\n=>\nOk\n(\nPoll\n::\nReady\n(\nREDACTED_CONTENT\n)\n)\n,\nNone\n=>\nErr\n(\nerror\n)\n,\n}\nIf using the nightly channel, a backtrace is captured and printed with the\nerror if the underlying error type does not already provide its own. In order\nto see backtraces, they must be enabled through the environment variables\ndescribed in\nstd::backtrace\n:\nIf you want panics and errors to both have backtraces, set\nRUST_BACKTRACE=1\n;\nIf you want only errors to have backtraces, set\nRUST_LIB_BACKTRACE=1\n;\nIf you want only panics to have backtraces, set\nRUST_BACKTRACE=1\nand\nRUST_LIB_BACKTRACE=0\n.\nThe tracking issue for this feature is\nrust-lang/rust#53487\n.\nEyre works with any error type that has an impl of\nstd::error::Error\n,\nincluding ones defined in your crate. We do not bundle a\nderive(Error)\nmacro\nbut you can write the impls yourself or use a standalone macro like\nthiserror\n.\nuse\nthiserror\n::\nError\n;\n#\n[\nderive\n(\nError\n,\nDebug\n)\n]\npub\nenum\nFormatError\n{\n#\n[\nerror\n(\n\"Invalid header (expected {expected:?}, got {found:?})\"\n)\n]\nInvalidHeader\n{\nexpected\n:\nString\n,\nfound\n:\nString\n,\n}\n,\n#\n[\nerror\n(\n\"Missing attribute: {0}\"\n)\n]\nMissingAttribute\n(\nString\n)\n,\n}\nOne-off error messages can be constructed using the\neyre!\nmacro, which\nsupports string interpolation and produces an\neyre::Report\n.\nreturn\nErr\n(\neyre\n!\n(\n\"Missing attribute: {}\"\n,\nmissing\n)\n)\n;",
+            "children": []
+          },
+          {
+            "heading": "No-std support",
+            "text": "NOTE\n: tests are currently broken for\nno_std\nso I cannot guarantee that\neverything works still. I'm waiting for upstream fixes to be merged rather than\nfixing them myself, so bear with me.\nIn no_std mode, the same API is almost all available and works the same way. To\ndepend on Eyre in no_std mode, disable our default enabled \"std\" feature in\nCargo.toml. A global allocator is required.\n[\ndependencies\n]\neyre\n= {\nversion\n=\n\"\n0.6\n\"\n,\ndefault-features\n=\nfalse\n}\nSince the\n?\n-based error conversions would normally rely on the\nstd::error::Error\ntrait which is only available through std, no_std mode will\nrequire an explicit\n.map_err(Report::msg)\nwhen working with a non-Eyre error\ntype inside a function that returns Eyre's error type.",
+            "children": []
+          },
+          {
+            "heading": "Comparison to failure",
+            "text": "The\neyre::Report\ntype works something like\nfailure::Error\n, but unlike\nfailure ours is built around the standard library's\nstd::error::Error\ntrait\nrather than a separate trait\nfailure::Fail\n. The standard library has adopted\nthe necessary improvements for this to be possible as part of\nRFC 2504\n.",
+            "children": []
+          },
+          {
+            "heading": "Comparison to thiserror",
+            "text": "Use\neyre\nif you don't think you'll do anything with an error other than\nreport it. This is common in application code. Use\nthiserror\nif you think\nyou need an error type that can be handled via match or reported. This is\ncommon in library crates where you don't know how your users will handle\nyour errors.",
+            "children": []
+          },
+          {
+            "heading": "Compatibility with anyhow",
+            "text": "This crate does its best to be usable as a drop in replacement of\nanyhow\nand\nvice-versa by\nre-exporting\nall of the renamed APIs with the names used in\nanyhow\n, though there are some differences still.",
+            "children": [
+              {
+                "heading": "Context and Option",
+                "text": "As part of renaming\nContext\nto\nWrapErr\nwe also intentionally do not\nimplement\nWrapErr\nfor\nOption\n. This decision was made because\nwrap_err\nimplies that you're creating a new error that saves the old error as its\nsource\n. With\nOption\nthere is no source error to wrap, so\nwrap_err\nends up\nbeing somewhat meaningless.\nInstead\neyre\nintends for users to use the combinator functions provided by\nstd\nfor converting\nOption\ns to\nResult\ns. So where you would write this with\nanyhow:\nuse\nanyhow\n::\nContext\n;\nlet\nopt\n:\nOption\n<\n(\n)\n>\n=\nNone\n;\nlet\nresult = opt\n.\ncontext\n(\n\"new error message\"\n)\n;\nWith\neyre\nwe want users to write:\nuse\neyre\n::\n{\neyre\n,\nResult\n}\n;\nlet\nopt\n:\nOption\n<\n(\n)\n>\n=\nNone\n;\nlet\nresult\n:\nResult\n<\n(\n)\n>\n= opt\n.\nok_or_else\n(\n||\neyre\n!\n(\n\"new error message\"\n)\n)\n;\nNOTE\n: However, to help with porting we do provide a\nContextCompat\ntrait which\nimplements\ncontext\nfor options which you can import to make existing\n.context\ncalls compile.",
+                "children": []
+              },
+              {
+                "heading": "License",
+                "text": "Licensed under either of\nApache License, Version\n2.0\nor\nMIT license\nat your option.\nUnless you explicitly state otherwise, any contribution intentionally submitted\nfor inclusion in this crate by you, as defined in the Apache-2.0 license, shall\nbe dual licensed as above, without any additional terms or conditions.",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": "A trait object based error handling type for easy idiomatic error handling and reporting in Rust applications",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2021-01-05T17:49:15.000Z"
+  }
+}

@@ -1,0 +1,587 @@
+[
+  {
+    "name": "riscv-isa-sim",
+    "url": "https://github.com/furiosa-ai/riscv-isa-sim",
+    "visibility": "public"
+  },
+  {
+    "name": "unicorn",
+    "url": "https://github.com/furiosa-ai/unicorn",
+    "visibility": "public"
+  },
+  {
+    "name": "vllm_compressed_tensor_custom",
+    "url": "https://github.com/furiosa-ai/vllm_compressed_tensor_custom",
+    "visibility": "public"
+  },
+  {
+    "name": "vllm",
+    "url": "https://github.com/furiosa-ai/vllm",
+    "visibility": "public"
+  },
+  {
+    "name": "LongBench",
+    "url": "https://github.com/furiosa-ai/LongBench",
+    "visibility": "public"
+  },
+  {
+    "name": "libfuriosa-kubernetes",
+    "url": "https://github.com/furiosa-ai/libfuriosa-kubernetes",
+    "visibility": "public"
+  },
+  {
+    "name": "furiosa-metrics-exporter",
+    "url": "https://github.com/furiosa-ai/furiosa-metrics-exporter",
+    "visibility": "public"
+  },
+  {
+    "name": "furiosa-device-plugin",
+    "url": "https://github.com/furiosa-ai/furiosa-device-plugin",
+    "visibility": "public"
+  },
+  {
+    "name": "furiosa-feature-discovery",
+    "url": "https://github.com/furiosa-ai/furiosa-feature-discovery",
+    "visibility": "public"
+  },
+  {
+    "name": "furiosa-models",
+    "url": "https://github.com/furiosa-ai/furiosa-models",
+    "visibility": "public"
+  },
+  {
+    "name": "claude-squad-rs",
+    "url": "https://github.com/furiosa-ai/claude-squad-rs",
+    "visibility": "public"
+  },
+  {
+    "name": "xgrammar-rs",
+    "url": "https://github.com/furiosa-ai/xgrammar-rs",
+    "visibility": "public"
+  },
+  {
+    "name": "helm-charts",
+    "url": "https://github.com/furiosa-ai/helm-charts",
+    "visibility": "public"
+  },
+  {
+    "name": "furiosa-smi-go",
+    "url": "https://github.com/furiosa-ai/furiosa-smi-go",
+    "visibility": "public"
+  },
+  {
+    "name": "ParallelBench",
+    "url": "https://github.com/furiosa-ai/ParallelBench",
+    "visibility": "public"
+  },
+  {
+    "name": "furiosa-ai.github.io",
+    "url": "https://github.com/furiosa-ai/furiosa-ai.github.io",
+    "visibility": "public"
+  },
+  {
+    "name": "cocotbext-fcov",
+    "url": "https://github.com/furiosa-ai/cocotbext-fcov",
+    "visibility": "public"
+  },
+  {
+    "name": "trl",
+    "url": "https://github.com/furiosa-ai/trl",
+    "visibility": "public"
+  },
+  {
+    "name": "sglang",
+    "url": "https://github.com/furiosa-ai/sglang",
+    "visibility": "public"
+  },
+  {
+    "name": "simple-evals",
+    "url": "https://github.com/furiosa-ai/simple-evals",
+    "visibility": "public"
+  },
+  {
+    "name": "sdk-cookbook",
+    "url": "https://github.com/furiosa-ai/sdk-cookbook",
+    "visibility": "public"
+  },
+  {
+    "name": "tokio-uring",
+    "url": "https://github.com/furiosa-ai/tokio-uring",
+    "visibility": "public"
+  },
+  {
+    "name": "torch-fx-rs",
+    "url": "https://github.com/furiosa-ai/torch-fx-rs",
+    "visibility": "public"
+  },
+  {
+    "name": "compressed-tensors-compression-part",
+    "url": "https://github.com/furiosa-ai/compressed-tensors-compression-part",
+    "visibility": "public"
+  },
+  {
+    "name": "warboy-vision-models",
+    "url": "https://github.com/furiosa-ai/warboy-vision-models",
+    "visibility": "public"
+  },
+  {
+    "name": "rust",
+    "url": "https://github.com/furiosa-ai/rust",
+    "visibility": "public"
+  },
+  {
+    "name": "uncage",
+    "url": "https://github.com/furiosa-ai/uncage",
+    "visibility": "public"
+  },
+  {
+    "name": "tch-rs",
+    "url": "https://github.com/furiosa-ai/tch-rs",
+    "visibility": "public"
+  },
+  {
+    "name": "evalplus",
+    "url": "https://github.com/furiosa-ai/evalplus",
+    "visibility": "public"
+  },
+  {
+    "name": "ciborium",
+    "url": "https://github.com/furiosa-ai/ciborium",
+    "visibility": "public"
+  },
+  {
+    "name": "production-stack",
+    "url": "https://github.com/furiosa-ai/production-stack",
+    "visibility": "public"
+  },
+  {
+    "name": "draft-based-approx-llm",
+    "url": "https://github.com/furiosa-ai/draft-based-approx-llm",
+    "visibility": "public"
+  },
+  {
+    "name": "synstructure",
+    "url": "https://github.com/furiosa-ai/synstructure",
+    "visibility": "public"
+  },
+  {
+    "name": "counting-guidance",
+    "url": "https://github.com/furiosa-ai/counting-guidance",
+    "visibility": "public"
+  },
+  {
+    "name": "furiosa-dra-driver-guide",
+    "url": "https://github.com/furiosa-ai/furiosa-dra-driver-guide",
+    "visibility": "public"
+  },
+  {
+    "name": "tektoncd-actions",
+    "url": "https://github.com/furiosa-ai/tektoncd-actions",
+    "visibility": "public"
+  },
+  {
+    "name": "serde-lite",
+    "url": "https://github.com/furiosa-ai/serde-lite",
+    "visibility": "public"
+  },
+  {
+    "name": "eta-inversion",
+    "url": "https://github.com/furiosa-ai/eta-inversion",
+    "visibility": "public"
+  },
+  {
+    "name": "ssm-state-tuning",
+    "url": "https://github.com/furiosa-ai/ssm-state-tuning",
+    "visibility": "public"
+  },
+  {
+    "name": "ssm-peft",
+    "url": "https://github.com/furiosa-ai/ssm-peft",
+    "visibility": "public"
+  },
+  {
+    "name": "furiosa-metadata",
+    "url": "https://github.com/furiosa-ai/furiosa-metadata",
+    "visibility": "public"
+  },
+  {
+    "name": "gorilla",
+    "url": "https://github.com/furiosa-ai/gorilla",
+    "visibility": "public"
+  },
+  {
+    "name": "libbpf-rs",
+    "url": "https://github.com/furiosa-ai/libbpf-rs",
+    "visibility": "public"
+  },
+  {
+    "name": "shippie",
+    "url": "https://github.com/furiosa-ai/shippie",
+    "visibility": "public"
+  },
+  {
+    "name": "libbpf-sys",
+    "url": "https://github.com/furiosa-ai/libbpf-sys",
+    "visibility": "public"
+  },
+  {
+    "name": "libbpf",
+    "url": "https://github.com/furiosa-ai/libbpf",
+    "visibility": "public"
+  },
+  {
+    "name": "llmperf",
+    "url": "https://github.com/furiosa-ai/llmperf",
+    "visibility": "public"
+  },
+  {
+    "name": "TABED",
+    "url": "https://github.com/furiosa-ai/TABED",
+    "visibility": "public"
+  },
+  {
+    "name": "docs",
+    "url": "https://github.com/furiosa-ai/docs",
+    "visibility": "public"
+  },
+  {
+    "name": "IbED",
+    "url": "https://github.com/furiosa-ai/IbED",
+    "visibility": "public"
+  },
+  {
+    "name": "mlperf-log-parser",
+    "url": "https://github.com/furiosa-ai/mlperf-log-parser",
+    "visibility": "public"
+  },
+  {
+    "name": "systemc",
+    "url": "https://github.com/furiosa-ai/systemc",
+    "visibility": "public"
+  },
+  {
+    "name": "inference",
+    "url": "https://github.com/furiosa-ai/inference",
+    "visibility": "public"
+  },
+  {
+    "name": "makefile-modifier",
+    "url": "https://github.com/furiosa-ai/makefile-modifier",
+    "visibility": "public"
+  },
+  {
+    "name": "git-sync-maestro",
+    "url": "https://github.com/furiosa-ai/git-sync-maestro",
+    "visibility": "public"
+  },
+  {
+    "name": "yolov5m",
+    "url": "https://github.com/furiosa-ai/yolov5m",
+    "visibility": "public"
+  },
+  {
+    "name": "wheel_repairer",
+    "url": "https://github.com/furiosa-ai/wheel_repairer",
+    "visibility": "public"
+  },
+  {
+    "name": "furiosa-sdk",
+    "url": "https://github.com/furiosa-ai/furiosa-sdk",
+    "visibility": "public"
+  },
+  {
+    "name": "inference-compression",
+    "url": "https://github.com/furiosa-ai/inference-compression",
+    "visibility": "public"
+  },
+  {
+    "name": "transformers_llama3",
+    "url": "https://github.com/furiosa-ai/transformers_llama3",
+    "visibility": "public"
+  },
+  {
+    "name": "mlperf-postprocess",
+    "url": "https://github.com/furiosa-ai/mlperf-postprocess",
+    "visibility": "public"
+  },
+  {
+    "name": "device-api",
+    "url": "https://github.com/furiosa-ai/device-api",
+    "visibility": "public"
+  },
+  {
+    "name": "dvcon2024-functional-coverage-closure-with-python",
+    "url": "https://github.com/furiosa-ai/dvcon2024-functional-coverage-closure-with-python",
+    "visibility": "public"
+  },
+  {
+    "name": "tracing-chrometrace",
+    "url": "https://github.com/furiosa-ai/tracing-chrometrace",
+    "visibility": "public"
+  },
+  {
+    "name": "power-dev",
+    "url": "https://github.com/furiosa-ai/power-dev",
+    "visibility": "public"
+  },
+  {
+    "name": "llama2",
+    "url": "https://github.com/furiosa-ai/llama2",
+    "visibility": "public"
+  },
+  {
+    "name": "multi_npu_demo",
+    "url": "https://github.com/furiosa-ai/multi_npu_demo",
+    "visibility": "public"
+  },
+  {
+    "name": "heaptrack",
+    "url": "https://github.com/furiosa-ai/heaptrack",
+    "visibility": "public"
+  },
+  {
+    "name": "backtrace-rs",
+    "url": "https://github.com/furiosa-ai/backtrace-rs",
+    "visibility": "public"
+  },
+  {
+    "name": "cudarc",
+    "url": "https://github.com/furiosa-ai/cudarc",
+    "visibility": "public"
+  },
+  {
+    "name": "tracing",
+    "url": "https://github.com/furiosa-ai/tracing",
+    "visibility": "public"
+  },
+  {
+    "name": "dot-viewer",
+    "url": "https://github.com/furiosa-ai/dot-viewer",
+    "visibility": "public"
+  },
+  {
+    "name": "dot-graph",
+    "url": "https://github.com/furiosa-ai/dot-graph",
+    "visibility": "public"
+  },
+  {
+    "name": "llama",
+    "url": "https://github.com/furiosa-ai/llama",
+    "visibility": "public"
+  },
+  {
+    "name": "optimum",
+    "url": "https://github.com/furiosa-ai/optimum",
+    "visibility": "public"
+  },
+  {
+    "name": "yolov7",
+    "url": "https://github.com/furiosa-ai/yolov7",
+    "visibility": "public"
+  },
+  {
+    "name": "proptest",
+    "url": "https://github.com/furiosa-ai/proptest",
+    "visibility": "public"
+  },
+  {
+    "name": "matrixmultiply",
+    "url": "https://github.com/furiosa-ai/matrixmultiply",
+    "visibility": "public"
+  },
+  {
+    "name": "yolov5s",
+    "url": "https://github.com/furiosa-ai/yolov5s",
+    "visibility": "public"
+  },
+  {
+    "name": "tflite-rs",
+    "url": "https://github.com/furiosa-ai/tflite-rs",
+    "visibility": "public"
+  },
+  {
+    "name": "pyo3-asyncio",
+    "url": "https://github.com/furiosa-ai/pyo3-asyncio",
+    "visibility": "public"
+  },
+  {
+    "name": "optimum-furiosa",
+    "url": "https://github.com/furiosa-ai/optimum-furiosa",
+    "visibility": "public"
+  },
+  {
+    "name": "yolov5-demo",
+    "url": "https://github.com/furiosa-ai/yolov5-demo",
+    "visibility": "public"
+  },
+  {
+    "name": "protobuf-gen",
+    "url": "https://github.com/furiosa-ai/protobuf-gen",
+    "visibility": "public"
+  },
+  {
+    "name": "tekton-dashboard",
+    "url": "https://github.com/furiosa-ai/tekton-dashboard",
+    "visibility": "public"
+  },
+  {
+    "name": "maturin",
+    "url": "https://github.com/furiosa-ai/maturin",
+    "visibility": "public"
+  },
+  {
+    "name": "highs-sys",
+    "url": "https://github.com/furiosa-ai/highs-sys",
+    "visibility": "public"
+  },
+  {
+    "name": "highs",
+    "url": "https://github.com/furiosa-ai/highs",
+    "visibility": "public"
+  },
+  {
+    "name": "good_lp",
+    "url": "https://github.com/furiosa-ai/good_lp",
+    "visibility": "public"
+  },
+  {
+    "name": "kvmd",
+    "url": "https://github.com/furiosa-ai/kvmd",
+    "visibility": "public"
+  },
+  {
+    "name": "ironic",
+    "url": "https://github.com/furiosa-ai/ironic",
+    "visibility": "public"
+  },
+  {
+    "name": "furiosa-version",
+    "url": "https://github.com/furiosa-ai/furiosa-version",
+    "visibility": "public"
+  },
+  {
+    "name": "efficientdet-pytorch",
+    "url": "https://github.com/furiosa-ai/efficientdet-pytorch",
+    "visibility": "public"
+  },
+  {
+    "name": "opencv",
+    "url": "https://github.com/furiosa-ai/opencv",
+    "visibility": "public"
+  },
+  {
+    "name": "smart-cctv-demo",
+    "url": "https://github.com/furiosa-ai/smart-cctv-demo",
+    "visibility": "public"
+  },
+  {
+    "name": "panoptic-deeplab",
+    "url": "https://github.com/furiosa-ai/panoptic-deeplab",
+    "visibility": "public"
+  },
+  {
+    "name": "detectron2",
+    "url": "https://github.com/furiosa-ai/detectron2",
+    "visibility": "public"
+  },
+  {
+    "name": "pyvsc",
+    "url": "https://github.com/furiosa-ai/pyvsc",
+    "visibility": "public"
+  },
+  {
+    "name": "pyucis",
+    "url": "https://github.com/furiosa-ai/pyucis",
+    "visibility": "public"
+  },
+  {
+    "name": "EDSR-PyTorch",
+    "url": "https://github.com/furiosa-ai/EDSR-PyTorch",
+    "visibility": "public"
+  },
+  {
+    "name": "onnx-mlir",
+    "url": "https://github.com/furiosa-ai/onnx-mlir",
+    "visibility": "public"
+  },
+  {
+    "name": "FasterTransformer",
+    "url": "https://github.com/furiosa-ai/FasterTransformer",
+    "visibility": "public"
+  },
+  {
+    "name": "bit-set",
+    "url": "https://github.com/furiosa-ai/bit-set",
+    "visibility": "public"
+  },
+  {
+    "name": "opaque_typedef",
+    "url": "https://github.com/furiosa-ai/opaque_typedef",
+    "visibility": "public"
+  },
+  {
+    "name": "mlflow",
+    "url": "https://github.com/furiosa-ai/mlflow",
+    "visibility": "public"
+  },
+  {
+    "name": "color-eyre",
+    "url": "https://github.com/furiosa-ai/color-eyre",
+    "visibility": "public"
+  },
+  {
+    "name": "eyre",
+    "url": "https://github.com/furiosa-ai/eyre",
+    "visibility": "public"
+  },
+  {
+    "name": "csmith",
+    "url": "https://github.com/furiosa-ai/csmith",
+    "visibility": "public"
+  },
+  {
+    "name": "error-chain",
+    "url": "https://github.com/furiosa-ai/error-chain",
+    "visibility": "public"
+  },
+  {
+    "name": "tract",
+    "url": "https://github.com/furiosa-ai/tract",
+    "visibility": "public"
+  },
+  {
+    "name": "ndarray-linalg",
+    "url": "https://github.com/furiosa-ai/ndarray-linalg",
+    "visibility": "public"
+  },
+  {
+    "name": "tensorflow",
+    "url": "https://github.com/furiosa-ai/tensorflow",
+    "visibility": "public"
+  },
+  {
+    "name": "rusty-fork",
+    "url": "https://github.com/furiosa-ai/rusty-fork",
+    "visibility": "public"
+  },
+  {
+    "name": "chisel3",
+    "url": "https://github.com/furiosa-ai/chisel3",
+    "visibility": "public"
+  },
+  {
+    "name": "netron",
+    "url": "https://github.com/furiosa-ai/netron",
+    "visibility": "public"
+  },
+  {
+    "name": "SSD.TensorFlow",
+    "url": "https://github.com/furiosa-ai/SSD.TensorFlow",
+    "visibility": "public"
+  },
+  {
+    "name": "project-template",
+    "url": "https://github.com/furiosa-ai/project-template",
+    "visibility": "public"
+  }
+]

@@ -1,0 +1,116 @@
+{
+  "name": "trl",
+  "url": "https://github.com/furiosa-ai/trl",
+  "visibility": "public",
+  "readme": {
+    "title": "TRL - Transformer Reinforcement Learning",
+    "sections": [
+      {
+        "heading": "TRL - Transformer Reinforcement Learning",
+        "text": "",
+        "children": [
+          {
+            "heading": "A comprehensive library to post-train foundation models",
+            "text": "",
+            "children": []
+          },
+          {
+            "heading": "🎉 What's New",
+            "text": "✨ OpenAI GPT OSS Support\n: TRL now fully supports fine-tuning the latest\nOpenAI GPT OSS models\n! Check out the:\nOpenAI Cookbook\nGPT OSS recipes\nOur example script",
+            "children": []
+          },
+          {
+            "heading": "Overview",
+            "text": "TRL is a cutting-edge library designed for post-training foundation models using advanced techniques like Supervised Fine-Tuning (SFT), Proximal Policy Optimization (PPO), and Direct Preference Optimization (DPO). Built on top of the\n🤗 Transformers\necosystem, TRL supports a variety of model architectures and modalities, and can be scaled-up across various hardware setups.",
+            "children": []
+          },
+          {
+            "heading": "Highlights",
+            "text": "Trainers\n: Various fine-tuning methods are easily accessible via trainers like\nSFTTrainer\n,\nGRPOTrainer\n,\nDPOTrainer\n,\nRewardTrainer\nand more.\nEfficient and scalable\n:\nLeverages\n🤗 Accelerate\nto scale from single GPU to multi-node clusters using methods like\nDDP\nand\nDeepSpeed\n.\nFull integration with\n🤗 PEFT\nenables training on large models with modest hardware via quantization and LoRA/QLoRA.\nIntegrates\n🦥 Unsloth\nfor accelerating training using optimized kernels.\nCommand Line Interface (CLI)\n: A simple interface lets you fine-tune with models without needing to write code.",
+            "children": []
+          },
+          {
+            "heading": "Installation",
+            "text": "",
+            "children": [
+              {
+                "heading": "Python Package",
+                "text": "Install the library using\npip\n:\npip install trl",
+                "children": []
+              },
+              {
+                "heading": "From source",
+                "text": "If you want to use the latest features before an official release, you can install TRL from source:\npip install git+https://github.com/huggingface/trl.git",
+                "children": []
+              },
+              {
+                "heading": "Repository",
+                "text": "If you want to use the examples you can clone the repository with the following command:\ngit clone https://github.com/huggingface/trl.git",
+                "children": []
+              }
+            ]
+          },
+          {
+            "heading": "Quick Start",
+            "text": "For more flexibility and control over training, TRL provides dedicated trainer classes to post-train language models or PEFT adapters on a custom dataset. Each trainer in TRL is a light wrapper around the 🤗 Transformers trainer and natively supports distributed training methods like DDP, DeepSpeed ZeRO, and FSDP.",
+            "children": [
+              {
+                "heading": "SFTTrainer",
+                "text": "Here is a basic example of how to use the\nSFTTrainer\n:\nfrom\ntrl\nimport\nSFTTrainer\nfrom\ndatasets\nimport\nload_dataset\ndataset\n=\nload_dataset\n(\n\"trl-lib/Capybara\"\n,\nsplit\n=\n\"train\"\n)\ntrainer\n=\nSFTTrainer\n(\nmodel\n=\n\"Qwen/Qwen2.5-0.5B\"\n,\ntrain_dataset\n=\ndataset\n,\n)\ntrainer\n.\ntrain\n()",
+                "children": []
+              },
+              {
+                "heading": "GRPOTrainer",
+                "text": "GRPOTrainer\nimplements the\nGroup Relative Policy Optimization (GRPO) algorithm\nthat is more memory-efficient than PPO and was used to train\nDeepseek AI's R1\n.\nfrom\ndatasets\nimport\nload_dataset\nfrom\ntrl\nimport\nGRPOTrainer\ndataset\n=\nload_dataset\n(\n\"trl-lib/tldr\"\n,\nsplit\n=\n\"train\"\n)\n# Dummy reward function: count the number of unique characters in the completions\ndef\nreward_num_unique_chars\n(\ncompletions\n,\n**\nkwargs\n):\nreturn\n[\nlen\n(\nset\n(\nc\n))\nfor\nc\nin\ncompletions\n]\ntrainer\n=\nGRPOTrainer\n(\nmodel\n=\n\"Qwen/Qwen2-0.5B-Instruct\"\n,\nreward_funcs\n=\nreward_num_unique_chars\n,\ntrain_dataset\n=\ndataset\n,\n)\ntrainer\n.\ntrain\n()",
+                "children": []
+              },
+              {
+                "heading": "DPOTrainer",
+                "text": "DPOTrainer\nimplements the popular\nDirect Preference Optimization (DPO) algorithm\nthat was used to post-train\nLlama 3\nand many other models. Here is a basic example of how to use the\nDPOTrainer\n:\nfrom\ndatasets\nimport\nload_dataset\nfrom\ntransformers\nimport\nAutoModelForCausalLM\n,\nAutoTokenizer\nfrom\ntrl\nimport\nDPOConfig\n,\nDPOTrainer\nmodel\n=\nAutoModelForCausalLM\n.\nfrom_pretrained\n(\n\"Qwen/Qwen2.5-0.5B-Instruct\"\n)\ntokenizer\n=\nAutoTokenizer\n.\nfrom_pretrained\n(\n\"Qwen/Qwen2.5-0.5B-Instruct\"\n)\ndataset\n=\nload_dataset\n(\n\"trl-lib/ultrafeedback_binarized\"\n,\nsplit\n=\n\"train\"\n)\ntraining_args\n=\nDPOConfig\n(\noutput_dir\n=\n\"Qwen2.5-0.5B-DPO\"\n)\ntrainer\n=\nDPOTrainer\n(\nmodel\n=\nmodel\n,\nargs\n=\ntraining_args\n,\ntrain_dataset\n=\ndataset\n,\nprocessing_class\n=\ntokenizer\n)\ntrainer\n.\ntrain\n()",
+                "children": []
+              },
+              {
+                "heading": "RewardTrainer",
+                "text": "Here is a basic example of how to use the\nRewardTrainer\n:\nfrom\ntrl\nimport\nRewardConfig\n,\nRewardTrainer\nfrom\ndatasets\nimport\nload_dataset\nfrom\ntransformers\nimport\nAutoModelForSequenceClassification\n,\nAutoTokenizer\ntokenizer\n=\nAutoTokenizer\n.\nfrom_pretrained\n(\n\"Qwen/Qwen2.5-0.5B-Instruct\"\n)\nmodel\n=\nAutoModelForSequenceClassification\n.\nfrom_pretrained\n(\n\"Qwen/Qwen2.5-0.5B-Instruct\"\n,\nnum_labels\n=\n1\n)\nmodel\n.\nconfig\n.\npad_token_id\n=\ntokenizer\n.\npad_token_id\ndataset\n=\nload_dataset\n(\n\"trl-lib/ultrafeedback_binarized\"\n,\nsplit\n=\n\"train\"\n)\ntraining_args\n=\nRewardConfig\n(\noutput_dir\n=\n\"Qwen2.5-0.5B-Reward\"\n,\nper_device_train_batch_size\n=\n2\n)\ntrainer\n=\nRewardTrainer\n(\nargs\n=\ntraining_args\n,\nmodel\n=\nmodel\n,\nprocessing_class\n=\ntokenizer\n,\ntrain_dataset\n=\ndataset\n,\n)\ntrainer\n.\ntrain\n()",
+                "children": []
+              }
+            ]
+          },
+          {
+            "heading": "Command Line Interface (CLI)",
+            "text": "You can use the TRL Command Line Interface (CLI) to quickly get started with post-training methods like Supervised Fine-Tuning (SFT) or Direct Preference Optimization (DPO):\nSFT:\ntrl sft --model_name_or_path Qwen/Qwen2.5-0.5B \\\n    --dataset_name trl-lib/Capybara \\\n    --output_dir Qwen2.5-0.5B-SFT\nDPO:\ntrl dpo --model_name_or_path Qwen/Qwen2.5-0.5B-Instruct \\\n    --dataset_name argilla/Capybara-Preferences \\\n    --output_dir Qwen2.5-0.5B-DPO\nRead more about CLI in the\nrelevant documentation section\nor use\n--help\nfor more details.",
+            "children": []
+          },
+          {
+            "heading": "Development",
+            "text": "If you want to contribute to\ntrl\nor customize it to your needs make sure to read the\ncontribution guide\nand make sure you make a dev install:\ngit clone https://github.com/huggingface/trl.git\ncd\ntrl/\npip install -e .[dev]",
+            "children": []
+          },
+          {
+            "heading": "Experimental",
+            "text": "A minimal incubation area is available under\ntrl.experimental\nfor unstable / fast-evolving features. Anything there may change or be removed in any release without notice.\nExample:\nfrom\ntrl\n.\nexperimental\n.\nnew_trainer\nimport\nNewTrainer\nRead more in the\nExperimental docs\n.",
+            "children": []
+          },
+          {
+            "heading": "Citation",
+            "text": "@misc\n{\nvonwerra2022trl\n,\nauthor\n=\n{\nLeandro von Werra and Younes Belkada and Lewis Tunstall and Edward Beeching and Tristan Thrush and Nathan Lambert and Shengyi Huang and Kashif Rasul and Quentin Gallouédec\n}\n,\ntitle\n=\n{\nTRL: Transformer Reinforcement Learning\n}\n,\nyear\n=\n{\n2020\n}\n,\npublisher\n=\n{\nGitHub\n}\n,\njournal\n=\n{\nGitHub repository\n}\n,\nhowpublished\n=\n{\n\\url{https://github.com/huggingface/trl}\n}\n}",
+            "children": []
+          },
+          {
+            "heading": "License",
+            "text": "This repository's source code is available under the\nApache-2.0 License\n.",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": "Train transformer language models with reinforcement learning.",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-11-14T00:38:33.513120Z"
+  }
+}

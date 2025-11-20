@@ -1,0 +1,81 @@
+{
+  "name": "color-eyre",
+  "url": "https://github.com/furiosa-ai/color-eyre",
+  "visibility": "public",
+  "readme": {
+    "title": "(no title)",
+    "sections": [
+      {
+        "heading": "color-eyre",
+        "text": "An error report handler for panics and the\neyre\ncrate for colorful, consistent, and well\nformatted error reports for all kinds of errors.",
+        "children": []
+      },
+      {
+        "heading": "TLDR",
+        "text": "color_eyre\nhelps you build error reports that look like this:",
+        "children": []
+      },
+      {
+        "heading": "Setup",
+        "text": "Add the following to your toml file:\n[\ndependencies\n]\ncolor-eyre\n=\n\"\n0.5\n\"\nAnd install the panic and error report handlers:\nuse\ncolor_eyre\n::\neyre\n::\nResult\n;\nfn\nmain\n(\n)\n->\nResult\n<\n(\n)\n>\n{\ncolor_eyre\n::\ninstall\n(\n)\n?\n;\n// ...\n#\nOk\n(\n(\n)\n)\n}",
+        "children": [
+          {
+            "heading": "Disabling tracing support",
+            "text": "If you don't plan on using\ntracing_error\nand\nSpanTrace\nyou can disable the\ntracing integration to cut down on unused dependencies:\n[\ndependencies\n]\ncolor-eyre\n= {\nversion\n=\n\"\n0.5\n\"\n,\ndefault-features\n=\nfalse\n}",
+            "children": []
+          },
+          {
+            "heading": "Disabling SpanTrace capture by default",
+            "text": "color-eyre defaults to capturing span traces. This is because\nSpanTrace\ncapture is significantly cheaper than\nBacktrace\ncapture. However, like\nbacktraces, span traces are most useful for debugging applications, and it's\nnot uncommon to want to disable span trace capture by default to keep noise out\ndeveloper.\nTo disable span trace capture you must explicitly set one of the env variables\nthat regulate\nSpanTrace\ncapture to\n\"0\"\n:\nif\nstd\n::\nenv\n::\nvar\n(\n\"RUST_SPANTRACE\"\n)\n.\nis_err\n(\n)\n{\nstd\n::\nenv\n::\nset_var\n(\n\"RUST_SPANTRACE\"\n,\n\"0\"\n)\n;\n}",
+            "children": []
+          },
+          {
+            "heading": "Improving perf on debug builds",
+            "text": "In debug mode\ncolor-eyre\nbehaves noticably worse than\neyre\n. This is caused\nby the fact that\neyre\nuses\nstd::backtrace::Backtrace\ninstead of\nbacktrace::Backtrace\n. The std version of backtrace is precompiled with\noptimizations, this means that whether or not you're in debug mode doesn't\nmatter much for how expensive backtrace capture is, it will always be in the\n10s of milliseconds to capture. A debug version of\nbacktrace::Backtrace\nhowever isn't so lucky, and can take an order of magnitude more time to capture\na backtrace compared to its std counterpart.\nCargo\nprofile\noverrides\ncan be used to mitigate this problem. By configuring your project to always\nbuild\nbacktrace\nwith optimizations you should get the same performance from\ncolor-eyre\nthat you're used to with\neyre\n. To do so add the following to\nyour Cargo.toml:\n[\nprofile\n.\ndev\n.\npackage\n.\nbacktrace\n]\nopt-level\n=\n3",
+            "children": []
+          }
+        ]
+      },
+      {
+        "heading": "Features",
+        "text": "",
+        "children": [
+          {
+            "heading": "Multiple report format verbosity levels",
+            "text": "color-eyre\nprovides 3 different report formats for how it formats the captured\nSpanTrace\nand\nBacktrace\n, minimal, short, and full. Take the below snippets of the output produced by\nexamples/usage.rs\n:\nRunning\ncargo run --example usage\nwithout\nRUST_LIB_BACKTRACE\nset will produce a minimal\nreport like this:\nRunning\nRUST_LIB_BACKTRACE=1 cargo run --example usage\ntells\ncolor-eyre\nto use the short\nformat, which additionally capture a\nbacktrace::Backtrace\n:\nFinally, running\nRUST_LIB_BACKTRACE=full cargo run --example usage\ntells\ncolor-eyre\nto use\nthe full format, which in addition to the above will attempt to include source lines where the\nerror originated from, assuming it can find them on the disk.",
+            "children": []
+          },
+          {
+            "heading": "Custom Section s for error reports via Section trait",
+            "text": "The\nsection\nmodule provides helpers for adding extra sections to error\nreports. Sections are disinct from error messages and are displayed\nindependently from the chain of errors. Take this example of adding sections\nto contain\nstderr\nand\nstdout\nfrom a failed command, taken from\nexamples/custom_section.rs\n:\nuse\ncolor_eyre\n::\n{\neyre\n::\neyre\n,\nSectionExt\n,\nSection\n,\neyre\n::\nReport\n}\n;\nuse\nstd\n::\nprocess\n::\nCommand\n;\nuse\ntracing\n::\ninstrument\n;\ntrait\nOutput\n{\nfn\noutput2\n(\n&\nmut\nself\n)\n->\nResult\n<\nString\n,\nReport\n>\n;\n}\nimpl\nOutput\nfor\nCommand\n{\n#\n[\ninstrument\n]\nfn\noutput2\n(\n&\nmut\nself\n)\n->\nResult\n<\nString\n,\nReport\n>\n{\nlet\noutput =\nself\n.\noutput\n(\n)\n?\n;\nlet\nstdout =\nString\n::\nfrom_utf8_lossy\n(\n&\noutput\n.\nstdout\n)\n;\nif\n!output\n.\nstatus\n.\nsuccess\n(\n)\n{\nlet\nstderr =\nString\n::\nfrom_utf8_lossy\n(\n&\noutput\n.\nstderr\n)\n;\nErr\n(\neyre\n!\n(\n\"cmd exited with non-zero status code\"\n)\n)\n.\nwith_section\n(\nmove\n|| stdout\n.\ntrim\n(\n)\n.\nto_string\n(\n)\n.\nheader\n(\n\"Stdout:\"\n)\n)\n.\nwith_section\n(\nmove\n|| stderr\n.\ntrim\n(\n)\n.\nto_string\n(\n)\n.\nheader\n(\n\"Stderr:\"\n)\n)\n}\nelse\n{\nOk\n(\nstdout\n.\ninto\n(\n)\n)\n}\n}\n}\nHere we have an function that, if the command exits unsuccessfully, creates a\nreport indicating the failure and attaches two sections, one for\nstdout\nand\none for\nstderr\n.\nRunning\ncargo run --example custom_section\nshows us how these sections are\nincluded in the output:\nOnly the\nStderr:\nsection actually gets included. The\ncat\ncommand fails,\nso stdout ends up being empty and is skipped in the final report. This gives\nus a short and concise error report indicating exactly what was attempted and\nhow it failed.",
+            "children": []
+          },
+          {
+            "heading": "Aggregating multiple errors into one report",
+            "text": "It's not uncommon for programs like batched task runners or parsers to want\nto return an error with multiple sources. The current version of the error\ntrait does not support this use case very well, though there is\nwork being\ndone\nto improve this.\nFor now however one way to work around this is to compose errors outside the\nerror trait.\ncolor-eyre\nsupports such composition in its error reports via\nthe\nSection\ntrait.\nFor an example of how to aggregate errors check out\nexamples/multiple_errors.rs\n.",
+            "children": []
+          },
+          {
+            "heading": "Custom configuration for color-backtrace for setting custom filters and more",
+            "text": "The pretty printing for backtraces and span traces isn't actually provided by\ncolor-eyre\n, but instead comes from its dependencies\ncolor-backtrace\nand\ncolor-spantrace\n.\ncolor-backtrace\nin particular has many more features\nthan are exported by\ncolor-eyre\n, such as customized color schemes, panic\nhooks, and custom frame filters. The custom frame filters are particularly\nuseful when combined with\ncolor-eyre\n, so to enable their usage we provide\nthe\ninstall\nfn for setting up a custom\nBacktracePrinter\nwith custom\nfilters installed.\nFor an example of how to setup custom filters, check out\nexamples/custom_filter.rs\n.",
+            "children": [
+              {
+                "heading": "License",
+                "text": "Licensed under either of\nApache License, Version\n2.0\nor\nMIT license\nat your option.\nUnless you explicitly state otherwise, any contribution intentionally submitted\nfor inclusion in this crate by you, as defined in the Apache-2.0 license, shall\nbe dual licensed as above, without any additional terms or conditions.",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": "Custom hooks for colorful human oriented error reports via panics and the eyre crate",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2021-04-14T21:04:14.000Z"
+  }
+}

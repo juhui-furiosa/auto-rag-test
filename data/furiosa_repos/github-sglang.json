@@ -1,0 +1,58 @@
+{
+  "name": "sglang",
+  "url": "https://github.com/furiosa-ai/sglang",
+  "visibility": "public",
+  "readme": {
+    "title": "(no title)",
+    "sections": [
+      {
+        "heading": "News",
+        "text": "[2025/08] 🔔 SGLang x AMD SF Meetup on 8/22: Hands-on GPU workshop, tech talks by AMD/xAI/SGLang, and networking (\nRoadmap\n,\nLarge-scale EP\n,\nHighlights\n,\nAITER/MoRI\n,\nWave\n).\n[2025/08] 🔥 SGLang provides day-0 support for OpenAI gpt-oss model (\ninstructions\n)\n[2025/06] 🔥 SGLang, the high-performance serving infrastructure powering trillions of tokens daily, has been awarded the third batch of the Open Source AI Grant by a16z (\na16z blog\n).\n[2025/06] 🔥 Deploying DeepSeek on GB200 NVL72 with PD and Large Scale EP (Part I): 2.7x Higher Decoding Throughput (\nblog\n).\n[2025/05] 🔥 Deploying DeepSeek with PD Disaggregation and Large-scale Expert Parallelism on 96 H100 GPUs (\nblog\n).\n[2025/03] Supercharge DeepSeek-R1 Inference on AMD Instinct MI300X (\nAMD blog\n)\n[2025/03] SGLang Joins PyTorch Ecosystem: Efficient LLM Serving Engine (\nPyTorch blog\n)\n[2024/12] v0.4 Release: Zero-Overhead Batch Scheduler, Cache-Aware Load Balancer, Faster Structured Outputs (\nblog\n).",
+        "children": []
+      },
+      {
+        "heading": "About",
+        "text": "SGLang is a fast serving framework for large language models and vision language models.\nIt makes your interaction with models faster and more controllable by co-designing the backend runtime and frontend language.\nThe core features include:\nFast Backend Runtime\n: Provides efficient serving with RadixAttention for prefix caching, zero-overhead CPU scheduler, prefill-decode disaggregation, speculative decoding, continuous batching, paged attention, tensor/pipeline/expert/data parallelism, structured outputs, chunked prefill, quantization (FP4/FP8/INT4/AWQ/GPTQ), and multi-lora batching.\nFlexible Frontend Language\n: Offers an intuitive interface for programming LLM applications, including chained generation calls, advanced prompting, control flow, multi-modal inputs, parallelism, and external interactions.\nExtensive Model Support\n: Supports a wide range of generative models (Llama, Qwen, DeepSeek, Kimi, GPT, Gemma, Mistral, etc.), embedding models (e5-mistral, gte, mcdse) and reward models (Skywork), with easy extensibility for integrating new models.\nActive Community\n: SGLang is open-source and backed by an active community with wide industry adoption.",
+        "children": []
+      },
+      {
+        "heading": "Getting Started",
+        "text": "Install SGLang\nQuick Start\nBackend Tutorial\nFrontend Tutorial\nContribution Guide",
+        "children": []
+      },
+      {
+        "heading": "Benchmark and Performance",
+        "text": "Learn more in the release blogs:\nv0.2 blog\n,\nv0.3 blog\n,\nv0.4 blog\n,\nLarge-scale expert parallelism\n.",
+        "children": []
+      },
+      {
+        "heading": "Roadmap",
+        "text": "Development Roadmap (2025 H2)",
+        "children": []
+      },
+      {
+        "heading": "Adoption and Sponsorship",
+        "text": "SGLang has been deployed at large scale, generating trillions of tokens in production each day. It is trusted and adopted by a wide range of leading enterprises and institutions, including xAI, AMD, NVIDIA, Intel, LinkedIn, Cursor, Oracle Cloud, Google Cloud, Microsoft Azure, AWS, Atlas Cloud, Voltage Park, Nebius, DataCrunch, Novita, InnoMatrix, MIT, UCLA, the University of Washington, Stanford, UC Berkeley, Tsinghua University, Jam & Tea Studios, Baseten, and other major technology organizations across North America and Asia. As an open-source LLM inference engine, SGLang has become the de facto industry standard, with deployments running on over 1,000,000 GPUs worldwide.",
+        "children": []
+      },
+      {
+        "heading": "Contact Us",
+        "text": "For enterprises interested in adopting or deploying SGLang at scale, including technical consulting, sponsorship opportunities, or partnership inquiries, please contact us at\ncontact@sglang.ai\n.",
+        "children": []
+      },
+      {
+        "heading": "Acknowledgment",
+        "text": "We learned the design and reused code from the following projects:\nGuidance\n,\nvLLM\n,\nLightLLM\n,\nFlashInfer\n,\nOutlines\n, and\nLMQL\n.",
+        "children": []
+      }
+    ]
+  },
+  "metadata": {
+    "description": "SGLang is a fast serving framework for large language models and vision language models.",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-09-22T02:36:08.000Z"
+  }
+}

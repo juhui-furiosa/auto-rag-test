@@ -1,0 +1,2 @@
+filename,module_name,module_params,execution_time,average_output_token,meteor,rouge,sem_score,is_best
+0.parquet,LlamaIndexLLM,"{'llm': 'openai', 'model': 'gpt-4o', 'batch': 8}",0.5266180189450582,48.9,0.8899161882390105,0.8599495024900913,0.9106313645783515,True

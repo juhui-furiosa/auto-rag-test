@@ -1,0 +1,34 @@
+{
+  "name": "tektoncd-actions",
+  "url": "https://github.com/furiosa-ai/tektoncd-actions",
+  "visibility": "public",
+  "readme": {
+    "title": "Official Tekton GitHub actions",
+    "sections": [
+      {
+        "heading": "Official Tekton GitHub actions",
+        "text": "This repository holds\nofficial\nGitHub actions to be used in your GitHub Workflows.",
+        "children": [
+          {
+            "heading": "setup-tektoncd",
+            "text": "Action to rollout\nTekton Pipeline\n,\nCLI (\ntkn\n)\nand a\nContainer-Registry\ninstance, setting up the environment for testing using these components.\nExample usage below with inputs using default values:\n---\njobs\n:\nsetup-tektoncd\n:\nsteps\n:\n#\nusing KinD to provide the Kubernetes instance and kubectl\n-\nuses\n:\nhelm/kind-action@v1.5.0\nwith\n:\ncluster_name\n:\nkind\n#\nsetting up Tekton Pipelines, CLI and additional components...\n-\nuses\n:\ntektoncd/actions/setup-tektoncd@main\nwith\n:\npipeline_version\n:\nlatest\nsetup_registry\n:\n\"\ntrue\n\"\npatch_etc_hosts\n:\n\"\ntrue\n\"\nSee more on\nsetup-tektoncd/README.md\n.",
+            "children": []
+          },
+          {
+            "heading": "setup-tektoncd-cli",
+            "text": "Action to install the\nTekton CLI (\ntkn\n)\n.\nExample usage below with inputs using some default values:\n---\njobs\n:\nsetup-tektoncd-cli\n:\nsteps\n:\n      -\nuses\n:\ntektoncd/actions/setup-tektoncd-cli@main\nwith\n:\nversion\n:\nlatest\nBy default the action is set to install\nlatest\nrelease, use the\nversion\ninput for a specific target.",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": "Hold \"official\" Tekton GitHub Action (to be used in workflows)",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-11-14T00:39:15.206081Z"
+  }
+}

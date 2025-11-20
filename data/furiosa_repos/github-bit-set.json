@@ -1,0 +1,17 @@
+{
+  "name": "bit-set",
+  "url": "https://github.com/furiosa-ai/bit-set",
+  "visibility": "public",
+  "readme": {
+    "title": "(no title)",
+    "sections": []
+  },
+  "metadata": {
+    "description": "A Set of Bits",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-11-14T00:42:08.313725Z"
+  }
+}

@@ -1,0 +1,2 @@
+filename,module_name,module_params,execution_time,retrieval_f1,retrieval_recall,retrieval_precision,retrieval_ndcg,retrieval_mrr,is_best
+0.parquet,HybridRRF,"{'top_k': 5, 'weight_range': (4, 80), 'weight': 4.0}",0.16326414267222086,0.2777777777777778,0.8333333333333334,0.16666666666666663,0.710253108973223,0.6687777777777778,True

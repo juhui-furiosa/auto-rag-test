@@ -1,0 +1,134 @@
+{
+  "name": "torch-fx-rs",
+  "url": "https://github.com/furiosa-ai/torch-fx-rs",
+  "visibility": "public",
+  "readme": {
+    "title": "torch-fx-rs",
+    "sections": [
+      {
+        "heading": "torch-fx-rs",
+        "text": "Rust APIs to handle PyTorch graph modules and graphs",
+        "children": [
+          {
+            "heading": "Where to use",
+            "text": "This API can help writing a Python module in Rust\nusing\nPyO3\n, in case\nthe module needs to handle PyTorch graph modules or graphs\n.",
+            "children": []
+          },
+          {
+            "heading": "APIs",
+            "text": "",
+            "children": [
+              {
+                "heading": "pub struct GraphModule",
+                "text": "#\n[\nrepr\n(\ntransparent\n)\n]\npub\nstruct\nGraphModule\n(\n_\n)\n;\nA wrapper for PyTorch's\nGraphModule\nclass.\nThe constructor method of this returns a shared reference\n&GraphModule\ninstead of an owned value. The return value is GIL-bound owning reference into Python's heap.",
+                "children": [
+                  {
+                    "heading": "Methods",
+                    "text": "pub\nfn\nnew\n<\n'\npy\n>\n(\npy\n:\nPython\n<\n'\npy\n>\n,\nnn\n:\n&\nGraphModule\n,\ngraph\n:\n&\nGraph\n)\n->\nPyResult\n<\n&\n'\npy\nSelf\n>\nCreate new instance of\nGraphModule\nPyTorch class with PyTorch\nnative constructor\nbut\nclass_name\nis not given (so that it remains as the default value\n'GraphModule'\n).\nIf new instance is created succesfully, returns\nOk\nwith a shared reference to the newly created instance in it. Otherwise, returns\nErr\nwith a\nPyErr\nin it. The\nPyErr\nwill explain the cause of the failure.\npub\nfn\nnew_with_empty_gm\n<\n'\npy\n>\n(\npy\n:\nPython\n<\n'\npy\n>\n,\ngraph\n:\n&\nGraph\n)\n->\nPyResult\n<\n&\n'\npy\nSelf\n>\nCreate new instane of\nGraphModule\nPyTorch class with PyTorch\nnative constructor\nbut\nclass_name\nis not given (so that it remains as the default value\n'GraphModule'\n) and\nroot\nis a newly created\ntorch.nn.Module\nby\ntorch.nn.Module()\n.\nIf new instance is created succesfully, returns\nOk\nwith a shared reference to the newly created instance in it. Otherwise, returns\nErr\nwith a\nPyErr\nin it. The\nPyErr\nwill explain the cause of the failure.\npub\nfn\nextract_parameters_view\n<\n'\npy\n>\n(\n&\nself\n,\npy\n:\nPython\n<\n'\npy\n>\n,\n)\n->\nPyResult\n<\nHashMap\n<\nString\n,\nBufferView\n<\n'\npy\n>\n>\n>\nCollect all parameters of this\nGraphModule\nas zero-copy views.\nReturns a\nHashMap\nmapping parameter names to\nBufferView<'py>\nvalues, whose lifetimes are tied to the provided GIL token. No data is copied.\npub\nfn\nextract_buffers_view\n<\n'\npy\n>\n(\n&\nself\n,\npy\n:\nPython\n<\n'\npy\n>\n,\n)\n->\nPyResult\n<\nHashMap\n<\nString\n,\nBufferView\n<\n'\npy\n>\n>\n>\nCollect all buffers of this\nGraphModule\nas zero-copy views.\nReturns a\nHashMap\nmapping buffer names to\nBufferView<'py>\nvalues, lifetime-bound to\npy\n. No data is copied.\npub\nfn\ngraph\n(\n&\nself\n)\n->\nPyResult\n<\n&\nGraph\n>\nRetrieve the\ngraph\nattribute of this\nGraphModule\n.\nIf the retrieval is done successfully, returns\nOk\nwith a shared reference to the\ngraph\nattribute (\n&Graph\n) in it. Otherwise, returns\nErr\nwith a\nPyErr\nin it. The\nPyErr\nwill explain the cause of the failure.\npub\nfn\nget_parameter_view\n<\n'\npy\n>\n(\n&\nself\n,\npy\n:\nPython\n<\n'\npy\n>\n,\nname\n:\n&\nstr\n)\n->\nPyResult\n<\nOption\n<\nBufferView\n<\n'\npy\n>\n>\n>\nGet a zero-copy view into the underlying storage of the parameter named\nname\n. Since\nBufferView\ndereferences to\n[u8]\n, you can use methods like\nview.len()\nor pass\n&*view\nwhere a slice is expected.\nReturns\nOk(None)\nif absent, or\nOk(Some(BufferView<'py>))\nif present. No data is copied.\npub\nfn\ncount_parameters\n(\n&\nself\n)\n->\nPyResult\n<\nusize\n>\nGet the number of parameters of this\nGraphModule\n.\nIf a Python error occurs during this procedure, returns\nErr\nwith a\nPyErr\nin it.\nPyErr\nwill explain the error. Otherwise, returns\nOk\nwith the number of parameters of this\nGraphModule\nin it.\npub\nfn\nget_buffer_view\n<\n'\npy\n>\n(\n&\nself\n,\npy\n:\nPython\n<\n'\npy\n>\n,\nname\n:\n&\nstr\n)\n->\nPyResult\n<\nOption\n<\nBufferView\n<\n'\npy\n>\n>\n>\nGet a zero-copy view into the underlying storage of the buffer named\nname\n. Since\nBufferView\ndereferences to\n[u8]\n, you can use methods like\nview.len()\nor pass\n&*view\nwhere a slice is expected.\nReturns\nOk(None)\nif absent, or\nOk(Some(BufferView<'py>))\nif present. No data is copied.",
+                    "children": []
+                  },
+                  {
+                    "heading": "Zero-Copy Views: Safety & Usage",
+                    "text": "BufferView<'py>\nprovides read-only, zero-copy access to a tensor's underlying storage.\nLifetime: the view is tied to the GIL token (\nPython<'py>\n) used to create it. Do not store it beyond the GIL scope. If you need to persist the data, copy it via\n&*view\ninto an owned buffer.\nRead-only: do not mutate the underlying tensor while a view is held. Treat the view as immutable bytes.\nStrided tensors: views represent the storage range backing the tensor, not logical shape. Use separate metadata (e.g.,\nTensorMeta\n) to reason about shape/stride.\nExample:\npyo3\n::\nprepare_freethreaded_python\n(\n)\n;\nPython\n::\nwith_gil\n(\n|py|\n{\nlet\ngm =\nGraphModule\n::\nnew_with_empty_gm\n(\npy\n,\nGraph\n::\nnew\n(\npy\n)\n.\nunwrap\n(\n)\n)\n.\nunwrap\n(\n)\n;\n// Assume gm has a parameter \"w\"\nif\nlet\nSome\n(\nview\n)\n= gm\n.\nget_parameter_view\n(\npy\n,\n\"w\"\n)\n.\nunwrap\n(\n)\n{\n// Safe to read within the GIL scope\nlet\nlen = view\n.\nlen\n(\n)\n;\nlet\nfirst = view\n[\n0\n]\n;\n// If you need to keep data, copy it out\nlet\nowned\n:\nVec\n<\nu8\n>\n= view\n.\nto_vec\n(\n)\n;\ndrop\n(\n(\nlen\n,\nfirst\n,\nowned\n)\n)\n;\n}\n}\n)\n;\npub\nfn\niter_parameters_view\n<\n'\npy\n>\n(\n&\nself\n,\npy\n:\nPython\n<\n'\npy\n>\n,\n)\n->\nPyResult\n<\nimpl\nIterator\n<\nItem\n=\nPyResult\n<\n(\nString\n,\nBufferView\n<\n'\npy\n>\n)\n>\n>\n+\n'\npy\n>\nIterate parameters lazily as\n(name, BufferView)\n, avoiding intermediate\nHashMap\nallocation. Each item is a\nPyResult\nto surface Python interop errors during iteration.\npub\nfn\niter_buffers_view\n<\n'\npy\n>\n(\n&\nself\n,\npy\n:\nPython\n<\n'\npy\n>\n,\n)\n->\nPyResult\n<\nimpl\nIterator\n<\nItem\n=\nPyResult\n<\n(\nString\n,\nBufferView\n<\n'\npy\n>\n)\n>\n>\n+\n'\npy\n>\nIterate buffers lazily as\n(name, BufferView)\nwith zero-copy semantics.\npub\nfn\ncount_buffers\n(\n&\nself\n)\n->\nPyResult\n<\nusize\n>\nGet the number of buffers of this\nGraphModule\n.\nIf a Python error occurs during this procedure, returns\nErr\nwith a\nPyErr\nin it.\nPyErr\nwill explain the error. Otherwise, returns\nOk\nwith the number of parameters of this\nGraphModule\nin it.\npub\nfn\nprint_readable\n(\n&\nself\n)\n->\nPyResult\n<\nString\n>\nStringify this\nGraphModule\n.\nThis does the same what\nprint_readable\ninstance method of\nGraphModule\nPyTorch class does, but\nprint_output\nis given as\nTrue\n.\nIf stringifying is done successfully, returns\nOk\nwith the resulting string in it. Otherwise, returns\nErr\nwith a\nPyErr\nin it. The\nPyErr\nwill explain the cause of the failure.",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "heading": "pub struct Graph",
+                "text": "#\n[\nrepr\n(\ntransparent\n)\n]\npub\nstruct\nGraph\n(\n_\n)\n;\nA wrapper for PyTorch's\nGraph\nclass.\nThe constructor method of this returns a shared reference\n&Graph\ninstead of an owned value. The return value is GIL-bound owning reference into Python's heap.",
+                "children": [
+                  {
+                    "heading": "Methods",
+                    "text": "pub\nfn\nnew\n(\npy\n:\nPython\n<\n'\n_\n>\n)\n->\nPyResult\n<\n&\nSelf\n>\nCreate new instance of\nGraph\nPyTorch class with PyTorch native constructor.\nIf new instance is created successfully, returns\nOk\nwith a shared reference to the newly created instance in it. Otherwise, returns\nErr\nwith a\nPyErr\nin it. The\nPyErr\nwill explain the cause of the failure.\npub\nfn\nnodes_iterator\n(\n&\nself\n)\n->\nPyResult\n<\n&\nPyIterator\n>\nRetrieve all the\nNode\ns\nof this\nGraph\nas a Python iterator.\nIf the retrieval is done successfully, returns\nOk\nwith a shared reference\nto a Python iterator for it in it. Otherwise, returns\nErr\nwith a\nPyErr\nin it. The\nPyErr\nwill explain the cause of the failure.\npub\nfn\neliminate_dead_code\n(\n&\nself\n)\n->\nPyResult\n<\n(\n)\n>\nAn interface for\neliminate_dead_code\ninstance method of\nGraph\nPyTorch class.\nIf the method call is done successfully, returns\nOk(())\n. Otherwise, returns\nErr\nwith a\nPyErr\nin it. The\nPyErr\nwill explain the cause of the failure.\npub\nfn\nlint\n(\n&\nself\n)\n->\nPyResult\n<\n(\n)\n>\nAn interface for\nlint\ninstance method of\nGraph\nPyTorch class.\nIf the method call is done successfully, returns\nOk(())\n. Otherwise, returns\nErr\nwith a\nPyErr\nin it. The\nPyErr\nwill explain the cause of the failure.\npub\nfn\ncreate_node\n<\nS\n:\nAsRef\n<\nstr\n>\n>\n(\n&\nself\n,\nop\n:\nOp\n,\ntarget\n:\nTarget\n,\nargs\n:\nimpl\nIntoIterator\n<\nIntoIter\n=\nimpl\nExactSizeIterator\n<\nItem\n=\nArgument\n>\n>\n,\nkwargs\n:\nimpl\nIntoIterator\n<\nItem\n=\n(\nString\n,\nArgument\n)\n>\n,\nname\n:\nS\n,\nmeta\n:\nOption\n<\nHashMap\n<\nString\n,\nPyObject\n>\n>\n,\n)\n->\nPyResult\n<\n&\nNode\n>\nAn interface for\ncreate_node\ninstance method of\nGraph\nPyTorch class, but\ntype_expr\nis not given (\nNone\n). Also, if\nmeta\nis given, the newly created\nNode\nwill have an attribute\nmeta\n, whose value will be the given argument\nmeta\n.\nIf the method call is done successfully, returns\nOk\nwith a shared reference to the newly created\nNode\nin it. Otherwise, returns\nErr\nwith a\nPyErr\nin it. The\nPyErr\nwill explain the cause of the failure.\npub\nfn\nplaceholder\n<\nS\n:\nAsRef\n<\nstr\n>\n>\n(\n&\nself\n,\nname\n:\nS\n)\n->\nPyResult\n<\n&\nNode\n>\nCreate and insert a placeholder\nNode\ninto this\nGraph\n. A placeholder represents a function input.\nname\nis the name for the input value.\nThis does the same what\nplaceholder\ninstance method of\nGraph\nPyTorch class does, but\ntype_expr\nis\nNone\nand\ndefault_value\nis\ninspect.Signature.empty\n.\nIf the creation and insertion of the\nNode\nis done successfully, returns\nOk\nwith a shared reference to the newly created\nNode\nin it. Otherwise, returns\nErr\nwith a\nPyErr\nin it. The\nPyErr\nwill explain the cause of the failure.\npub\nfn\noutput\n(\n&\nself\n,\nargs\n:\nArgument\n)\n->\nPyResult\n<\n&\nNode\n>\nCreate and insert an output\nNode\ninto this\nGraph\n.\nargs\nis the value that should be returned by this output node.\nargs\nhas to be\nArgument::NodeTuple\n.\nThis does the same what\noutput\ninstance method of\nGraph\nPyTorch class does, but\ntype_expr\nis\nNone\nand the newly created\nNode\nhas a name 'output'.\nIf the creation and insertion of the\nNode\nis done successfully, returns\nOk\nwith a shared reference to the newly created\nNode\nin it. Otherwise, returns\nErr\nwith a\nPyErr\nin it. The\nPyErr\nwill explain the cause of the failure.\npub\nfn\ncall_custom_function\n<\nS\n:\nAsRef\n<\nstr\n>\n>\n(\n&\nself\n,\nname\n:\nS\n,\ncustom_fn\n:\nCustomFn\n,\nargs\n:\nimpl\nIntoIterator\n<\nIntoIter\n=\nimpl\nExactSizeIterator\n<\nItem\n=\nArgument\n>\n>\n,\nkwargs\n:\nimpl\nIntoIterator\n<\nItem\n=\n(\nString\n,\nArgument\n)\n>\n,\n)\n->\nPyResult\n<\n&\nNode\n>\nCreate and insert a call_function\nNode\ninto this\nGraph\n. call_function\nNode\nrepresents a call to a Python callable, specified by\ncustom_fn\n.\nThis does the same what\ncall_function\ninstance method of\nGraph\nPyTorch class does, but the name of\nthe_function\nparameter is changed into\ncustom_fn\n,\ntype_expr\nis not given (\nNone\n), and the\nname\nfor the name of this node is given.\ncustom_fn\nmust be a\nCustomFn\n, a python callable which calls a Rust function actually.\nIf the creation and insertion of the\nNode\nis done successfully, returns\nOk\nwith a shared reference to the newly created\nNode\nin it. Otherwise, returns\nErr\nwith a\nPyErr\nin it. The\nPyErr\nwill explain the cause of the failure.\npub\nfn\ncall_python_function\n<\nS\n:\nAsRef\n<\nstr\n>\n>\n(\n&\nself\n,\nname\n:\nS\n,\nthe_function\n:\nPy\n<\nPyAny\n>\n,\nargs\n:\nimpl\nIntoIterator\n<\nIntoIter\n=\nimpl\nExactSizeIterator\n<\nItem\n=\nArgument\n>\n>\n,\nkwargs\n:\nimpl\nIntoIterator\n<\nItem\n=\n(\nString\n,\nArgument\n)\n>\n,\n)\n->\nPyResult\n<\n&\nNode\n>\nCreate and insert a call_function\nNode\ninto this\nGraph\n. call_function\nNode\nrepresents a call to a Python callable, specified by\nthe_function\n.\nThis does the same what\ncall_function\ninstance method of\nGraph\nPyTorch class does, but\ntype_expr\nis not given (\nNone\n) and the\nname\nfor the name of this node is given.\nIf the creation and insertion of the\nNode\nis done successfully, returns\nOk\nwith a shared reference to the newly created\nNode\nin it. Otherwise, returns\nErr\nwith a\nPyErr\nin it. The\nPyErr\nwill explain the cause of the failure.\npub\nfn\nnode_copy\n(\n&\nself\n,\nnode\n:\n&\nNode\n,\nmapper\n:\nOption\n<\n&\nHashMap\n<\nString\n,\nString\n>\n>\n,\n)\n->\nPyResult\n<\n&\nNode\n>\nCopy a\nNode\nfrom another\nGraph\ninto this\nGraph\n(\nself\n).\nnode\nis the node to copy into\nself\n.\nmapper\nneeds to transform arguments from the graph of\nnode\nto the graph of self.\nThis does the same what\nnode_copy\ninstance method of\nGraph\nPyTorch class does.\nIf the copying and insertion of the\nNode\nis done successfuly, returns\nOk\nwith a shared reference to the newly created\nNode\nin it. Otherwise, returns\nErr\nwith a\nPyErr\nin it. The\nPyErr\nwill explain the cause of the failure.\npub\nfn\nflatten_node_args\n<\nS\n:\nAsRef\n<\nstr\n>\n>\n(\n&\nself\n,\nnode_name\n:\nS\n)\n->\nPyResult\n<\nOption\n<\nVec\n<\nString\n>\n>\n>\nRetrieve the names of argument\nNode\ns of the\nNode\nnamed as the value of\nnode_name\nin this\nGraph\n.\nIf this graph doesn't have a\nNode\nnamed as the value of\nnode_name\n, returns\nOk(None)\n. If this graph have a\nNode\nnamed as the value of\nnode_name\n, returns\nOk(Some)\nwith a\nVec\nof names of argument\nNode\ns of the\nNode\n, in the\nSome\n. If something fails while looking into this\nGraph\n, returns\nErr\nwith a\nPyErr\nin it. The\nPyErr\nwill explain the cause of the failure.\npub\nfn\nflatten_node_args_nodes\n<\nS\n:\nAsRef\n<\nstr\n>\n>\n(\n&\nself\n,\nnode_name\n:\nS\n,\n)\n->\nPyResult\n<\nOption\n<\nVec\n<\n&\nNode\n>\n>\n>\nRetrieve the argument nodes of\nnode_name\nas borrowed\n&Node\nreferences, avoiding string copies. Returns\nOk(None)\nif the node does not exist.\npub\nfn\nusers\n<\nS\n:\nAsRef\n<\nstr\n>\n>\n(\n&\nself\n,\nnode_name\n:\nS\n)\n->\nPyResult\n<\nOption\n<\nVec\n<\nString\n>\n>\n>\nRetrieve the names of user\nNode\ns of the\nNode\nnamed as the value of\nnode_name\nin this\nGraph\n.\nIf this graph doesn't have a\nNode\nnamed as the value of\nnode_name\n, returns\nOk(None)\n. If this graph have a\nNode\nnamed as the value of\nnode_name\n, returns\nOk(Some)\nwith a\nVec\nof names of user\nNode\ns of the\nNode\n, in the\nSome\n. If something fails while looking into this\nGraph\n, returns\nErr\nwith a\nPyErr\nin it. The\nPyErr\nwill explain the cause of the failure.\npub\nfn\nusers_nodes\n<\nS\n:\nAsRef\n<\nstr\n>\n>\n(\n&\nself\n,\nnode_name\n:\nS\n)\n->\nPyResult\n<\nOption\n<\nVec\n<\n&\nNode\n>\n>\n>\nRetrieve user nodes of\nnode_name\nas borrowed\n&Node\nreferences without copying names. Returns\nOk(None)\nif the node does not exist.\npub\nfn\ngraph_to_string\n(\n&\nself\n,\npy\n:\nPython\n<\n'\n_\n>\n)\n->\nPyResult\n<\nString\n>\nStringify this\nGraph\n.\nThis does the same what\n__str__\ninstance method of\nGraph\nPyTorch class.\nIf stringifying is done successfully, returns\nOk\nwith the resulting string in it. Otherwise, returns\nErr\nwith a\nPyErr\nin it. The\nPyErr\nwill explain the cause of the failure.\npub\nfn\nextract_named_nodes\n(\n&\nself\n)\n->\nPyResult\n<\nIndexMap\n<\nString\n,\n&\nNode\n>\n>\nCollect all named\nNode\ns of this\nGraph\n.\nMake an\nIndexMap\nwhich maps each\nNode\n's name to a shared reference of the\nNode\nitself, for every\nNode\nin\nself\n.\nIf this process is successful, returns\nOk\nwith the\nIndexMap\nin it. Otherwise, return\nErr\nwith a\nPyErr\nin it.\nPyErr\nwill explain the cause of the failure.\npub\nfn\nlookup_node\n<\nS\n:\nAsRef\n<\nstr\n>\n>\n(\n&\nself\n,\nname\n:\nS\n)\n->\nPyResult\n<\nOption\n<\n&\nNode\n>\n>\nLookup a\nNode\nby its name(\nname\n) in this\nGraph\n.\nIf there is no\nNode\nwith a name named as the value of\nname\n,\nOk(None)\nis returned. If there exists such\nNode\nin this\nGraph\n,\nOk(Some)\nwith a shared reference to the\nNode\nis returned. If this process fails, returns\nErr\nwith a\nPyErr\nin it.\nPyErr\nwill explain the cause of the failure.",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "heading": "pub struct Node",
+                "text": "#\n[\nrepr\n(\ntransparent\n)\n]\npub\nstruct\nNode\n(\n_\n)\n;\nA wrapper for PyTorch's\nNode\nclass.\nThis appears as a shared reference\n&Node\ninto Python's heap instead of an owned value.",
+                "children": [
+                  {
+                    "heading": "Methods",
+                    "text": "pub\nfn\nflatten_node_args\n(\n&\nself\n)\n->\nPyResult\n<\nVec\n<\nString\n>\n>\nRetrieve the names of argument\nNode\ns of this\nNode\n. Although a\nNode\ncan have multiple arguments and an argument can have one or more\nNode\ns, the result will contain all the argument\nNode\ns' names in a 1-dimensional vector. (This is why this method is named\nflatten_node_args\n.)\nIf the retrieval is done successfully, returns\nOk\nwith a\nVec\nof names of argument nodes. Otherwise, returns\nErr\nwith a\nPyErr\nin it. The\nPyErr\nwill explain the cause of the failure.\npub\nfn\nargs\n(\n&\nself\n)\n->\nPyResult\n<\nVec\n<\nArgument\n>\n>\nRetrieve the arguments of this\nNode\n.\nIf the retrieval is done successfully, returns\nOk\nwith a\nVec<\nArgument\n>\ncontaining the arguments. Otherwise, returns\nErr\nwith a\nPyErr\nin it. The\nPyErr\nwill explain the cause of the failure.\npub\nfn\nname\n(\n&\nself\n)\n->\nPyResult\n<\nString\n>\nRetrieve the name of this\nNode\n.\nIf the retrieval is done successfully, returns\nOk\nwith the name in it. Otherwise, returns\nErr\nwith a\nPyErr\nin it. The\nPyErr\nwill explain the cause of the failure.\npub\nfn\nop\n(\n&\nself\n)\n->\nPyResult\n<\nOp\n>\nRetrieve the opcode of this\nNode\n.\nIf the retrieval is done successfully, returns\nOk\nwith the opcode in\nOp\nin it. Otherwise, returns\nErr\nwith a\nPyErr\nin it. The\nPyErr\nwill explain the cause of the failure.\npub\nfn\ntarget\n(\n&\nself\n)\n->\nPyResult\n<\nTarget\n>\nRetrieve the target this\nNode\nshould call.\nIf the retrieval is done successfully, returns\nOk\nwith the target in\nTarget\nin it. Otherwise, returns\nErr\nwith a\nPyErr\nin it. The\nPyErr\nwill explain the cause of the failure.\npub\nfn\nkwargs\n(\n&\nself\n)\n->\nPyResult\n<\nHashMap\n<\nString\n,\nArgument\n>\n>\nRetrieve the kwargs to be passed to the target of this\nNode\n.\nIf the retrieval is done successfully, returns\nOk\nwith the kwargs in\nHashMap<String,\nArgument\n>\nin it. Otherwise, returns\nErr\nwith a\nPyErr\nin it. The\nPyErr\nwill explain the cause of the failure.\npub\nfn\nmeta\n(\n&\nself\n)\n->\nPyResult\n<\nHashMap\n<\nString\n,\nPyObject\n>\n>\nRetrieve the meta of this\nNode\n.\nIf this\nNode\nhas an attribute\nmeta\n, returns\nOk\nwith the meta in\nHashMap<String, PyObject>\nin it. Otherwise, returns\nOk(Default::default())\n. This never returns\nErr\n.",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "heading": "pub type FunctionWrapper",
+                "text": "Wrapper for a Rust function. This wraps a function to execute it in Python. Therefore, the function needs to receive 2 arguments, args as\n&PyTuple\nand kwargs as\nOption<&PyDict>\n, and return\nPyResult<PyObject>\n.",
+                "children": []
+              },
+              {
+                "heading": "pub struct CustomFn",
+                "text": "#\n[\npyclass\n]\n#\n[\nderive\n(\nClone\n)\n]\npub\nstruct\nCustomFn\n{\npub\nfunc_name\n:\nString\n,\n/* private fields */\n}\nAn interface for Python callable object which actually executes a Rust function.",
+                "children": [
+                  {
+                    "heading": "Fields",
+                    "text": "pub func_name: String\nName of the custom function",
+                    "children": []
+                  },
+                  {
+                    "heading": "Methods",
+                    "text": "pub\nfn\nnew\n<\nS\n:\nAsRef\n<\nstr\n>\n>\n(\nfunc_name\n:\nS\n,\nfunc\n:\nFunctionWrapper\n)\n->\nSelf\nCreate a new Python callable object which is named as the value of\nfunc_name\nand actually executes a Rust function wrapped in\nfunc\n.",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "heading": "pub struct TensorMeta",
+                "text": "#\n[\nderive\n(\nDebug\n,\nClone\n,\nFromPyObject\n)\n]\npub\nstruct\nTensorMeta\n{\npub\nshape\n:\nVec\n<\nusize\n>\n,\npub\ndtype\n:\nDtype\n,\npub\nrequires_grad\n:\nbool\n,\npub\nstride\n:\nVec\n<\nusize\n>\n,\npub\nmemory_format\n:\nOption\n<\nMemoryFormat\n>\n,\npub\nis_quantized\n:\nbool\n,\npub\nqparams\n:\nHashMap\n<\nString\n,\nPyObject\n>\n,\n}\nA structure containing pertinent information about a tensor within a PyTorch program.\n(\nreference\n)",
+                "children": []
+              },
+              {
+                "heading": "pub enum Op",
+                "text": "#\n[\nderive\n(\nDebug\n,\nCopy\n,\nClone\n,\nEq\n,\nPartialEq\n)\n]\npub\nenum\nOp\n{\nPlaceholder\n,\nCallFunction\n,\nCallMethod\n,\nCallModule\n,\nGetAttr\n,\nOutput\n,\n}\nA representation of opcodes for\nNode\ns.",
+                "children": []
+              },
+              {
+                "heading": "pub enum Target",
+                "text": "#\n[\nderive\n(\nDebug\n,\nClone\n)\n]\npub\nenum\nTarget\n{\nStr\n(\nString\n)\n,\nTorchOp\n(\nString\n,\nPyObject\n)\n,\nBuiltinFn\n(\nString\n,\nPyObject\n)\n,\nCallable\n(\nPyObject\n)\n,\nCustomFn\n(\nCustomFn\n)\n,\n}\nA representation of targets for\nNode\ns.",
+                "children": []
+              },
+              {
+                "heading": "pub enum Argument",
+                "text": "#\n[\nderive\n(\nDebug\n,\nClone\n)\n]\npub\nenum\nArgument\n{\nNode\n(\nString\n)\n,\nNodeList\n(\nVec\n<\nString\n>\n)\n,\nNodeTuple\n(\nVec\n<\nString\n>\n)\n,\nOptionalNodeList\n(\nVec\n<\nOption\n<\nString\n>\n>\n)\n,\nOptionalNodeTuple\n(\nVec\n<\nOption\n<\nString\n>\n>\n)\n,\nNoneList\n(\nusize\n)\n,\nNoneTuple\n(\nusize\n)\n,\nBool\n(\nbool\n)\n,\nInt\n(\ni64\n)\n,\nFloat\n(\nf64\n)\n,\nVecBool\n(\nVec\n<\nbool\n>\n)\n,\nVecInt\n(\nVec\n<\ni64\n>\n)\n,\nVecFloat\n(\nVec\n<\nf64\n>\n)\n,\nDtype\n(\nDtype\n)\n,\nLayout\n(\nLayout\n)\n,\nDevice\n(\nDevice\n)\n,\nMemoryFormat\n(\nMemoryFormat\n)\n,\nValue\n(\nPyObject\n)\n,\nEmptyList\n,\nNone\n,\n}\nA representation of arguments for\nNode\ns.",
+                "children": []
+              },
+              {
+                "heading": "pub enum Dtype",
+                "text": "#\n[\nderive\n(\nDebug\n,\nCopy\n,\nClone\n,\nPartialEq\n,\nEq\n)\n]\npub\nenum\nDtype\n{\nFloat32\n,\nFloat64\n,\nComplex64\n,\nComplex128\n,\nFloat16\n,\nBfloat16\n,\nUint8\n,\nInt8\n,\nInt16\n,\nInt32\n,\nInt64\n,\nBool\n,\n}\nAn\nenum\nwhich represents the data type of a\ntorch.Tensor\n.\n(\nreference\n)",
+                "children": []
+              },
+              {
+                "heading": "pub enum MemoryFormat",
+                "text": "#\n[\nderive\n(\nDebug\n,\nCopy\n,\nClone\n,\nPartialEq\n,\nEq\n)\n]\npub\nenum\nMemoryFormat\n{\nContiguousFormat\n,\nChannelsLast\n,\nChannelsLast3d\n,\nPreserveFormat\n,\n}\nAn\nenum\nwhich represents the memory format on which a\ntorch.Tensor\nis or will be allocated.\n(\nreference\n)",
+                "children": []
+              },
+              {
+                "heading": "pub enum Device",
+                "text": "#\n[\nderive\n(\nDebug\n,\nCopy\n,\nClone\n,\nPartialEq\n,\nEq\n)\n]\npub\nenum\nDevice\n{\nCpu\n(\nOption\n<\nusize\n>\n)\n,\nCuda\n(\nOption\n<\nusize\n>\n)\n,\nMps\n(\nOption\n<\nusize\n>\n)\n,\n}\nAn\nenum\nwhich represents the device on which a\ntorch.Tensor\nis or will be allocated.\n(\nreference\n)",
+                "children": []
+              }
+            ]
+          },
+          {
+            "heading": "Documentation",
+            "text": "By executing following, the documentation, by\ncargo-docs\n, for this crate will open.\ncargo doc --open\nMore detailed documentation for\ntorch.fx\nmay be needed.",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": null,
+    "license": null,
+    "stars": 2,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-11-14T00:38:44.298168Z"
+  }
+}

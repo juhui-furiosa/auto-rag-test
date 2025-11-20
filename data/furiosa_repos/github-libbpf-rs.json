@@ -1,0 +1,28 @@
+{
+  "name": "libbpf-rs",
+  "url": "https://github.com/furiosa-ai/libbpf-rs",
+  "visibility": "public",
+  "readme": {
+    "title": "(no title)",
+    "sections": [
+      {
+        "heading": "libbpf-rs",
+        "text": "Idiomatic Rust wrapper around\nlibbpf\n.",
+        "children": []
+      },
+      {
+        "heading": "libbpf-cargo",
+        "text": "Helps you build and develop BPF programs with standard Rust tooling.",
+        "children": []
+      }
+    ]
+  },
+  "metadata": {
+    "description": "Minimal and opinionated eBPF tooling for the Rust ecosystem",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-11-14T00:39:29.652960Z"
+  }
+}

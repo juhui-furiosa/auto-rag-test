@@ -1,0 +1,58 @@
+{
+  "name": "smart-cctv-demo",
+  "url": "https://github.com/furiosa-ai/smart-cctv-demo",
+  "visibility": "public",
+  "readme": {
+    "title": "(no title)",
+    "sections": [
+      {
+        "heading": "Setup",
+        "text": "sudo apt install cmake\nsudo apt install \\\n  furiosa-libhal-warboy=0.9.0-2+nightly-220810 \\\n  libonnxruntime=1.11.1-2 \\\n  furiosa-libnux=0.8.0-2+nightly-220810 \\\n  furiosa-libcompiler=0.8.0-2+nightly-220803\nconda env create -n\n\"\ncctv\n\"\npython=3.8\nconda activate cctv\nconda install cython\nconda env update --file environment.yml\nbash build.sh",
+        "children": []
+      },
+      {
+        "heading": "Datasets",
+        "text": "Download CrowdHuman from\nhere\nand extract to \"data/CrowdHuman/\"\nDownload PRW from\nhere\nand extract to \"data/\"\nDownload WIDERFACE from\nhere\nand extract to \"data/\"\nDownload MSM1-RetinaFace from\nhere\nand extract to \"data/\"\nmarket1501 dataset will be downloaded automatically at progam execution",
+        "children": []
+      },
+      {
+        "heading": "Test files (face recognition)",
+        "text": "Download\nvideo\nand move to \"data/tom_cruise_test.mp4\"\nDownload\nquery\nand move to \"data/tom_cruise_profile1.jpeg\"",
+        "children": []
+      },
+      {
+        "heading": "Weights",
+        "text": "Download reid checkpoint from\nhere\nand move to weights/\nDownload remaining checkpoints from\nhere\nand extract to weights/",
+        "children": []
+      },
+      {
+        "heading": "Final directory structure",
+        "text": "smart-cctv-demo$ tree -L 2 data weights\ndata\n├── CrowdHuman\n│   └── Images\n├── PRW-v16.04.20\n│   ├── ID_test.mat\n│   ├── ID_train.mat\n│   ├── annotations\n│   ├── frame_test.mat\n│   ├── frame_train.mat\n│   ├── frames\n│   ├── generate_query.m\n│   ├── query_box\n│   ├── query_info.txt\n│   └── readme.txt\n├── WIDER_val\n│   └── images\n├── market1501\n│   ├── Market-1501-v15.09.15\n│   └── Market-1501-v15.09.15.zip\n├── ms1m-retinaface-t1\n│   ├── agedb_30.bin\n│   ├── cfp_fp.bin\n│   ├── lfw.bin\n│   ├── property\n│   ├── train.idx\n│   ├── train.lst\n│   └── train.rec\n├── tom_cruise_profile1.jpeg\n└── tom_cruise_test.mp4\nweights\n├── ms1mv3_r50_leakyrelu_1.pt\n├── resnet50_market_xent.pth.tar\n├── yolov5_face_relu.pt\n└── yolov5m_warboy.pt",
+        "children": []
+      },
+      {
+        "heading": "Query demo",
+        "text": "#\nOptionally clear cache\nrm\n*\n.onnx\n#\nf32 model cache\nrm\n*\n.dfg\n#\ni8 model cache\nrm -rf galleries/\n*\n#\ngallery cache\nrm -rf results/\n*\n#\ndelete previous results\n#\nFace recognition (results will be written to \"results/face\")\ncd\ninsightface\npython recognition/arcface_torch/query_video.py \\\n  --gallery ../data/tom_cruise_test.mp4 \\\n  --query ../data/tom_cruise_profile1.jpeg \\\n  --device furiosa\n#\nReId (results will be written to \"results/reid\")\ncd\ntorchreid\npython query_video.py \\\n  --gallery ../data/PRW-v16.04.20/frames \\\n  --query ../data/PRW-v16.04.20/query_box/479_c1s3_016471.jpg \\\n  --device furiosa",
+        "children": []
+      },
+      {
+        "heading": "GUI",
+        "text": "Local inference\npython demo.py\nServer inference\nAdd to ~/.ssh/config\nHost vis\n  HostName 210.109.63.237\n  User ubuntu\n  IdentityFile ~/.ssh/vision-intelligence.pem\n  IdentitiesOnly yes\nRun\npython demo.py --server cfg/server_vis.yaml",
+        "children": []
+      },
+      {
+        "heading": "Demo",
+        "text": "",
+        "children": []
+      }
+    ]
+  },
+  "metadata": {
+    "description": null,
+    "license": null,
+    "stars": 1,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2022-08-18T13:40:02.000Z"
+  }
+}

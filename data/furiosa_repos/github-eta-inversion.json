@@ -1,0 +1,70 @@
+{
+  "name": "eta-inversion",
+  "url": "https://github.com/furiosa-ai/eta-inversion",
+  "visibility": "public",
+  "readme": {
+    "title": "[ECCV 2024] Eta Inversion: Designing an Optimal Eta Function for Diffusion-based Real Image Editing",
+    "sections": [
+      {
+        "heading": "[ECCV 2024] Eta Inversion: Designing an Optimal Eta Function for Diffusion-based Real Image Editing",
+        "text": "",
+        "children": [
+          {
+            "heading": "Wonjun Kang * , Kevin Galim * , Hyung Il Koo FuriosaAI",
+            "text": "Paper Link\n:\nhttps://arxiv.org/abs/2403.09468\nVideo\n:\nYouTube",
+            "children": []
+          },
+          {
+            "heading": "Updates",
+            "text": "[03/15/24] Code released.",
+            "children": []
+          },
+          {
+            "heading": "Usage",
+            "text": "Note, we tested the code on a NVIDIA V100 32GB GPU. On different GPUs, results might slightly differ.",
+            "children": [
+              {
+                "heading": "Setup",
+                "text": "Install PyTorch (tested with Python 3.9 and PyTorch 1.13.1), e.g.,\nconda create -n diffinv python=3.9\nconda activate diffinv\nconda install pytorch==1.13.1 torchvision==0.14.1 torchaudio==0.13.1 pytorch-cuda=11.7 -c pytorch -c nvidia\nInstall requirements\npip install -r requirements.txt",
+                "children": []
+              },
+              {
+                "heading": "Demo",
+                "text": "To run the provided Gradio demo run\npython demo/run.py\nand open\nhttp://localhost:7860/\nin your browser.",
+                "children": []
+              },
+              {
+                "heading": "Edit single image",
+                "text": "To edit a single image, use\nedit_image.py\n.\npython edit_image.py --help\nusage: edit_image.py [-h] --input INPUT --source_prompt SOURCE_PROMPT --target_prompt TARGET_PROMPT [--output OUTPUT] [--inv_method INV_METHOD] [--edit_method EDIT_METHOD] [--edit_cfg EDIT_CFG] [--scheduler {ddim,ddpm,dpm}] [--steps STEPS] [--guidance_scale_bwd GUIDANCE_SCALE_BWD] [--guidance_scale_fwd GUIDANCE_SCALE_FWD]\n\nEdits a single image.\n\noptional arguments:\n  -h, --help            show this\nhelp\nmessage and\nexit\n--input INPUT         Path to image to invert.\n  --source_prompt SOURCE_PROMPT\n                        Prompt to use\nfor\ninversion.\n  --target_prompt TARGET_PROMPT\n                        Prompt to use\nfor\ninversion.\n  --output OUTPUT       Path\nfor\noutput image.\n  --inv_method INV_METHOD\n                        Available inversion methods:\n                          diffinv                  Naiv DDIM inversion\n                          nti                      Null text inversion\n                          npi                      Negative prompt inversion\n                          proxnpi                  Proximal negative prompt inversion\n                          edict                    EDICT inversion\n                          ddpminv                  DDPM inversion\n                          dirinv                   Direct inversion\n                          etainv                   Eta inversion\n  --edit_method EDIT_METHOD\n                        Available editing methods:\n                          simple                   Simple denoising of inverted latent with target prompt\n                          ptp                      Prompt-to-prompt\n                          masactrl                 MasaControl\n                          pnp                      Plug-and-play\n                          pix2pix_zero             Pix2Pix zero\n  --edit_cfg EDIT_CFG   Path to yaml file\nfor\neditor configuration. Often needed\nfor\nprompt-to-prompt.\n  --scheduler {ddim,ddpm,dpm}\n                        Which scheduler to use.\n  --steps STEPS         How many diffusion steps to use.\n  --guidance_scale_bwd GUIDANCE_SCALE_BWD\n                        Classifier free guidance scale to use\nfor\nbackward diffusion (denoising).\n  --guidance_scale_fwd GUIDANCE_SCALE_FWD\n                        Classifier free guidance scale to use\nfor\nforward diffusion (inversion).\n  --prec {fp16,fp32}    Precision\nfor\ndiffusion.\nE.g., for prompt-to-prompt editing using Eta Inversion of\ntest/data/house.png\nwith prompt\n\"a house->monster in the woods\"\n, run\npython edit_image.py \\\n  --inv_method etainv \\\n  --edit_method ptp \\\n  --input test/data/house.png \\\n  --source_prompt\n\"\na house in the woods\n\"\n\\\n  --target_prompt\n\"\na monster in the woods\n\"\n\\\n  --output out.png\nInput\nOutput",
+                "children": []
+              },
+              {
+                "heading": "Prepare datasets (for evaluation)",
+                "text": "PIE\n: Download from\nhere\nand extract to\ndata/eval/PIE-Bench_v1\nPlug-and-Play\nDownload from\nhere\nand extract to\ndata/eval/plug_and_play\nRun\npython scripts/convert_plug_and_play_imagenetr-ti2i.py\npython scripts/convert_plug_and_play_imagenetr-fake-ti2i.py\nImagenHub\n: No setup needed",
+                "children": []
+              },
+              {
+                "heading": "Evaluate",
+                "text": "For evaluation prepare the dataset(s) above you want to test and create a config .yaml file inside\ncfg/eval\nwith the datasets, inversion methods and editing methods you want to evaluate. For a reference config file see\ncfg/eval/demo.yaml\n. The evaluating script will run each combination given under\ndata\n,\nedit_method\nand\nmethod\n. E.g., for the config file\ncfg/eval/demo.yaml\n, evaluation will run for\n(diffinv, ptp)\n,\n(npi, ptp)\nand\n(etainv, ptp)\n. After preparing the config .yaml file use\npython eval.py --help\nusage: eval.py [-h] --cfg CFG [CFG ...] [--device DEVICE [DEVICE ...]] [--no_proc]\n\nRun evaluation\nfor\nthe given config file. The result will be stored under result/{cfg_file_name}. For each combination of dataset, inversion and editing method\nin\nthe config file, a separate directory will be created\nin\nresult/{cfg_file_name}\n\noptional arguments:\n  -h, --help            show this\nhelp\nmessage and\nexit\n--cfg CFG [CFG ...]   Config file(s)\nfor\nevaluation.\n  --device DEVICE [DEVICE ...]\n                        Which cuda devices to use. Can be multiple (multiprocessing).\n  --no_proc             Disables multiprocessing.\nto perform editing and save all images under\nresult/{cfg_file_name}\n. E.g., if you want to use\ncfg/eval/demo.yaml\nwith one GPU, run\npython eval.py --cfg cfg/eval/demo.yaml\nAll images will be stored under\nresult/demo\n.\nAfterwards you can compute metrics on the output images using\npython compute_metrics.py --help\nusage: compute_metrics.py [-h] [--cfg CFG [CFG ...]] [--metric METRIC [METRIC ...]]\n\noptional arguments:\n-h\n, --help            show this\nhelp\nmessage and\nexit\n--cfg CFG [CFG ...]   Config file(s)\nfor\nevaluation.\n  --metric METRIC [METRIC ...]\n                        Metric(s) to compute. If not specified, all metrics are computed.\nThe metrics will be stored as .yaml file in a folder named\nmetrics\nunder each experiment directory. E.g., to compute metrics for\ncfg/eval/demo.yaml\nrun\npython compute_metrics.py --cfg cfg/eval/demo.yaml\nFinally you can visualize the computed metrics with\nnotebooks/visualize_results.ipynb\n. Please see the notebook for further details.",
+                "children": []
+              }
+            ]
+          },
+          {
+            "heading": "Citation",
+            "text": "@inproceedings{kang2024eta,\n  title={Eta inversion: Designing an optimal eta function for diffusion-based real image editing},\n  author={Kang, Wonjun and Galim, Kevin and Koo, Hyung Il},\n  booktitle={European Conference on Computer Vision},\n  pages={90--106},\n  year={2024},\n  organization={Springer}\n}",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": "[ECCV 2024] Official Pytorch Implementation for \"Eta Inversion: Designing an Optimal Eta Function for Diffusion-based Real Image Editing\"",
+    "license": null,
+    "stars": 27,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-06-16T06:37:07.000Z"
+  }
+}

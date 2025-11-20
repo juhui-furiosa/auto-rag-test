@@ -1,0 +1,81 @@
+{
+  "name": "llama",
+  "url": "https://github.com/furiosa-ai/llama",
+  "visibility": "public",
+  "readme": {
+    "title": "Llama 2",
+    "sections": [
+      {
+        "heading": "Llama 2",
+        "text": "We are unlocking the power of large language models. Our latest version of Llama is now accessible to individuals, creators, researchers and businesses of all sizes so that they can experiment, innovate and scale their ideas responsibly.\nThis release includes model weights and starting code for pretrained and fine-tuned Llama language models — ranging from 7B to 70B parameters.\nThis repository is intended as a minimal example to load\nLlama 2\nmodels and run inference. For more detailed examples leveraging HuggingFace, see\nllama-recipes\n.",
+        "children": [
+          {
+            "heading": "Download",
+            "text": "⚠️\n7/18: We're aware of people encountering a number of download issues today. Anyone still encountering issues should remove all local files, re-clone the repository, and\nrequest a new download link\n. It's critical to do all of these in case you have local corrupt files. When you receive the email, copy\nonly\nthe link text - it should begin with\nhttps://download.llamameta.net\nand not with\nhttps://l.facebook.com\n, which will give errors.\nIn order to download the model weights and tokenizer, please visit the\nMeta AI website\nand accept our License.\nOnce your request is approved, you will receive a signed URL over email. Then run the download.sh script, passing the URL provided when prompted to start the download. Make sure that you copy the URL text itself,\ndo not use the 'Copy link address' option\nwhen you right click the URL. If the copied URL text starts with:\nhttps://download.llamameta.net\n, you copied it correctly. If the copied URL text starts with:\nhttps://l.facebook.com\n, you copied it the wrong way.\nPre-requisites: make sure you have\nwget\nand\nmd5sum\ninstalled. Then to run the script:\n./download.sh\n.\nKeep in mind that the links expire after 24 hours and a certain amount of downloads. If you start seeing errors such as\n403: Forbidden\n, you can always re-request a link.",
+            "children": [
+              {
+                "heading": "Access on Hugging Face",
+                "text": "We are also providing downloads on\nHugging Face\n. You must first request a download from the Meta AI website using the same email address as your Hugging Face account. After doing so, you can request access to any of the models on Hugging Face and within 1-2 days your account will be granted access to all versions.",
+                "children": []
+              }
+            ]
+          },
+          {
+            "heading": "Setup",
+            "text": "In a conda env with PyTorch / CUDA available, clone the repo and run in the top-level directory:\npip install -e .",
+            "children": []
+          },
+          {
+            "heading": "Inference",
+            "text": "Different models require different model-parallel (MP) values:\nModel\nMP\n7B\n1\n13B\n2\n70B\n8\nAll models support sequence length up to 4096 tokens, but we pre-allocate the cache according to\nmax_seq_len\nand\nmax_batch_size\nvalues. So set those according to your hardware.",
+            "children": [
+              {
+                "heading": "Pretrained Models",
+                "text": "These models are not finetuned for chat or Q&A. They should be prompted so that the expected answer is the natural continuation of the prompt.\nSee\nexample_text_completion.py\nfor some examples. To illustrate, see command below to run it with the llama-2-7b model (\nnproc_per_node\nneeds to be set to the\nMP\nvalue):\ntorchrun --nproc_per_node 1 example_text_completion.py \\\n    --ckpt_dir llama-2-7b/ \\\n    --tokenizer_path tokenizer.model \\\n    --max_seq_len 128 --max_batch_size 4",
+                "children": []
+              },
+              {
+                "heading": "Fine-tuned Chat Models",
+                "text": "The fine-tuned models were trained for dialogue applications. To get the expected features and performance for them, a specific formatting defined in\nchat_completion\nneeds to be followed, including the\nINST\nand\n<<SYS>>\ntags,\nBOS\nand\nEOS\ntokens, and the whitespaces and breaklines in between (we recommend calling\nstrip()\non inputs to avoid double-spaces).\nYou can also deploy additional classifiers for filtering out inputs and outputs that are deemed unsafe. See the llama-recipes repo for\nan example\nof how to add a safety checker to the inputs and outputs of your inference code.\nExamples using llama-2-7b-chat:\ntorchrun --nproc_per_node 1 example_chat_completion.py \\\n    --ckpt_dir llama-2-7b-chat/ \\\n    --tokenizer_path tokenizer.model \\\n    --max_seq_len 512 --max_batch_size 4\nLlama 2 is a new technology that carries potential risks with use. Testing conducted to date has not — and could not — cover all scenarios.\nIn order to help developers address these risks, we have created the\nResponsible Use Guide\n. More details can be found in our research paper as well.",
+                "children": []
+              }
+            ]
+          },
+          {
+            "heading": "Issues",
+            "text": "Please report any software “bug,” or other problems with the models through one of the following means:\nReporting issues with the model:\ngithub.com/facebookresearch/llama\nReporting risky content generated by the model:\ndevelopers.facebook.com/llama_output_feedback\nReporting bugs and security concerns:\nfacebook.com/whitehat/info",
+            "children": []
+          },
+          {
+            "heading": "Model Card",
+            "text": "See\nMODEL_CARD.md\n.",
+            "children": []
+          },
+          {
+            "heading": "License",
+            "text": "Our model and weights are licensed for both researchers and commercial entities, upholding the principles of openness. Our mission is to empower individuals, and industry through this opportunity, while fostering an environment of discovery and ethical AI advancements.\nSee the\nLICENSE\nfile, as well as our accompanying\nAcceptable Use Policy",
+            "children": []
+          },
+          {
+            "heading": "References",
+            "text": "Research Paper\nLlama 2 technical overview\nOpen Innovation AI Research Community",
+            "children": []
+          },
+          {
+            "heading": "Original LLaMA",
+            "text": "The repo for the original llama release is in the\nllama_v1\nbranch.",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": "Inference code for LLaMA models",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-11-14T00:40:46.311667Z"
+  }
+}

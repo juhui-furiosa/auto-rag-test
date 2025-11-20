@@ -1,0 +1,101 @@
+{
+  "name": "tract",
+  "url": "https://github.com/furiosa-ai/tract",
+  "visibility": "public",
+  "readme": {
+    "title": "License",
+    "sections": [
+      {
+        "heading": "What ?",
+        "text": "tract\nis a tensorflow- and ONNX- compatible inference library. It loads a\nTensorflow or ONNX frozen model from the regular protobuf format, and flows\ndata through it.",
+        "children": []
+      },
+      {
+        "heading": "Quick start",
+        "text": "MobileNet v2 with TensorFlow\nFrom Keras in Jupyter to tract\nResNet with PyTorch",
+        "children": []
+      },
+      {
+        "heading": "Real-time streaming support",
+        "text": "This is a semi-experimental support for real-time applications like voice\nprocessing. In many real time voice applications, processing must happen \"as you\ngo\". One can not wait for the end of the incoming audio signal to start\ndecoding.\nWhile Kaldi has built its inference engine around this streaming constraint,\nour approach to the same issue is a bit different.\ntract\ngraph analyser and\noptimiser will reason on \"streamed\" tensors, in order to generate an equivalent\nstateful \"pulsing\" network that will propagate small time slices (\"pulses\") of\ndata. This makes optimisation efforts on pulsing and \"finite\" tensor modes\nmutually benefit each other.\nObviously, this conversion only makes sense for a subset of operators, so not\nall networks can be converted to a pulse network: for instance, an aggregation\n(like a SoftMax) on the time dimension can only be given a value when the\nsignal has been processed up to the end.",
+        "children": []
+      },
+      {
+        "heading": "Status and compatibility",
+        "text": "",
+        "children": [
+          {
+            "heading": "ONNX",
+            "text": "As of today (October 2019),\ntract\npasses successfully about 85% of ONNX backends\ntests. All \"real life\" integration tests in Onnx test suite are passing:\nbvlc_alexnet, densenet121, inception_v1, inception_v2, resnet50, shufflenet,\nsqueezenet, vgg19, zfnet512.\nThe following operators are implemented and tested.\nAbs, Acos, Acosh, Add, And, ArgMax, ArgMin, Asin, Asinh, Atan, Atanh, AveragePool, BatchNormalization, Cast, CategoryMapper, Ceil, Clip, Compress, Concat, Constant, ConstantLike, ConstantOfShape, Conv, Cos, Cosh, DequantizeLinear, Div, Dropout, Elu, Equal, Erf, Exp, Expand, EyeLike, Flatten, Floor, GRU, Gather, Gemm, GlobalAveragePool, GlobalLpPool, GlobalMaxPool, Greater, HardSigmoid, Hardmax, Identity, IsNaN, LRN, LSTM, LeakyRelu, Less, Log, LogSoftmax, MatMul, Max, MaxPool, Mean, Min, Mul, Neg, Not, Or, PRelu, Pad, ParametricSoftplus, Pow, QuantizeLinear, RNN, Reciprocal, ReduceL1, ReduceL2, ReduceLogSum, ReduceLogSumExp, ReduceMax, ReduceMean, ReduceMin, ReduceProd, ReduceSum, ReduceSumSquare, Relu, Reshape, Rsqrt, ScaledTanh, Scan, Selu, Shape, Shrink, Sigmoid, Sign, Sin, Sinh, Size, Slice, Softmax, Softplus, Softsign, Split, Sqrt, Squeeze, Sub, Sum, Tan, Tanh, ThresholdedRelu, Tile, Transpose, Unsqueeze, Where, Xor\nWe test these operators against Onnx 1.4.1 (operator set 9) and Onnx 1.5.0\n(operator set 10).",
+            "children": []
+          },
+          {
+            "heading": "TensorFlow",
+            "text": "Even if\ntract\nis very far from supporting any arbitrary model, it can run\nGoogle Inception v3 and Snips wake word models. Missing operators are easy\nto add. The lack of easy to reuse test suite, and the wide diversity of\noperators in Tensorflow make it difficult to target a full support.\nThe following operators are implemented and tested:\nAbs, Add, AddN, AddV2, Assign, AvgPool, BatchToSpaceND, BiasAdd, BlockLSTM, Cast, Ceil, ConcatV2, Const, Conv2D, DepthwiseConv2dNative, Div, Enter, Equal, Exit, ExpandDims, FakeQuantWithMinMaxVars, Fill, FloorMod, FusedBatchNorm, GatherNd, GatherV2, Greater, GreaterEqual, Identity, Less, LessEqual, Log, LogicalAnd, LogicalOr, LoopCond, MatMul, Max, MaxPool, Maximum, Mean, Min, Minimum, Mul, Neg, NoOp, Pack, Pad, Placeholder, Pow, Prod, RandomUniform, RandomUniformInt, Range, RealDiv, Relu, Relu6, Reshape, Rsqrt, Shape, Sigmoid, Slice, Softmax, SpaceToBatchND, Squeeze, StridedSlice, Sub, Sum, Tanh, Tile, Transpose, VariableV2",
+            "children": []
+          },
+          {
+            "heading": "TensorFlow-Lite",
+            "text": "TensorFlow-Lite is a TensorFlow subproject that also focuses on inference on\nsmaller devices. It uses a precompiler to transform a TensorFlow network to\nits own format. It only supports a subset of operators from TensorFlow though,\nand is only optimised for devices with Arm Neon support.\nTract supports a wider subset of TensorFlow operators, and has been optimised\nfor CPU of the previous generation (ARM VFP), also targetting devices in the\nRaspberry Pi Zero family.",
+            "children": []
+          },
+          {
+            "heading": "NNEF",
+            "text": "Long story short, TensorFlow and Onnx formats are good for designing and\ntraining networks. They need to move fast to follow the research field, tend to\nintegrate new features and operators greedily. They also exhibit a high level\nof expressibity to make facilitate network design.\nOn the other hand, only a subset of operators and network features actually\nreach production, so systems running production network do not have to deal\nwith so many operators. Furthermore, some information required for training can\nbe stripped from the network before going to production for prediction.\nNNEF tries to bridge the gap between training frameworks and inference by\nproposing a format dedicated to production and prediction.\nTract NNEF support is partial, and alpha level:\ntract_nnef can load and execute networks NNEF networks\ntract command line can translate networks from TensorFlow or ONNX to NNEF\ntract supports most of the NNEF specification, the most notable exception\nbeing the ROI operators and deconvolution\ntract needs to extend NNEF with other operators (or extend some operators\nsemantics) in order to support the subset of ONNX and TensorFlow that tract\nsupports.",
+            "children": []
+          }
+        ]
+      },
+      {
+        "heading": "Example of supported networks",
+        "text": "These models among others, are used to track tract performance evolution as\npart of the Continuous Integration jobs. See\n.travis/README.md\nand\n.travis/bundle-entrypoint.sh\nfor more\ninformation.",
+        "children": [
+          {
+            "heading": "Keyword spotting on Arm Cortex-M Microcontrollers",
+            "text": "https://github.com/ARM-software/ML-KWS-for-MCU\nARM demonstrated the capabilited of the Cortex-M family by providing\ntutorials and pre-trained models for keyword spotting. While the exercise\nis ultimately meant for micro-controllers,\ntract\ncan run the intermediate\nTensorFlow models.\nFor instance, on a Rasperry Pi Zero, the \"CNN M\" model runs in about 70\nmicro-seconds, and 11 micro-seconds on a Raspberry Pi 3.",
+            "children": []
+          },
+          {
+            "heading": "Snips wake word models",
+            "text": "https://arxiv.org/abs/1811.07684\nSnips uses\ntract\nto run the wake word detectors. While earlier models were\nclass-based and did not require any special treatment,\ntract\npulsing\ncapabilities made it possible to run WaveNet models efficiently enough for a\nRaspberry Pi Zero.",
+            "children": []
+          },
+          {
+            "heading": "Inception v3",
+            "text": "Device\nFamily\nTensorFlow-lite\ntract\nRaspberry Pi Zero\nArmv6 VFP\n113s\n39s\nRaspberry Pi 2\nArmv7 NEON\n25s\n7s\nRaspberry Pi 3\naarch32 NEON\n5s\n5s\nNotes:\nwhile the Raspberry Pi 3 is an Armv8 device, this bench is running\non Raspbian, an armv6 operating system, crippling the performance\nof both benches\nthere exists other benches on the internet that show better\nperformance results for TensorFlow (not -Lite) on the Pi 3.\nThey use all four cores of the device. Both TensorFlow-Lite and tract\nhere have been made to run on a single-core.",
+            "children": []
+          }
+        ]
+      },
+      {
+        "heading": "Roadmap",
+        "text": "One important guiding cross-concern: this library must cross-compile as\neasily as practical to small-ish devices (think 20$ boards).\nnearly complete ONNX support, and wraps it as a backend\nintegrate other TF models to use as example, test and benches\nhttps://github.com/ARM-software/ML-KWS-for-MCU\nhttps://github.com/mozilla/DeepSpeech\nconsider acting as kaldi backend",
+        "children": []
+      },
+      {
+        "heading": "License",
+        "text": "Note: files in the\ntensorflow/protos\ndirectory are copied from the\nTensorFlow\nproject and are not\ncovered by the following licence statement.\nNote: files in the\nonnx/protos\ndirectory are copied from the\nONNX\nproject and are not\ncovered by the following licence statement.",
+        "children": [
+          {
+            "heading": "Apache 2.0/MIT",
+            "text": "All original work licensed under either of\nApache License, Version 2.0 (\nLICENSE-APACHE\nor\nhttp://www.apache.org/licenses/LICENSE-2.0\n)\nMIT license (\nLICENSE-MIT\nor\nhttp://opensource.org/licenses/MIT\n)\nat your option.",
+            "children": []
+          },
+          {
+            "heading": "Contribution",
+            "text": "Unless you explicitly state otherwise, any contribution intentionally submitted\nfor inclusion in the work by you, as defined in the Apache-2.0 license, shall\nbe dual licensed as above, without any additional terms or conditions.",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": "Tiny, no-nonsense, self-contained, Tensorflow and ONNX inference",
+    "license": null,
+    "stars": 1,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2020-08-23T11:40:29.000Z"
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "name": "device-api",
+  "url": "https://github.com/furiosa-ai/device-api",
+  "visibility": "public",
+  "readme": {
+    "title": "Furiosa Device API",
+    "sections": [
+      {
+        "heading": "Furiosa Device API",
+        "text": "A set of APIs to list and retrieve information of FuriosaAI's NPU devices. To learn more about FuriosaAI's NPU, please visit\nhttps://furiosa.ai\n.",
+        "children": []
+      },
+      {
+        "heading": "Before you start",
+        "text": "This crate requires FuriosaAI's NPU device and its kernel driver. Currently, FuriosaAI offers NPU devices for only users who register Early Access Program (EAP). Please contact\ncontact@furiosa.ai\nto learn how to start the EAP. You can also refer to\nDriver, Firmware, and Runtime Installation\nto learn the kernel driver installation.",
+        "children": []
+      },
+      {
+        "heading": "Documentation for Rust",
+        "text": "To render docs in local, please use a command as below (*requires nightly):\ncd\ndevice-api\ncargo rustdoc --lib --all-features -- --cfg docsrs",
+        "children": []
+      },
+      {
+        "heading": "For Python",
+        "text": "The Python API for FuriosaAI's NPU device is available\nhere\n.",
+        "children": []
+      },
+      {
+        "heading": "License",
+        "text": "Copyright 2022 FuriosaAI, Inc.\n\nLicensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
+        "children": []
+      }
+    ]
+  },
+  "metadata": {
+    "description": "APIs that offers NPU devices' information and allow to control the devices",
+    "license": null,
+    "stars": 5,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2022-06-13T12:25:01Z"
+  }
+}

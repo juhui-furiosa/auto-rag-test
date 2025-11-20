@@ -1,0 +1,111 @@
+{
+  "name": "production-stack",
+  "url": "https://github.com/furiosa-ai/production-stack",
+  "visibility": "public",
+  "readme": {
+    "title": "vLLM Production Stack: reference stack for production vLLM deployment",
+    "sections": [
+      {
+        "heading": "vLLM Production Stack: reference stack for production vLLM deployment",
+        "text": "|\nBlog\n|\nDocs\n|\nProduction-Stack Slack Channel\n|\nLMCache Slack\n|\nInterest Form\n|\nOfficial Email\n|",
+        "children": [
+          {
+            "heading": "Latest News",
+            "text": "📄\nOfficial documentation\nreleased for production-stack!\n✨\nCloud Deployment Tutorials\nfor Lambda Labs, AWS EKS, Google GCP are out!\n🛤️ 2025 Q1 roadmap is released!\nJoin the discussion now\n!\n🔥 vLLM Production Stack is released! Check out our\nrelease blogs\nposted on January 22, 2025.",
+            "children": []
+          },
+          {
+            "heading": "Community Events",
+            "text": "We host\nweekly\ncommunity meetings at the following timeslot:\nTuesdays at 5:30 PM PT –\nAdd to Calendar\nAll are welcome to join!",
+            "children": []
+          },
+          {
+            "heading": "Introduction",
+            "text": "vLLM Production Stack\nproject provides a reference implementation on how to build an inference stack on top of vLLM, which allows you to:\n🚀 Scale from a single vLLM instance to a distributed vLLM deployment without changing any application code\n💻 Monitor the metrics through a web dashboard\n😄 Enjoy the performance benefits brought by request routing and KV cache offloading",
+            "children": []
+          },
+          {
+            "heading": "Step-By-Step Tutorials",
+            "text": "How To\nInstall Kubernetes (kubectl, helm, minikube, etc)\n?\nHow to\nDeploy Production Stack on Major Cloud Platforms (AWS, GCP, Lambda Labs, Azure)\n?\nHow To\nSet up a Minimal vLLM Production Stack\n?\nHow To\nCustomize vLLM Configs (optional)\n?\nHow to\nLoad Your LLM Weights\n?\nHow to\nLaunch Different LLMs in vLLM Production Stack\n?\nHow to\nEnable KV Cache Offloading with LMCache\n?",
+            "children": []
+          },
+          {
+            "heading": "Architecture",
+            "text": "The stack is set up using\nHelm\n, and contains the following key parts:\nServing engine\n: The vLLM engines that run different LLMs.\nRequest router\n: Directs requests to appropriate backends based on routing keys or session IDs to maximize KV cache reuse.\nObservability stack\n: monitors the metrics of the backends through\nPrometheus\n+\nGrafana",
+            "children": []
+          },
+          {
+            "heading": "Roadmap",
+            "text": "We are actively working on this project and will release the following features soon. Please stay tuned!\nAutoscaling\nbased on vLLM-specific metrics\nSupport for\ndisaggregated prefill\nRouter improvements\n(e.g., more performant router using non-python languages, KV-cache-aware routing algorithm, better fault tolerance, etc)",
+            "children": []
+          },
+          {
+            "heading": "Deploying the stack via Helm",
+            "text": "",
+            "children": [
+              {
+                "heading": "Prerequisites",
+                "text": "A running Kubernetes (K8s) environment with GPUs\nRun\ncd utils && bash install-minikube-cluster.sh\nOr follow our\ntutorial",
+                "children": []
+              },
+              {
+                "heading": "Deployment",
+                "text": "vLLM Production Stack can be deployed via helm charts. Clone the repo to local and execute the following commands for a minimal deployment:\ngit clone https://github.com/vllm-project/production-stack.git\ncd\nproduction-stack/\nhelm repo add vllm https://vllm-project.github.io/production-stack\nhelm install vllm vllm/vllm-stack -f tutorials/assets/values-01-minimal-example.yaml\nThe deployed stack provides the same\nOpenAI API interface\nas vLLM, and can be accessed through kubernetes service.\nTo validate the installation and send a query to the stack, refer to\nthis tutorial\n.\nFor more information about customizing the helm chart, please refer to\nvalues.yaml\nand our other\ntutorials\n.",
+                "children": []
+              },
+              {
+                "heading": "Uninstall",
+                "text": "helm uninstall vllm",
+                "children": []
+              }
+            ]
+          },
+          {
+            "heading": "Grafana Dashboard",
+            "text": "",
+            "children": [
+              {
+                "heading": "Features",
+                "text": "The Grafana dashboard provides the following insights:\nAvailable vLLM Instances\n: Displays the number of healthy instances.\nRequest Latency Distribution\n: Visualizes end-to-end request latency.\nTime-to-First-Token (TTFT) Distribution\n: Monitors response times for token generation.\nNumber of Running Requests\n: Tracks the number of active requests per instance.\nNumber of Pending Requests\n: Tracks requests waiting to be processed.\nGPU KV Usage Percent\n: Monitors GPU KV cache usage.\nGPU KV Cache Hit Rate\n: Displays the hit rate for the GPU KV cache.",
+                "children": []
+              },
+              {
+                "heading": "Configuration",
+                "text": "See the details in\nobservability/README.md",
+                "children": []
+              }
+            ]
+          },
+          {
+            "heading": "Router",
+            "text": "The router ensures efficient request distribution among backends. It supports:\nRouting to endpoints that run different models\nExporting observability metrics for each serving engine instance, including QPS, time-to-first-token (TTFT), number of pending/running/finished requests, and uptime\nAutomatic service discovery and fault tolerance via the Kubernetes API\nModel aliases\nMultiple routing algorithms:\nRound-robin routing\nSession-ID based routing\nPrefix-aware routing (WIP)\nPlease refer to the\nrouter documentation\nfor more details.",
+            "children": []
+          },
+          {
+            "heading": "Contributing",
+            "text": "We welcome and value any contributions and collaborations. Please check out\nCONTRIBUTING.md\nfor how to get involved.",
+            "children": []
+          },
+          {
+            "heading": "License",
+            "text": "This project is licensed under Apache License 2.0. See the\nLICENSE\nfile for details.",
+            "children": []
+          },
+          {
+            "heading": "Sponsors",
+            "text": "We are grateful to our sponsors who support our development and benchmarking efforts:\nFor any issues or questions, feel free to open an issue or contact us (\n@ApostaC\n,\n@YuhanLiu11\n,\n@Shaoting-Feng\n).",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": "vLLM’s reference system for K8S-native cluster-wide deployment with community-driven performance optimization",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-11-14T00:39:02.933461Z"
+  }
+}

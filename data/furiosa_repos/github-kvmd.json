@@ -1,0 +1,23 @@
+{
+  "name": "kvmd",
+  "url": "https://github.com/furiosa-ai/kvmd",
+  "visibility": "public",
+  "readme": {
+    "title": "KVMD",
+    "sections": [
+      {
+        "heading": "KVMD",
+        "text": "This repository contains the configuration and code of KVMD, the main PiKVM daemon.\nIf your request does not relate directly to this codebase, please send it to issues of the\nPiKVM\nrepository.",
+        "children": []
+      }
+    ]
+  },
+  "metadata": {
+    "description": "The main PiKVM daemon",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2025-11-14T00:41:23.028268Z"
+  }
+}

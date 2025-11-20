@@ -1,0 +1,4 @@
+node_type,best_module_filename,best_module_name,best_module_params,best_execution_time
+lexical_retrieval,1.parquet,BM25,"{'top_k': 5, 'bm25_tokenizer': 'porter_stemmer'}",0.0013298106193542
+semantic_retrieval,0.parquet,VectorDB,"{'top_k': 5, 'vectordb': 'furiosa_store'}",0.0296900836626688
+hybrid_retrieval,0.parquet,HybridRRF,"{'top_k': 5, 'weight_range': (4, 80), 'weight': 4.0}",0.1486893002192179

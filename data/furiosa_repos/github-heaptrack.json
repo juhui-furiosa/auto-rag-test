@@ -1,0 +1,137 @@
+{
+  "name": "heaptrack",
+  "url": "https://github.com/furiosa-ai/heaptrack",
+  "visibility": "public",
+  "readme": {
+    "title": "heaptrack - a heap memory profiler for Linux",
+    "sections": [
+      {
+        "heading": "heaptrack - a heap memory profiler for Linux",
+        "text": "Heaptrack traces all memory allocations and annotates these events with stack traces.\nDedicated analysis tools then allow you to interpret the heap memory profile to:\nfind hotspots that need to be optimized to reduce the\nmemory footprint\nof your application\nfind\nmemory leaks\n, i.e. locations that allocate memory which is never deallocated\nfind\nallocation hotspots\n, i.e. code locations that trigger a lot of memory allocation calls\nfind\ntemporary allocations\n, which are allocations that are directly followed by their deallocation",
+        "children": [
+          {
+            "heading": "Using heaptrack",
+            "text": "The recommended way is to launch your application and start tracing from the beginning:\nheaptrack <your application and its parameters>\n\nheaptrack output will be written to \"/tmp/heaptrack.APP.PID.gz\"\nstarting application, this might take some time...\n\n...\n\nheaptrack stats:\n    allocations:            65\n    leaked allocations:     60\n    temporary allocations:  1\n\nHeaptrack finished! Now run the following to investigate the data:\n\n    heaptrack_gui \"/tmp/heaptrack.APP.PID.gz\"\nAlternatively, you can attach to an already running process:\nheaptrack --pid $(pidof <your application>)\n\nheaptrack output will be written to \"/tmp/heaptrack.APP.PID.gz\"\ninjecting heaptrack into application via GDB, this might take some time...\ninjection finished\n\n...\n\nHeaptrack finished! Now run the following to investigate the data:\n\n    heaptrack_gui \"/tmp/heaptrack.APP.PID.gz\"",
+            "children": []
+          },
+          {
+            "heading": "Building heaptrack",
+            "text": "Heaptrack is split into two parts: The data collector, i.e.\nheaptrack\nitself, and the\nanalyzer GUI called\nheaptrack_gui\n. The following summarizes the dependencies for these\ntwo parts as they can be build independently. You will find corresponding development\npackages on all major distributions for these dependencies.\nOn an embedded device or older Linux distribution, you will only want to build\nheaptrack\n.\nThe data can then be analyzed on a different machine with a more modern Linux distribution\nthat has access to the required GUI dependencies.\nIf you need help with building, deploying or using heaptrack, you can contact KDAB for\ncommercial support:\nhttps://www.kdab.com/software-services/workshops/profiling-workshops/",
+            "children": [
+              {
+                "heading": "Shared dependencies",
+                "text": "Both parts require the following tools and libraries:\ncmake 2.8.9 or higher\na C++11 enabled compiler like g++ or clang++\nzlib\noptionally: zstd for faster (de)compression\nelfutils\nlibdl\npthread\nlibc",
+                "children": []
+              },
+              {
+                "heading": "heaptrack dependencies",
+                "text": "The heaptrack data collector and the simplistic\nheaptrack_print\nanalyzer depend on the\nfollowing libraries:\nboost 1.41 or higher: iostreams, program_options\nlibunwind\nFor runtime-attaching, you will need\ngdb\ninstalled.",
+                "children": []
+              },
+              {
+                "heading": "heaptrack_gui dependencies",
+                "text": "The graphical user interface to interpret and analyze the data collected by heaptrack\ndepends on Qt 5 and some KDE libraries:\nextra-cmake-modules\nQt 5.2 or higher: Core, Widgets\nKDE Frameworks 5: CoreAddons, I18n, ItemModels, ThreadWeaver, ConfigWidgets, KIO, IconThemes\nWhen any of these dependencies is missing,\nheaptrack_gui\nwill not be build.\nOptionally, install the following dependencies to get additional features in\nthe GUI:\nKDiagram: KChart (for chart visualizations)",
+                "children": []
+              },
+              {
+                "heading": "Compiling",
+                "text": "Run the following commands to compile heaptrack. Do pay attention to the output\nof the CMake command, as it will tell you about missing dependencies!\ncd heaptrack # i.e. the source folder\nmkdir build\ncd build\ncmake -DCMAKE_BUILD_TYPE=Release .. # look for messages about missing dependencies!\nmake -j$(nproc)",
+                "children": [
+                  {
+                    "heading": "Compile heaptrack_gui on macOS using homebrew",
+                    "text": "heaptrack_print\nand\nheaptrack_gui\ncan be built on platforms other than Linux, using the dependencies mentioned above.\nOn macOS the dependencies can be installed easily using\nhomebrew\nand the\nKDE homebrew tap\n.\nbrew install qt@5\n\n# prepare tap\nbrew tap kde-mac/kde https://invent.kde.org/packaging/homebrew-kde.git\n\"$(brew --repo kde-mac/kde)/tools/do-caveats.sh\"\n\n# install dependencies\nbrew install kde-mac/kde/kf5-kcoreaddons kde-mac/kde/kf5-kitemmodels kde-mac/kde/kf5-kconfigwidgets \\\n             kde-mac/kde/kf5-kio kde-mac/kde/kdiagram \\\n             extra-cmake-modules ki18n threadweaver \\\n             boost zstd gettext\n\n# run manual steps as printed by brew\nln -sfv \"$(brew --prefix)/share/kf5\" \"$HOME/Library/Application Support\"\nln -sfv \"$(brew --prefix)/share/knotifications5\" \"$HOME/Library/Application Support\"\nln -sfv \"$(brew --prefix)/share/kservices5\" \"$HOME/Library/Application Support\"\nln -sfv \"$(brew --prefix)/share/kservicetypes5\" \"$HOME/Library/Application Support\"\nTo compile make sure to use Qt from homebrew and to have gettext in the path:\ncd heaptrack # i.e. the source folder\nmkdir build\ncd build\nCMAKE_PREFIX_PATH=/opt/homebrew/opt/qt@5 PATH=$PATH:/opt/homebrew/opt/gettext/bin cmake ..\ncmake -DCMAKE_BUILD_TYPE=Release .. # look for messages about missing dependencies!\nmake heaptrack_gui heaptrack_print",
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "heading": "Interpreting the heap profile",
+            "text": "Heaptrack generates data files that are impossible to analyze for a human. Instead, you need\nto use either\nheaptrack_print\nor\nheaptrack_gui\nto interpret the results.",
+            "children": [
+              {
+                "heading": "heaptrack_gui",
+                "text": "The highly recommended way to analyze a heap profile is by using the\nheaptrack_gui\ntool.\nIt depends on Qt 5 and KF 5 to graphically visualize the recorded data. It features:\na summary page of the data\nbottom-up and top-down tree views of the code locations that allocated memory with\ntheir aggregated cost and stack traces\nflame graph visualization\ngraphs of allocation costs over time",
+                "children": []
+              },
+              {
+                "heading": "heaptrack_print",
+                "text": "The\nheaptrack_print\ntool is a command line application with minimal dependencies. It takes\nthe heap profile, analyzes it, and prints the results in ASCII format to the command line.\nIn its most simple form, you can use it like this:\nheaptrack_print heaptrack.APP.PID.gz | less\nBy default, the report will contain three sections:\nMOST CALLS TO ALLOCATION FUNCTIONS\nPEAK MEMORY CONSUMERS\nMOST TEMPORARY ALLOCATIONS\nEach section then lists the top ten hotspots, i.e. code locations that triggered e.g.\nthe most memory allocations.\nHave a look at\nheaptrack_print --help\nfor changing the output format and other options.\nNote that you can use this tool to convert a heaptrack data file to the Massif data format.\nYou can generate a collapsed stack report for consumption by\nflamegraph.pl\n.",
+                "children": []
+              }
+            ]
+          },
+          {
+            "heading": "Comparison to Valgrind's massif",
+            "text": "The idea to build heaptrack was born out of the pain in working with Valgrind's massif.\nValgrind comes with a huge overhead in both memory and time, which sometimes prevent you\nfrom running it on larger real-world applications. Most of what Valgrind does is not\nneeded for a simple heap profiler.",
+            "children": [
+              {
+                "heading": "Advantages of heaptrack over massif",
+                "text": "speed and memory overhead\nMulti-threaded applications are not serialized when you trace them with heaptrack and\neven for single-threaded applications the overhead in both time and memory is significantly\nlower. Most notably, you only pay a price when you allocate memory -- time-intensive CPU\ncalculations are not slowed down at all, contrary to what happens in Valgrind.\nmore data\nValgrind's massif aggregates data before writing the report. This step loses a lot of\nuseful information. Most notably, you are not longer able to find out how often memory\nwas allocated, or where temporary allocations are triggered. Heaptrack does not aggregate the\ndata until you interpret it, which allows for more useful insights into your allocation patterns.",
+                "children": []
+              },
+              {
+                "heading": "Advantages of massif over heaptrack",
+                "text": "ability to profile page allocations as heap\nThis allows you to heap-profile applications that use pool allocators that circumvent\nmalloc & friends. Heaptrack can in principle also profile such applications, but it\nrequires code changes to annotate the memory pool implementation.\nability to profile stack allocations\nThis is inherently impossible to implement efficiently in heaptrack as far as I know.",
+                "children": []
+              }
+            ]
+          },
+          {
+            "heading": "Contributing to heaptrack",
+            "text": "As a FOSS project, we welcome contributions of any form. You can help improve the project by:\nsubmitting bug reports at\nhttps://bugs.kde.org/enter_bug.cgi?product=Heaptrack\ncontributing patches via\nhttps://invent.kde.org/sdk/heaptrack\ntranslating the GUI with the help of\nhttps://l10n.kde.org/\nwriting documentation on\nhttps://userbase.kde.org/Heaptrack\nWhen submitting bug reports, you can anonymize your data with the\ntools/anonymize\nscript:\ntools/anonymize heaptrack.APP.PID.gz heaptrack.bug_report_data.gz",
+            "children": []
+          },
+          {
+            "heading": "Known bugs and limitations",
+            "text": "",
+            "children": [
+              {
+                "heading": "Issues with old gold linker",
+                "text": "Libunwind may produce bogus backtraces when unwinding from code linked with old versions of the gold linker.\nIn such cases, recording with heaptrack seems to work and produces data files. But parsing these data files\nwith heaptrack_gui will often lead to out-of-memory crashes. Looking at the data with heaptrack_print, one\nwill see garbage backtraces that are completely broken.\nIf you encounter such issues, try to relink your application and also libunwind with\nld.bfd\ninstead of\nld.gold\n.\nYou can see if you are affected by running the libunwind unit tests via\nmake check\n. But do note that you\nneed to relink your application too, not only libunwind.",
+                "children": []
+              }
+            ]
+          },
+          {
+            "heading": "Additional features",
+            "text": "",
+            "children": [
+              {
+                "heading": "Allocation size threshold",
+                "text": "If\nheaptrack\nstarted tracing from the beginning of the profiled application\nwith an environment variable\nHEAPTRACK_PRELOAD_ALLOC_SIZE_THRESHOLD\nset,\nheaptrack\nwill NOT trace any heap memory allocation with the size\nsmaller than\nHEAPTRACK_PRELOAD_ALLOC_SIZE_THRESHOLD\nbytes\n.",
+                "children": [
+                  {
+                    "heading": "Example",
+                    "text": "$ HEAPTRACK_PRELOAD_ALLOC_SIZE_THRESHOLD=1024 heaptrack <your application and its parameters>",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "heading": "Function name blacklist",
+                "text": "If\nheaptrack\nstarted tracing from the beginning of the profiled application\nwith an environment variable\nHEAPTRACK_PRELOAD_FUNCTION_NAME_BLACKLIST\nset,\nheaptrack\nwill NOT trace any heap memory allocation if current call stack contains\nsome return pointers to some functions listed in\nHEAPTRACK_PRELOAD_FUNCTION_NAME_BLACKLIST\n.\nIn\nHEAPTRACK_PRELOAD_FUNCTION_NAME_BLACKLIST\n,\nfunction names should be delimited by\n':'\n,\n' '\n(space character) or\n'\\n'\n(newline character).",
+                "children": [
+                  {
+                    "heading": "Example",
+                    "text": "$ HEAPTRACK_PRELOAD_FUNCTION_NAME_BLACKLIST=foo:bar:foobar heaptrack <your application and its parameters>",
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "description": "A heap memory profiler for Linux",
+    "license": null,
+    "stars": 0,
+    "forks": 0,
+    "topics": [],
+    "last_updated": "2023-11-08T14:03:07.000Z"
+  }
+}
